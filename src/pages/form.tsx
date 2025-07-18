@@ -13,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -21,29 +20,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-
-const formSchema = z.object({
-  projectName: z.string().min(1, "Required!"),
-  proposerName: z.string().min(1, "Required!"),
-  projectCategory: z.string(),
-  description: z.string(),
-  email: z.string().email(),
-});
+import { FormSchema } from "@/lib/schema/formSchema";
+import TextField from "@/components/ui/form/form-text-field";
+import TextAreaField from "@/components/ui/form/form-textarea-field";
 
 export default function ProjectForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
-      proposerName: "",
-      description: "",
-      email: "",
-      projectCategory: "",
       projectName: "",
+      contactPerson: "",
+      location: "",
+      status: "",
+      contactDetails: {
+        site: {
+          name: "",
+          capacity: "",
+          email: "",
+          phone: "",
+        },
+        advisors: {
+          name: "",
+          email: "",
+          phone: "",
+        },
+      },
+      description: "",
+      website: "",
+      partners: "",
+      problems: "",
+      solution: "",
+      priorities: "",
+      outcomes: "",
+      challenges: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
       console.log(values);
       toast(
@@ -65,50 +78,33 @@ export default function ProjectForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-3xl mx-auto py-10"
         >
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-4">
-              <FormField
-                control={form.control}
-                name="projectName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Manhattan Project"
-                        type="text"
-                        {...field}
-                      />
-                    </FormControl>
+          <TextField
+            form={form}
+            name="projectName"
+            label="Project Name"
+            placeholder="Your project name"
+          />
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+          <TextField
+            form={form}
+            name="contactPerson"
+            label="Main Contact Person"
+            placeholder="John Doe"
+          />
 
-          <FormField
-            control={form.control}
-            name="proposerName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Proposer Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" type="text" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+          <TextField
+            form={form}
+            name="location"
+            label="Project Location"
+            placeholder="Your project location"
           />
 
           <FormField
             control={form.control}
-            name="projectCategory"
+            name="status"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Project Category</FormLabel>
+                <FormLabel>Project Status</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -119,58 +115,138 @@ export default function ProjectForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Agriculture">Agriculture</SelectItem>
-                    <SelectItem value="Transport">Transport</SelectItem>
-                    <SelectItem value="Entertainment">Entertainment</SelectItem>
+                    <SelectItem value="Concept">
+                      Concept (Pre-seed Funding - proof of concept)
+                    </SelectItem>
+                    <SelectItem value="Greenfield">
+                      Greenfield (Seed Funding - product launch & marketing){" "}
+                    </SelectItem>
+                    <SelectItem value="Brownfield">
+                      Brownfield (Early Stage Funding - increase market share
+                      and scale)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  Choose the development category your project falls under
+                  Choose the current status of your project
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <FormField
-            control={form.control}
+          <FormLabel>Main Contact Details</FormLabel>
+          <div className="grid grid-cols-12 gap-4 mt-4">
+            <div className="grid col-span-6 gap-4">
+              <FormLabel>Site</FormLabel>
+              <TextField
+                form={form}
+                name="contactDetails.site.name"
+                label="Name"
+                placeholder="John Doe"
+              />
+              <TextField
+                form={form}
+                name="contactDetails.site.capacity"
+                label="Capacity"
+                placeholder="Project capacity"
+              />
+              <TextField
+                form={form}
+                name="contactDetails.site.phone"
+                label="Tel No"
+                placeholder="9876543210"
+              />
+              <TextField
+                type="email"
+                form={form}
+                name="contactDetails.site.email"
+                label="Email"
+                placeholder="johndoe@email.com"
+              />
+            </div>
+            <div className="grid col-span-6 gap-4">
+              <FormLabel>Financial Advisors</FormLabel>
+              <TextField
+                form={form}
+                name="contactDetails.advisors.name"
+                label="Name"
+                placeholder="John Doe"
+              />
+              <TextField
+                form={form}
+                name="contactDetails.advisors.phone"
+                label="Tel No"
+                placeholder="9876543210"
+              />
+              <TextField
+                type="email"
+                form={form}
+                name="contactDetails.advisors.email"
+                label="Email"
+                placeholder="johndoe@email.com"
+              />
+              <div className="h-[58px]"></div>
+            </div>
+          </div>
+
+          <TextField
+            form={form}
+            name="website"
+            label="Website"
+            placeholder="project.com"
+          />
+
+          <TextAreaField
+            form={form}
+            name="partners"
+            label="Project Partners (if applicable)"
+            placeholder="Start typing here..."
+          />
+
+          <TextAreaField
+            form={form}
             name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Start typing here..."
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Mention the key points and benefits of the project
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            label='Description of the Biodiversity Investment Opportunity ("The
+                  Project")'
+            placeholder="Start typing here..."
           />
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="john.doe@gmail.com"
-                    type="email"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+          <TextAreaField
+            form={form}
+            name="problems"
+            label="What problem(s) is the project addressing?"
+            placeholder="Start typing here..."
           />
+
+          <TextAreaField
+            form={form}
+            name="solution"
+            label="What is the proposed solution (or nature of business)?"
+            placeholder="Start typing here..."
+          />
+
+          <TextAreaField
+            form={form}
+            name="priorities"
+            label="What are the biodiversity and conservation priorities of the project?"
+            placeholder="Start typing here..."
+          />
+
+          <TextAreaField
+            form={form}
+            name="outcomes"
+            label="What are the expected outcomes / impact? (e.g. economic development, job development)"
+            placeholder="Start typing here..."
+          />
+
+          <TextAreaField
+            form={form}
+            name="challenges"
+            label="What barriers or challenges does the project face?"
+            placeholder="Start typing here..."
+          />
+
           <Button type="submit">Submit</Button>
         </form>
       </Form>
