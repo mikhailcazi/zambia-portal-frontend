@@ -28,13 +28,13 @@ export const FormSchema = z.object({
   priorities: z.string(),
   outcomes: z.string(),
   challenges: z.string(),
-  // funding: z.array(z.object({
-  //       activity: z.string(),
-  //       amount: z.number()
-  // })),
-//   biodiversityHotspot: z.boolean(),
-//   protectedAreaExpansion: z.boolean(),
-//   generatingRevenue: z.boolean(),
+  funding: z.array(z.object({
+        activity: z.string(),
+        amount: z.string()
+  })),
+  biodiversityHotspot: z.boolean(),
+  protectedAreaExpansion: z.boolean(),
+  generatingRevenue: z.boolean(),
 //   communities: z.object({
 //     supports: z.boolean(),
 //     info: z.string()

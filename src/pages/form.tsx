@@ -23,6 +23,8 @@ import {
 import { FormSchema } from "@/lib/schema/formSchema";
 import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
+import FormArrayField from "@/components/ui/form/form-array-field";
+import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
 
 export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -53,6 +55,10 @@ export default function ProjectForm() {
       priorities: "",
       outcomes: "",
       challenges: "",
+      funding: [],
+      biodiversityHotspot: false,
+      protectedAreaExpansion: false,
+      generatingRevenue: false,
     },
   });
 
@@ -247,6 +253,29 @@ export default function ProjectForm() {
             placeholder="Start typing here..."
           />
 
+          <FormArrayField
+            name="funding"
+            label="What is the nature of capital investment or support required?"
+            form={form}
+          />
+
+          <FormCheckboxField
+            name="biodiversityHotspot"
+            label="Is the project located in a biodiversity hotspot or biodiversity rich area?"
+            form={form}
+          />
+
+          <FormCheckboxField
+            name="protectedAreaExpansion"
+            label="Does the project promote expansion of protected areas?"
+            form={form}
+          />
+
+          <FormCheckboxField
+            name="generatingRevenue"
+            label="Is the project generating revenue? (Please provide full financial projections in the business plan)"
+            form={form}
+          />
           <Button type="submit">Submit</Button>
         </form>
       </Form>
