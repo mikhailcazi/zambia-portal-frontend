@@ -8,24 +8,17 @@ import {
 } from "../form";
 import { Textarea } from "../textarea";
 import * as z from "zod";
-import { FormSchema } from "@/lib/schema/formSchema";
+import { FormSchema, StringFieldNames } from "@/lib/schema/formSchema";
 import { UseFormReturn } from "react-hook-form";
 
 type FormValues = z.infer<typeof FormSchema>;
 
 // Utility to get only keys where value is string
-type StringFieldNames<T, Prefix extends string = ""> = {
-  [K in keyof T]: T[K] extends string
-    ? `${Prefix}${K & string}`
-    : T[K] extends object
-    ? StringFieldNames<T[K], `${Prefix}${K & string}.`>
-    : never;
-}[keyof T];
 
 interface TextAreaFieldProps {
   description?: string;
   form: UseFormReturn<FormValues>;
-  name: StringFieldNames<FormValues>;
+  name: StringFieldNames;
   label: string;
   placeholder: string;
 }

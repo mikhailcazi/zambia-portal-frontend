@@ -25,6 +25,8 @@ import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
 import FormArrayField from "@/components/ui/form/form-array-field";
 import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
+import { FormCheckboxGroupArrayField } from "@/components/ui/form/form-checkbox-array-field";
+import { FormFileUploadField } from "@/components/ui/form/form-file-field";
 
 export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -59,6 +61,16 @@ export default function ProjectForm() {
       biodiversityHotspot: false,
       protectedAreaExpansion: false,
       generatingRevenue: false,
+      communities: "",
+      smmes: "",
+      fundingOptions: [],
+      org: "",
+      scalable: "",
+      envImpact: "",
+      socialImpact: "",
+      sustainability: "",
+      profitability: "",
+      attachments: [],
     },
   });
 
@@ -78,7 +90,12 @@ export default function ProjectForm() {
 
   return (
     <>
-      <h1 className="text-xl">Please enter the details of your project...</h1>
+      <h1 className="text-3xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight mb-6">
+        Biodiversity Conservation Investment Opportunity
+      </h1>
+      <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+        Business Case Template Form
+      </h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -259,23 +276,118 @@ export default function ProjectForm() {
             form={form}
           />
 
-          <FormCheckboxField
-            name="biodiversityHotspot"
-            label="Is the project located in a biodiversity hotspot or biodiversity rich area?"
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxField
+              name="biodiversityHotspot"
+              label="Is the project located in a biodiversity hotspot or biodiversity rich area?"
+              form={form}
+            />
+
+            <FormCheckboxField
+              name="protectedAreaExpansion"
+              label="Does the project promote expansion of protected areas?"
+              form={form}
+            />
+
+            <FormCheckboxField
+              name="generatingRevenue"
+              label="Is the project generating revenue? (Please provide full financial projections in the business plan)"
+              form={form}
+            />
+          </div>
+
+          <TextAreaField
+            form={form}
+            name="communities"
+            label="Does the project support communities (young people and women)?"
+            placeholder="Start typing here..."
+            description="If yes, please elaborate and give examples to support"
+          />
+
+          <TextAreaField
+            form={form}
+            name="smmes"
+            label="Does the project promote SMMEs?"
+            placeholder="Start typing here..."
+            description="If yes, please elaborate and give examples to support"
+          />
+
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxGroupArrayField
+              name="fundingOptions"
+              label="Project Funding Options"
+              options={[
+                { label: "Grant", value: "grant" },
+                { label: "Reimbursable grant", value: "reimbursable_grant" },
+                { label: "Guarantees", value: "guarantees" },
+                { label: "Equity", value: "equity" },
+                { label: "Subordinated loan", value: "sub_loan" },
+                { label: "Senior loan", value: "senior_loan" },
+                { label: "Other", value: "other" },
+              ]}
+            />
+          </div>
+
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Investment Case
+          </h2>
+
+          <TextAreaField
+            form={form}
+            name="org"
+            label="Organization and Governance"
+            placeholder="Start typing here..."
+            description="Please outline your governance structure"
+          />
+
+          <TextAreaField
+            form={form}
+            name="scalable"
+            label="Can the project be scaled and can it be copied?"
+            placeholder="Start typing here..."
+          />
+
+          <TextAreaField
+            form={form}
+            name="envImpact"
+            label="Environmental impact:"
+            placeholder="Start typing here..."
+            description="How will it improve the existing environmental conditions?"
+          />
+
+          <TextAreaField
+            form={form}
+            name="socialImpact"
+            label="Social impact:"
+            placeholder="Start typing here..."
+            description="How will it improve the livelihoods of local communities and marginalized people?"
+          />
+
+          <TextAreaField
+            form={form}
+            name="sustainability"
+            label="Sustainability:"
+            placeholder="Start typing here..."
+            description="Can the project continue to thrive post-investment?"
+          />
+
+          <TextAreaField
+            form={form}
+            name="profitability"
+            label="Profitability (for enterprises):"
+            placeholder="Start typing here..."
+            description="Is the business model viable?"
+          />
+
+          <FormFileUploadField
+            name="attachments"
+            label="Make sure the following supporting documents are attached:"
+            description={`1. Business Plan (including current financials, employees, business history) and projected cashflows\n2. Company Registration documents`}
             form={form}
           />
 
-          <FormCheckboxField
-            name="protectedAreaExpansion"
-            label="Does the project promote expansion of protected areas?"
-            form={form}
-          />
-
-          <FormCheckboxField
-            name="generatingRevenue"
-            label="Is the project generating revenue? (Please provide full financial projections in the business plan)"
-            form={form}
-          />
           <Button type="submit">Submit</Button>
         </form>
       </Form>

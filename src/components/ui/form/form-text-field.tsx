@@ -9,31 +9,11 @@ import {
 import { Input } from "../input";
 import * as z from "zod";
 
-import { FormSchema } from "@/lib/schema/formSchema";
+import { FormSchema, StringFieldNames } from "@/lib/schema/formSchema";
 
 type FormValues = z.infer<typeof FormSchema>;
 
 // Utility to get only keys where value is string
-type StringFieldNames =
-  | "projectName"
-  | "contactPerson"
-  | "location"
-  | "status"
-  | "contactDetails.site.name"
-  | "contactDetails.site.capacity"
-  | "contactDetails.site.phone"
-  | "contactDetails.site.email"
-  | "contactDetails.advisors.name"
-  | "contactDetails.advisors.phone"
-  | "contactDetails.advisors.email"
-  | "website"
-  | "partners"
-  | "description"
-  | "problems"
-  | "solution"
-  | "priorities"
-  | "outcomes"
-  | "challenges";
 
 interface TextFieldProps {
   type?: string;

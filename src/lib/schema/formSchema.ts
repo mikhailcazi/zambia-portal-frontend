@@ -1,8 +1,13 @@
 import * as z from "zod";
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_TYPES = [
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+];
 export const FormSchema = z.object({
-  projectName: z.string().min(1, "Required!"),
-  contactPerson: z.string().min(1, "Required!"),
+  projectName: z.string(),
+  contactPerson: z.string(),
   location: z.string(),
   status: z.string(),
 
@@ -11,12 +16,12 @@ export const FormSchema = z.object({
         name: z.string(),
         capacity: z.string(),
         phone: z.string(),
-        email: z.string().email(),
+        email: z.string()
     }),
     advisors: z.object({
         name: z.string(),
         phone: z.string(),
-        email: z.string().email()
+        email: z.string()
     }),
   }),
   website: z.string(),
@@ -35,20 +40,61 @@ export const FormSchema = z.object({
   biodiversityHotspot: z.boolean(),
   protectedAreaExpansion: z.boolean(),
   generatingRevenue: z.boolean(),
-//   communities: z.object({
-//     supports: z.boolean(),
-//     info: z.string()
-//   }),
-//   smmes: z.object({
-//     promotes: z.boolean(),
-//     info: z.string()
-//   }),
-//   fundingOptions: z.array(z.string()),
-//   org: z.string(),
-//   scalable: z.boolean(),
-//   envImpact: z.string(),
-//   socialImpact: z.string(),
-//   sustainability: z.string(),
-//   profitability: z.string(),
-//   supportingDocuments: z.array(z.boolean()),
+  communities: z.string(),
+  smmes: z.string(),
+  fundingOptions: z.array(z.string()),
+  org: z.string(),
+  scalable: z.string(),
+  envImpact: z.string(),
+  socialImpact: z.string(),
+  sustainability: z.string(),
+  profitability: z.string(),
+  attachments: z
+    .array(
+      z.custom<File>((file) => file instanceof File, {
+        message: "Invalid file",
+      })
+    )
+    // .min(1, { message: "At least one file is required" })
+    .refine(
+      (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
+      {
+        message: "Each file must be under 5MB",
+      }
+    )
+    .refine(
+      (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
+      {
+        message: "Only PDF or DOCX files are allowed",
+      }
+    ),
 });
+
+export type StringFieldNames =
+  | "projectName"
+  | "contactPerson"
+  | "location"
+  | "status"
+  | "contactDetails.site.name"
+  | "contactDetails.site.capacity"
+  | "contactDetails.site.phone"
+  | "contactDetails.site.email"
+  | "contactDetails.advisors.name"
+  | "contactDetails.advisors.phone"
+  | "contactDetails.advisors.email"
+  | "website"
+  | "partners"
+  | "description"
+  | "problems"
+  | "solution"
+  | "priorities"
+  | "outcomes"
+  | "challenges"
+  | "smmes"
+  | "communities"
+  | "org"
+  | "scalable"
+  | "envImpact"
+  | "socialImpact"
+  | "sustainability"
+  | "profitability";

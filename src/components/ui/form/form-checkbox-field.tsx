@@ -34,7 +34,7 @@ export default function FormCheckboxField({
           <FormControl>
             <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
-          <FormLabel className="font-normal">{label}</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <FormMessage />
         </FormItem>
       )}

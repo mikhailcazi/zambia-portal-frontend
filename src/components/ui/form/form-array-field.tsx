@@ -34,7 +34,7 @@ export default function FormArrayField({
 
   return (
     <div className="space-y-2">
-      <h2 className="font-medium text-sm text-muted-foreground">{label}</h2>
+      <h2 className="font-medium text-sm">{label}</h2>
 
       <div className="border rounded-lg">
         <div className="grid grid-cols-12 border-b p-2 bg-muted text-sm font-medium text-muted-foreground rounded-lg">
@@ -75,7 +75,7 @@ export default function FormArrayField({
                   <FormItem className="m-0">
                     <FormControl>
                       <input
-                        type="number"
+                        type="text"
                         {...field}
                         className="input input-bordered w-full"
                         placeholder="e.g. 10000"
@@ -105,7 +105,7 @@ export default function FormArrayField({
         type="button"
         variant="outline"
         size="sm"
-        onClick={() => append({ activity: "", amount: 0 })}
+        onClick={() => append({ activity: "", amount: "0" })}
         className="flex gap-1"
       >
         <Plus size={14} />
