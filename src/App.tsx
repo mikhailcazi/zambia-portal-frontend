@@ -4,11 +4,13 @@ import HomePage from "./pages/page";
 import Layout from "./Layout";
 import ProjectList from "./pages/projects";
 import ProjectForm from "./pages/form";
+// import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <>
       <div className="flex h-screen flex-col">
+        {/* <Toaster /> */}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

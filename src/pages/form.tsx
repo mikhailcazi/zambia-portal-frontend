@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FormSchema } from "@/lib/schema/formSchema";
+import { FormDefaultValues, FormSchema } from "@/lib/schema/formSchema";
 import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
 import FormArrayField from "@/components/ui/form/form-array-field";
@@ -31,47 +31,7 @@ import { FormFileUploadField } from "@/components/ui/form/form-file-field";
 export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      projectName: "",
-      contactPerson: "",
-      location: "",
-      status: "",
-      contactDetails: {
-        site: {
-          name: "",
-          capacity: "",
-          email: "",
-          phone: "",
-        },
-        advisors: {
-          name: "",
-          email: "",
-          phone: "",
-        },
-      },
-      description: "",
-      website: "",
-      partners: "",
-      problems: "",
-      solution: "",
-      priorities: "",
-      outcomes: "",
-      challenges: "",
-      funding: [],
-      biodiversityHotspot: false,
-      protectedAreaExpansion: false,
-      generatingRevenue: false,
-      communities: "",
-      smmes: "",
-      fundingOptions: [],
-      org: "",
-      scalable: "",
-      envImpact: "",
-      socialImpact: "",
-      sustainability: "",
-      profitability: "",
-      attachments: [],
-    },
+    defaultValues: FormDefaultValues,
   });
 
   function onSubmit(values: z.infer<typeof FormSchema>) {
