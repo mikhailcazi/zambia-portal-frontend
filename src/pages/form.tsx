@@ -27,6 +27,7 @@ import FormArrayField from "@/components/ui/form/form-array-field";
 import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
 import { FormCheckboxGroupArrayField } from "@/components/ui/form/form-checkbox-array-field";
 import { FormFileUploadField } from "@/components/ui/form/form-file-field";
+import { api } from "@/services/api.service";
 
 export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -34,14 +35,16 @@ export default function ProjectForm() {
     defaultValues: FormDefaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof FormSchema>) {
+  async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
       console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      // toast(
+      //   <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+      //     <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+      //   </pre>
+      // );
+
+      await api.createProject(values);
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
