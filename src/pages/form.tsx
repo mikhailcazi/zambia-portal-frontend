@@ -124,26 +124,26 @@ export default function ProjectForm() {
               <FormLabel>Site</FormLabel>
               <TextField
                 form={form}
-                name="contactDetails.site.name"
+                name="siteName"
                 label="Name"
                 placeholder="John Doe"
               />
               <TextField
                 form={form}
-                name="contactDetails.site.capacity"
+                name="siteCapacity"
                 label="Capacity"
                 placeholder="Project capacity"
               />
               <TextField
                 form={form}
-                name="contactDetails.site.phone"
+                name="sitePhone"
                 label="Tel No"
                 placeholder="9876543210"
               />
               <TextField
                 type="email"
                 form={form}
-                name="contactDetails.site.email"
+                name="siteEmail"
                 label="Email"
                 placeholder="johndoe@email.com"
               />
@@ -152,20 +152,20 @@ export default function ProjectForm() {
               <FormLabel>Financial Advisors</FormLabel>
               <TextField
                 form={form}
-                name="contactDetails.advisors.name"
+                name="advisorName"
                 label="Name"
                 placeholder="John Doe"
               />
               <TextField
                 form={form}
-                name="contactDetails.advisors.phone"
+                name="advisorPhone"
                 label="Tel No"
                 placeholder="9876543210"
               />
               <TextField
                 type="email"
                 form={form}
-                name="contactDetails.advisors.email"
+                name="advisorEmail"
                 label="Email"
                 placeholder="johndoe@email.com"
               />

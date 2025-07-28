@@ -11,20 +11,15 @@ export const FormSchema = z.object({
   contactPerson: z.string(),
   location: z.string(),
   status: z.string(),
+  siteName: z.string(),
+  siteCapacity: z.string(),
+  sitePhone: z.string(),
+  siteEmail: z.string().email(),
 
-  contactDetails: z.object({
-    site: z.object({
-      name: z.string(),
-      capacity: z.string(),
-      phone: z.string(),
-      email: z.string(),
-    }),
-    advisors: z.object({
-      name: z.string(),
-      phone: z.string(),
-      email: z.string(),
-    }),
-  }),
+  advisorName: z.string(),
+  advisorPhone: z.string(),
+  advisorEmail: z.string().email(),
+
   website: z.string(),
   partners: z.string(),
   description: z.string(),
@@ -52,7 +47,8 @@ export const FormSchema = z.object({
   socialImpact: z.string(),
   sustainability: z.string(),
   profitability: z.string(),
-  attachments: z.array(
+  attachments: z
+    .array(
       z.custom<File>((file) => file instanceof File, {
         message: "Invalid file",
       })
@@ -74,19 +70,16 @@ export const FormDefaultValues = {
   contactPerson: "",
   location: "",
   status: "",
-  contactDetails: {
-    site: {
-      name: "",
-      capacity: "",
-      email: "",
-      phone: "",
-    },
-    advisors: {
-      name: "",
-      email: "",
-      phone: "",
-    },
-  },
+
+  siteName: "",
+  siteCapacity: "",
+  sitePhone: "",
+  siteEmail: "",
+
+  advisorName: "",
+  advisorPhone: "",
+  advisorEmail: "",
+  
   description: "",
   website: "",
   partners: "",
@@ -116,13 +109,13 @@ export type StringFieldNames =
   | "contactPerson"
   | "location"
   | "status"
-  | "contactDetails.site.name"
-  | "contactDetails.site.capacity"
-  | "contactDetails.site.phone"
-  | "contactDetails.site.email"
-  | "contactDetails.advisors.name"
-  | "contactDetails.advisors.phone"
-  | "contactDetails.advisors.email"
+  | "siteName"
+  | "siteCapacity"
+  | "sitePhone"
+  | "siteEmail"
+  | "advisorName"
+  | "advisorPhone"
+  | "advisorEmail"
   | "website"
   | "partners"
   | "description"
