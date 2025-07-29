@@ -89,7 +89,7 @@ export const FormDefaultValues = {
   priorities: "",
   outcomes: "",
   challenges: "",
-  funding: [],
+  funding: [{ activity: "", amount: "0" }],
   biodiversityHotspot: false,
   protectedAreaExpansion: false,
   generatingRevenue: false,

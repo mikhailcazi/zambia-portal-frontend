@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { useFieldArray } from "react-hook-form";
 import { X, Plus } from "lucide-react";
+import { Input } from "../input";
 
 type FormType = z.infer<typeof FormSchema>;
 
@@ -36,8 +37,8 @@ export default function FormArrayField({
     <div className="space-y-2">
       <h2 className="font-medium text-sm">{label}</h2>
 
-      <div className="border rounded-lg">
-        <div className="grid grid-cols-12 border-b p-2 bg-muted text-sm font-medium text-muted-foreground rounded-lg">
+      <div className="">
+        <div className="grid grid-cols-12 border-b p-2 bg-muted text-sm font-medium text-muted-foreground">
           <div className="col-span-6">Activity</div>
           <div className="col-span-5">Amount Required</div>
           <div className="col-span-1 text-center"></div>
@@ -46,7 +47,7 @@ export default function FormArrayField({
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="grid grid-cols-12 items-center border-b last:border-b-0 p-2 gap-2"
+            className="grid grid-cols-12 items-center p-2 gap-2"
           >
             <div className="col-span-6">
               <FormField
@@ -55,11 +56,7 @@ export default function FormArrayField({
                 render={({ field }) => (
                   <FormItem className="m-0">
                     <FormControl>
-                      <input
-                        {...field}
-                        className="input input-bordered w-full"
-                        placeholder="e.g. Site survey"
-                      />
+                      <Input {...field} placeholder="e.g. Site survey" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -74,12 +71,7 @@ export default function FormArrayField({
                 render={({ field }) => (
                   <FormItem className="m-0">
                     <FormControl>
-                      <input
-                        type="text"
-                        {...field}
-                        className="input input-bordered w-full"
-                        placeholder="e.g. 10000"
-                      />
+                      <Input type="text" {...field} placeholder="e.g. 10000" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -109,7 +101,7 @@ export default function FormArrayField({
         className="flex gap-1"
       >
         <Plus size={14} />
-        Add Row
+        Add Item
       </Button>
     </div>
   );
