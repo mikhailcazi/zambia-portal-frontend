@@ -157,15 +157,7 @@ export default function ProjectList() {
 
   return (
     <div>
-      <h1>Projects</h1>
-      {/* <ul>
-        {projects.map((p) => (
-          <li key={p.id}>
-            <strong>{p.projectName}</strong> – {p.location}
-          </li>
-        ))}
-      </ul> */}
-
+      <h1 className="my-5 font-bold">Project Dashboard</h1>
       <ApproverProjectTable data={projects} />
     </div>
   );

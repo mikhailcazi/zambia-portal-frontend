@@ -1,11 +1,12 @@
 import { Outlet } from "react-router";
 import Header from "./components/header";
+import AdminHeader from "./components/admin-header";
 
 export default function AdminLayout() {
   return (
     <>
       <div>
-        <Header />
+        <AdminHeader />
       </div>
 
       <div className="body h-full bg-neutral-100 justify-items-center overflow-auto">

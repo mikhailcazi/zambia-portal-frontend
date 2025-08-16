@@ -7,6 +7,7 @@ import ProjectForm from "./pages/form";
 import Dashboard from "./pages/admin/dashboard";
 import AdminLayout from "./AdminLayout";
 import AdminLogin from "./pages/admin/admin-login";
+import { ProjectDetails } from "./pages/project-details";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
               <Route index element={<Navigate to="login" replace />} />
               <Route path="login" element={<AdminLogin />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="projects/:id" element={<ProjectDetails />} />
             </Route>
             <Route path="/" element={<Layout />}>
               <Route index element={<Navigate to="home" replace />} />

@@ -16,8 +16,9 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { useNavigate } from "react-router";
 
-type Project = {
+export type Project = {
   id: string;
   projectName: string;
   contactPerson: string;
@@ -103,6 +104,11 @@ export const columns: ColumnDef<Project>[] = [
 
 export function ApproverProjectTable({ data }: { data: Project[] }) {
   const [globalFilter, setGlobalFilter] = useState("");
+  const navigate = useNavigate();
+
+  const handleRowClick = (project: Project) => {
+    navigate(`/admin/projects/${project.id}`);
+  };
 
   const table = useReactTable({
     data,
@@ -126,7 +132,7 @@ export function ApproverProjectTable({ data }: { data: Project[] }) {
       />
 
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-[#dbebb2]">
           {table.getHeaderGroups().map((hg) => (
             <TableRow key={hg.id}>
               {hg.headers.map((header) => (
@@ -149,7 +155,11 @@ export function ApproverProjectTable({ data }: { data: Project[] }) {
 
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+              key={row.id}
+              onClick={() => handleRowClick(row.original)}
+              className="cursor-pointer"
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
