@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { useNavigate } from "react-router";
+import { Button } from "./ui/button";
 
 export type Project = {
   id: string;
@@ -99,6 +100,37 @@ export const columns: ColumnDef<Project>[] = [
     accessorKey: "createdAt",
     header: "Created",
     cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleDateString(),
+  },
+  {
+    id: "actions", // custom column id since it's not in Project type
+    header: "Actions",
+    cell: ({ row }) => {
+      const project = row.original;
+      return (
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation(); // prevent row click navigation
+              alert(`Viewing ${project.projectName}`);
+            }}
+          >
+            View
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              alert(`Deleting ${project.projectName}`);
+            }}
+          >
+            Delete
+          </Button>
+        </div>
+      );
+    },
   },
 ];
 

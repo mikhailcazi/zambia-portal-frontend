@@ -44,7 +44,7 @@ export default function ProjectForm() {
       //   </pre>
       // );
 
-      await api.createProject(values);
+      await api.createProposal(values);
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
