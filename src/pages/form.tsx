@@ -20,7 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FormDefaultValues, FormSchema } from "@/lib/schema/formSchema";
+import {
+  FormDefaultValues,
+  FormSchema,
+  FundingOptionsMapping,
+} from "@/lib/schema/formSchema";
 import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
 import FormArrayField from "@/components/ui/form/form-array-field";
@@ -50,6 +54,13 @@ export default function ProjectForm() {
       toast.error("Failed to submit the form. Please try again.");
     }
   }
+
+  const getFundingOptions = () => {
+    return Object.keys(FundingOptionsMapping).map((key) => ({
+      label: FundingOptionsMapping[key],
+      value: key,
+    }));
+  };
 
   return (
     <>
@@ -279,15 +290,7 @@ export default function ProjectForm() {
             <FormCheckboxGroupArrayField
               name="fundingOptions"
               label="Project Funding Options"
-              options={[
-                { label: "Grant", value: "grant" },
-                { label: "Reimbursable grant", value: "reimbursable_grant" },
-                { label: "Guarantees", value: "guarantees" },
-                { label: "Equity", value: "equity" },
-                { label: "Subordinated loan", value: "sub_loan" },
-                { label: "Senior loan", value: "senior_loan" },
-                { label: "Other", value: "other" },
-              ]}
+              options={getFundingOptions()}
             />
           </div>
 

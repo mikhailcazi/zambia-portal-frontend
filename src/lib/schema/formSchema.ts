@@ -11,7 +11,7 @@ export const FormSchema = z.object({
   contactPerson: z.string(),
   location: z.string(),
   status: z.string(),
-  
+
   siteName: z.string(),
   siteCapacity: z.string(),
   sitePhone: z.string(),
@@ -80,7 +80,7 @@ export const FormDefaultValues = {
   advisorName: "",
   advisorPhone: "",
   advisorEmail: "",
-  
+
   description: "",
   website: "",
   partners: "",
@@ -133,3 +133,13 @@ export type StringFieldNames =
   | "socialImpact"
   | "sustainability"
   | "profitability";
+
+export const FundingOptionsMapping: { [key: string]: string } = {
+  grant: "Grant",
+  reimbursable_grant: "Reimbursable grant",
+  guarantees: "Guarantees",
+  equity: "Equity",
+  sub_loan: "Subordinated loan",
+  senior_loan: "Senior loan",
+  other: "Other",
+};

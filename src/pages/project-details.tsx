@@ -2,7 +2,7 @@ import { Project } from "@/components/ProjectTable";
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import { useParams, useNavigate } from "react-router";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function ProjectDetails() {
