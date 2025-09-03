@@ -270,7 +270,7 @@ export function ProposalDetails() {
           </Card>
 
           {isAdmin() && (
-            <Card className="bg-[#ddeab1]">
+            <Card className="border-[#ddeab1]">
               <CardHeader>
                 <CardTitle>Proposal Review</CardTitle>
               </CardHeader>

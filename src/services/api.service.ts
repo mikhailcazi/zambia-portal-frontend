@@ -8,8 +8,12 @@ const API_BASE = "http://localhost:3000"; // or from env
 export const api = {
   getProposals: () => axios.get(`${API_BASE}/proposals`),
   getProposal: (id: string) => axios.get(`${API_BASE}/proposals/${id}`),
-  createProposal: (data: z.infer<typeof FormSchema>) =>
-    axios.post(`${API_BASE}/proposals`, data),
+  createProposal: (data: FormData) =>
+    axios.post(`${API_BASE}/proposals`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 
   getProjects: () => axios.get(`${API_BASE}/projects`),
   getProject: (id: string) => axios.get(`${API_BASE}/projects/${id}`),

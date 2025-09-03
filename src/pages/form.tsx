@@ -39,16 +39,25 @@ export default function ProjectForm() {
     defaultValues: FormDefaultValues,
   });
 
+  const createFormData = (values: z.infer<typeof FormSchema>) => {
+    const attachments = values.attachments;
+    values.attachments = [];
+
+    const formData = new FormData();
+
+    formData.append("data", JSON.stringify(values));
+    attachments.forEach((file) => formData.append("files", file));
+
+    return formData;
+  };
+
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
       console.log(values);
-      // toast(
-      //   <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      //     <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-      //   </pre>
-      // );
 
-      await api.createProposal(values);
+      const formData = createFormData(values);
+
+      await api.createProposal(formData);
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -65,10 +74,10 @@ export default function ProjectForm() {
   return (
     <>
       <h1 className="text-3xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight mb-6">
-        Biodiversity Conservation Investment Opportunity
+        Zambia Green Investment Portal
       </h1>
       <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
-        Business Case Template Form
+        Project Eligibility Form
       </h2>
       <Form {...form}>
         <form
@@ -77,8 +86,8 @@ export default function ProjectForm() {
         >
           <TextField
             form={form}
-            name="projectName"
-            label="Project Name"
+            name="projectTitle"
+            label="Project Title"
             placeholder="Your project name"
           />
 
