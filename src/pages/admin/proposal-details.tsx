@@ -11,7 +11,6 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { FundingOptionsMapping } from "@/lib/schema/formSchema";
 import { Textarea } from "@/components/ui/textarea";
 
 export function ProposalDetails() {
@@ -202,11 +201,9 @@ export function ProposalDetails() {
               <div>
                 <p className="font-semibold">Funding Options:</p>
                 <ul className="list-disc list-inside">
-                  {proposal.fundingOptions
-                    .map((option) => FundingOptionsMapping[option])
-                    .map((option, idx) => (
-                      <li key={idx}>{option}</li>
-                    ))}
+                  {proposal.fundingOptions.map((option, idx) => (
+                    <li key={idx}>{option}</li>
+                  ))}
                 </ul>
               </div>
             </CardContent>

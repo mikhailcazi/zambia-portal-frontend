@@ -14,7 +14,7 @@ import { FormSchema } from "@/lib/schema/formSchema";
 type FormValues = z.infer<typeof FormSchema>;
 
 type FormFileUploadFieldProps = {
-  name: "attachments";
+  name: "attachments" | "projectOverview";
   form: UseFormReturn<FormValues>;
   label: string;
   description?: string;

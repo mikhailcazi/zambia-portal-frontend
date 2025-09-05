@@ -21,14 +21,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  CategoryValues,
+  ClimateImpactValues,
   FormDefaultValues,
   FormSchema,
-  FundingOptionsMapping,
+  FundingOptions,
+  ProjectStages,
+  SocialImpactValues,
 } from "@/lib/schema/formSchema";
 import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
 import FormArrayField from "@/components/ui/form/form-array-field";
-import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
 import { FormCheckboxGroupArrayField } from "@/components/ui/form/form-checkbox-array-field";
 import { FormFileUploadField } from "@/components/ui/form/form-file-field";
 import { api } from "@/services/api.service";
@@ -64,26 +67,22 @@ export default function ProjectForm() {
     }
   }
 
-  const getFundingOptions = () => {
-    return Object.keys(FundingOptionsMapping).map((key) => ({
-      label: FundingOptionsMapping[key],
-      value: key,
-    }));
-  };
-
   return (
     <>
       <h1 className="text-3xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight mb-6">
-        Zambia Green Investment Portal
-      </h1>
-      <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
         Project Eligibility Form
-      </h2>
+      </h1>
+      {/* <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+        Project Eligibility Form
+      </h2> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-3xl mx-auto py-10"
         >
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section A: Basic Information
+          </h2>
           <TextField
             form={form}
             name="projectTitle"
@@ -93,8 +92,15 @@ export default function ProjectForm() {
 
           <TextField
             form={form}
+            name="organization"
+            label="Organization / Proponent"
+            placeholder="John Doe"
+          />
+
+          <TextField
+            form={form}
             name="contactPerson"
-            label="Main Contact Person"
+            label="Contact Person & Details"
             placeholder="John Doe"
           />
 
@@ -105,9 +111,18 @@ export default function ProjectForm() {
             placeholder="Your project location"
           />
 
+          {/* Implementation Period */}
+
+          <TextField
+            form={form}
+            name="sector"
+            label="Sector / Subsector"
+            placeholder="Your project sector"
+          />
+
           <FormField
             control={form.control}
-            name="status"
+            name="stage"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Project Status</FormLabel>
@@ -121,16 +136,9 @@ export default function ProjectForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Concept">
-                      Concept (Pre-seed Funding - proof of concept)
-                    </SelectItem>
-                    <SelectItem value="Greenfield">
-                      Greenfield (Seed Funding - product launch & marketing){" "}
-                    </SelectItem>
-                    <SelectItem value="Brownfield">
-                      Brownfield (Early Stage Funding - increase market share
-                      and scale)
-                    </SelectItem>
+                    {ProjectStages.map((stage) => (
+                      <SelectItem value={stage}>{stage}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormDescription>
@@ -141,117 +149,62 @@ export default function ProjectForm() {
             )}
           />
 
-          <FormLabel>Main Contact Details</FormLabel>
-          <div className="grid grid-cols-12 gap-4 mt-4">
-            <div className="grid col-span-6 gap-4">
-              <FormLabel>Site</FormLabel>
-              <TextField
-                form={form}
-                name="siteName"
-                label="Name"
-                placeholder="John Doe"
-              />
-              <TextField
-                form={form}
-                name="siteCapacity"
-                label="Capacity"
-                placeholder="Project capacity"
-              />
-              <TextField
-                form={form}
-                name="sitePhone"
-                label="Tel No"
-                placeholder="9876543210"
-              />
-              <TextField
-                type="email"
-                form={form}
-                name="siteEmail"
-                label="Email"
-                placeholder="johndoe@email.com"
-              />
-            </div>
-            <div className="grid col-span-6 gap-4">
-              <FormLabel>Financial Advisors</FormLabel>
-              <TextField
-                form={form}
-                name="advisorName"
-                label="Name"
-                placeholder="John Doe"
-              />
-              <TextField
-                form={form}
-                name="advisorPhone"
-                label="Tel No"
-                placeholder="9876543210"
-              />
-              <TextField
-                type="email"
-                form={form}
-                name="advisorEmail"
-                label="Email"
-                placeholder="johndoe@email.com"
-              />
-              <div className="h-[58px]"></div>
-            </div>
-          </div>
+          <TextField
+            form={form}
+            name="estimatedInvestment"
+            label="Estimated Required Investment (USD / ZMW)"
+            placeholder="Estimated investment"
+          />
 
           <TextField
             form={form}
-            name="website"
-            label="Website"
-            placeholder="project.com"
-          />
-
-          <TextAreaField
-            form={form}
             name="partners"
             label="Project Partners (if applicable)"
-            placeholder="Start typing here..."
+            placeholder="Partners"
           />
 
-          <TextAreaField
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section B: Investor-Friendly Project Overview (Pitch Deck Style)
+          </h2>
+          <FormFileUploadField
+            name="projectOverview"
+            label="Project Overview"
+            description={`Please upload a PDF deck which covers each of the following points, in 80 words or less\n1. Problem Statement\n2. Green Investment Opportunity\n3. Proposed Solution\n4. Innovation / Differentiation - What makes your project innovative or different? Briefly explain any new technology, approach, or co-benefits that go beyond “business as usual.”\n5. Expected Impact / Outcomes (Environmental, Social, Financial)\n6. Alignment with National Priorities (Zambia’s Green Growth Strategy, NDCs, NBSAP, Green Finance Strategy, or other relevant frameworks)\n7. Contribution to recognized environmental or social goals (e.g., climate action, biodiversity protection, sustainable livelihoods, community resilience etc.)`}
             form={form}
-            name="description"
-            label='Description of the Biodiversity Investment Opportunity ("The
-                  Project")'
-            placeholder="Start typing here..."
           />
 
-          <TextAreaField
-            form={form}
-            name="problems"
-            label="What problem(s) is the project addressing?"
-            placeholder="Start typing here..."
-          />
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxGroupArrayField
+              name="categories"
+              label="Eligible Categories"
+              options={CategoryValues.map((value) => ({
+                label: value,
+                value: value,
+              }))}
+            />
+          </div>
 
-          <TextAreaField
-            form={form}
-            name="solution"
-            label="What is the proposed solution (or nature of business)?"
-            placeholder="Start typing here..."
-          />
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxGroupArrayField
+              name="envImpact"
+              label="Environmental & Climate Impact"
+              options={ClimateImpactValues.map((value) => ({
+                label: value,
+                value: value,
+              }))}
+            />
+          </div>
 
-          <TextAreaField
-            form={form}
-            name="priorities"
-            label="What are the biodiversity and conservation priorities of the project?"
-            placeholder="Start typing here..."
-          />
-
-          <TextAreaField
-            form={form}
-            name="outcomes"
-            label="What are the expected outcomes / impact? (e.g. economic development, job development)"
-            placeholder="Start typing here..."
-          />
-
-          <TextAreaField
-            form={form}
-            name="challenges"
-            label="What barriers or challenges does the project face?"
-            placeholder="Start typing here..."
-          />
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxGroupArrayField
+              name="socialImpact"
+              label="Social & Developmental Impact"
+              options={SocialImpactValues.map((value) => ({
+                label: value,
+                value: value,
+              }))}
+            />
+          </div>
 
           <FormArrayField
             name="funding"
@@ -260,101 +213,28 @@ export default function ProjectForm() {
           />
 
           <div className="relative overflow-hidden grid gap-4 items-center">
-            <FormCheckboxField
-              name="biodiversityHotspot"
-              label="Is the project located in a biodiversity hotspot or biodiversity rich area?"
-              form={form}
-            />
-
-            <FormCheckboxField
-              name="protectedAreaExpansion"
-              label="Does the project promote expansion of protected areas?"
-              form={form}
-            />
-
-            <FormCheckboxField
-              name="generatingRevenue"
-              label="Is the project generating revenue? (Please provide full financial projections in the business plan)"
-              form={form}
-            />
-          </div>
-
-          <TextAreaField
-            form={form}
-            name="communities"
-            label="Does the project support communities (young people and women)?"
-            placeholder="Start typing here..."
-            description="If yes, please elaborate and give examples to support"
-          />
-
-          <TextAreaField
-            form={form}
-            name="smmes"
-            label="Does the project promote SMMEs?"
-            placeholder="Start typing here..."
-            description="If yes, please elaborate and give examples to support"
-          />
-
-          <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
               name="fundingOptions"
               label="Project Funding Options"
-              options={getFundingOptions()}
+              options={FundingOptions.map((value) => ({
+                label: value,
+                value: value,
+              }))}
             />
           </div>
+
+          <TextAreaField
+            form={form}
+            name="scalable"
+            label="Is the project scalable, replicable and sustainable?"
+            placeholder="80 words or less..."
+          />
 
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
 
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Investment Case
           </h2>
-
-          <TextAreaField
-            form={form}
-            name="org"
-            label="Organization and Governance"
-            placeholder="Start typing here..."
-            description="Please outline your governance structure"
-          />
-
-          <TextAreaField
-            form={form}
-            name="scalable"
-            label="Can the project be scaled and can it be copied?"
-            placeholder="Start typing here..."
-          />
-
-          <TextAreaField
-            form={form}
-            name="envImpact"
-            label="Environmental impact:"
-            placeholder="Start typing here..."
-            description="How will it improve the existing environmental conditions?"
-          />
-
-          <TextAreaField
-            form={form}
-            name="socialImpact"
-            label="Social impact:"
-            placeholder="Start typing here..."
-            description="How will it improve the livelihoods of local communities and marginalized people?"
-          />
-
-          <TextAreaField
-            form={form}
-            name="sustainability"
-            label="Sustainability:"
-            placeholder="Start typing here..."
-            description="Can the project continue to thrive post-investment?"
-          />
-
-          <TextAreaField
-            form={form}
-            name="profitability"
-            label="Profitability (for enterprises):"
-            placeholder="Start typing here..."
-            description="Is the business model viable?"
-          />
 
           <FormFileUploadField
             name="attachments"

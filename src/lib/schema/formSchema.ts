@@ -7,47 +7,56 @@ const ACCEPTED_TYPES = [
 ];
 
 export const FormSchema = z.object({
-  projectName: z.string(),
+  projectTitle: z.string(),
+  organization: z.string(),
   contactPerson: z.string(),
   location: z.string(),
-  status: z.string(),
-
-  siteName: z.string(),
-  siteCapacity: z.string(),
-  sitePhone: z.string(),
-  siteEmail: z.string().email(),
-
-  advisorName: z.string(),
-  advisorPhone: z.string(),
-  advisorEmail: z.string().email(),
-
-  website: z.string(),
+  implementationPeriod: z.string(),
+  sector: z.string(),
+  stage: z.string(),
+  estimatedInvestment: z.string(),
   partners: z.string(),
-  description: z.string(),
 
-  problems: z.string(),
-  solution: z.string(),
-  priorities: z.string(),
-  outcomes: z.string(),
-  challenges: z.string(),
-  funding: z.array(
+  // section b
+  projectOverview: z
+    .array(
+      z.custom<File>((file) => file instanceof File, {
+        message: "Invalid file",
+      })
+    )
+    // .min(1, { message: "At least one file is required" })
+    .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
+      message: "Each file must be under 5MB",
+    })
+    .refine(
+      (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
+      {
+        message: "Only PDF or DOCX files are allowed",
+      }
+    ),
+
+  // section c
+  categories: z.string(),
+  envImpact: z.string(),
+  socialImpact: z.string(),
+  compliance: z.string(),
+  fundingOptions: z.array(z.string()),
+  fundingSought: z.array(
     z.object({
       activity: z.string(),
       amount: z.string(),
     })
   ),
-  biodiversityHotspot: z.boolean(),
-  protectedAreaExpansion: z.boolean(),
-  generatingRevenue: z.boolean(),
-  communities: z.string(),
-  smmes: z.string(),
-  fundingOptions: z.array(z.string()),
-  org: z.string(),
   scalable: z.string(),
-  envImpact: z.string(),
-  socialImpact: z.string(),
-  sustainability: z.string(),
-  profitability: z.string(),
+
+  // section d
+  measureableImpact: z.boolean(),
+  annualReporting: z.boolean(),
+  keyIndicators: z.boolean(),
+
+  // section e
+  monitoring: z.boolean(),
+
   attachments: z
     .array(
       z.custom<File>((file) => file instanceof File, {
@@ -66,80 +75,100 @@ export const FormSchema = z.object({
     ),
 });
 
-export const FormDefaultValues = {
-  projectName: "",
+export const FormDefaultValues: z.infer<typeof FormSchema> = {
+  projectTitle: "",
+  organization: "",
   contactPerson: "",
   location: "",
-  status: "",
-
-  siteName: "",
-  siteCapacity: "",
-  sitePhone: "",
-  siteEmail: "",
-
-  advisorName: "",
-  advisorPhone: "",
-  advisorEmail: "",
-
-  description: "",
-  website: "",
+  implementationPeriod: "",
+  sector: "",
+  stage: "",
+  estimatedInvestment: "",
   partners: "",
-  problems: "",
-  solution: "",
-  priorities: "",
-  outcomes: "",
-  challenges: "",
-  funding: [{ activity: "", amount: "0" }],
-  biodiversityHotspot: false,
-  protectedAreaExpansion: false,
-  generatingRevenue: false,
-  communities: "",
-  smmes: "",
-  fundingOptions: [],
-  org: "",
-  scalable: "",
+
+  projectOverview: [],
+
+  categories: "",
   envImpact: "",
   socialImpact: "",
-  sustainability: "",
-  profitability: "",
+  compliance: "",
+  fundingOptions: [],
+  fundingSought: [{ activity: "", amount: "0" }],
+  scalable: "",
+
+  measureableImpact: false,
+  annualReporting: false,
+  keyIndicators: false,
+
+  // section e
+  monitoring: false,
+
   attachments: [],
 };
 
 export type StringFieldNames =
-  | "projectName"
+  | "projectTitle"
+  | "organization"
   | "contactPerson"
   | "location"
-  | "status"
-  | "siteName"
-  | "siteCapacity"
-  | "sitePhone"
-  | "siteEmail"
-  | "advisorName"
-  | "advisorPhone"
-  | "advisorEmail"
-  | "website"
+  | "implementationPeriod"
+  | "sector"
+  | "stage"
+  | "estimatedInvestment"
   | "partners"
-  | "description"
-  | "problems"
-  | "solution"
-  | "priorities"
-  | "outcomes"
-  | "challenges"
-  | "smmes"
-  | "communities"
-  | "org"
-  | "scalable"
+  | "categories"
   | "envImpact"
   | "socialImpact"
-  | "sustainability"
-  | "profitability";
+  | "compliance"
+  | "scalable";
 
-export const FundingOptionsMapping: { [key: string]: string } = {
-  grant: "Grant",
-  reimbursable_grant: "Reimbursable grant",
-  guarantees: "Guarantees",
-  equity: "Equity",
-  sub_loan: "Subordinated loan",
-  senior_loan: "Senior loan",
-  other: "Other",
-};
+export const FundingOptions = [
+  "Grant",
+  "Reimbursable grant",
+  "Guarantees",
+  "Equity",
+  "Subordinated loan",
+  "Senior loan",
+  "Lease finance",
+  "Other",
+];
+
+export const ProjectStages = [
+  "Concept",
+  "Early Stage",
+  "Feasibility",
+  "Development",
+  "Ready to Implement",
+  "Operational",
+  "Expansion",
+];
+
+export const CategoryValues = [
+  "Renewable Energy",
+  "Energy Efficiency",
+  "Sustainable Agriculture & Food Systems / Forestry",
+  "Biodiversity & Ecosystem Services",
+  "Water & Waste Management",
+  "Green Transport & Urban Infrastructure",
+  "Climate Adaptation & Resilience",
+  "Green Buildings",
+  "Social Co-Benefits",
+  "Other",
+];
+
+export const ClimateImpactValues = [
+  "GHG emissions reduction (mitigation)",
+  "Climate change adaptation",
+  "Biodiversity protection/enhancement",
+  "Pollution prevention/control",
+  "Resource efficiency & circular economy",
+];
+
+export const SocialImpactValues = [
+  "Job creation",
+  "Community well-being / social inclusion",
+  "Gender empowerment",
+  "Just Transition",
+];
+
+export const ComplianceValues = ["Done", "Not Done", "Not Applicable"];
