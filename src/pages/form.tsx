@@ -23,11 +23,15 @@ import {
 import {
   CategoryValues,
   ClimateImpactValues,
+  ComplianceOptions,
+  ComplianceQuestions,
   FormDefaultValues,
   FormSchema,
-  FundingOptions,
+  FinancialOptions,
   ProjectStages,
   SocialImpactValues,
+  FundingQuestions,
+  FundingOptions,
 } from "@/lib/schema/formSchema";
 import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
@@ -35,6 +39,10 @@ import FormArrayField from "@/components/ui/form/form-array-field";
 import { FormCheckboxGroupArrayField } from "@/components/ui/form/form-checkbox-array-field";
 import { FormFileUploadField } from "@/components/ui/form/form-file-field";
 import { api } from "@/services/api.service";
+import { Label } from "@radix-ui/react-label";
+import MultiRadioField from "@/components/ui/form/multi-radio-field";
+import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -111,8 +119,6 @@ export default function ProjectForm() {
             placeholder="Your project location"
           />
 
-          {/* Implementation Period */}
-
           <TextField
             form={form}
             name="sector"
@@ -136,8 +142,10 @@ export default function ProjectForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {ProjectStages.map((stage) => (
-                      <SelectItem value={stage}>{stage}</SelectItem>
+                    {ProjectStages.map((stage, index) => (
+                      <SelectItem key={index} value={stage}>
+                        {stage}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -163,6 +171,8 @@ export default function ProjectForm() {
             placeholder="Partners"
           />
 
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section B: Investor-Friendly Project Overview (Pitch Deck Style)
           </h2>
@@ -173,14 +183,17 @@ export default function ProjectForm() {
             form={form}
           />
 
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section C: Eligibility Screening
+          </h2>
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
               name="categories"
               label="Eligible Categories"
-              options={CategoryValues.map((value) => ({
-                label: value,
-                value: value,
-              }))}
+              options={CategoryValues}
+              otherOption={true}
             />
           </div>
 
@@ -188,10 +201,7 @@ export default function ProjectForm() {
             <FormCheckboxGroupArrayField
               name="envImpact"
               label="Environmental & Climate Impact"
-              options={ClimateImpactValues.map((value) => ({
-                label: value,
-                value: value,
-              }))}
+              options={ClimateImpactValues}
             />
           </div>
 
@@ -199,27 +209,34 @@ export default function ProjectForm() {
             <FormCheckboxGroupArrayField
               name="socialImpact"
               label="Social & Developmental Impact"
-              options={SocialImpactValues.map((value) => ({
-                label: value,
-                value: value,
-              }))}
+              options={SocialImpactValues}
             />
           </div>
 
-          <FormArrayField
-            name="funding"
-            label="What is the nature of capital investment or support required?"
-            form={form}
-          />
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <MultiRadioField
+              name="compliance"
+              label="Governance & Compliance"
+              questions={ComplianceQuestions}
+              options={ComplianceOptions}
+            />
+          </div>
+
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <MultiRadioField
+              name="fundingOptions"
+              label="Financial Readiness & Funding Options"
+              questions={FundingQuestions}
+              options={FundingOptions}
+            />
+          </div>
 
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
-              name="fundingOptions"
-              label="Project Funding Options"
-              options={FundingOptions.map((value) => ({
-                label: value,
-                value: value,
-              }))}
+              name="fundingSought"
+              label="Funding Instruments Sought After"
+              options={FinancialOptions}
+              otherOption={true}
             />
           </div>
 
@@ -233,16 +250,98 @@ export default function ProjectForm() {
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
 
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
-            Investment Case
+            Section D: Monitoring, Reporting and Verification (MRV)
+          </h2>
+
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxField
+              name="measureableImpact"
+              label="Measurable Impact Indicators Identified"
+              form={form}
+            />
+
+            <FormCheckboxField
+              name="annualReporting"
+              label="Commitment to Annual Reporting"
+              form={form}
+            />
+
+            <FormCheckboxField
+              name="keyIndicators"
+              label="Key Indicators to Track (Environmental, Social, Financial)"
+              form={form}
+            />
+          </div>
+
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section E: Commitment
+          </h2>
+          <div className="relative overflow-hidden grid gap-4 items-center">
+            <FormCheckboxField
+              name="monitoring"
+              label="Willingness to provide monitoring and annual impact reports"
+              form={form}
+            />
+          </div>
+
+          <Card className=" border-amber-500 p-3 text-sm ">
+            <CardHeader>
+              <CardTitle>Eligibility Note</CardTitle>
+            </CardHeader>
+            <CardContent>
+              To qualify, projects must:
+              <br />
+              1. Deliver clear positive environmental impacts (e.g., reduced
+              emissions, restored ecosystems, sustainable resource use). <br />
+              2. Align with the Green Finance Taxonomy and national/sectoral
+              priorities. <br />
+              3. Present measurable outcomes (e.g., CO₂ avoided, hectares
+              restored). <br />
+              4. Comply with environmental and social safeguards. Cut-off:
+              Projects that do not meet these minimum criteria are ineligible
+              for financing.
+            </CardContent>
+          </Card>
+
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section F: Supporting Documents
           </h2>
 
           <FormFileUploadField
             name="attachments"
-            label="Make sure the following supporting documents are attached:"
-            description={`1. Business Plan (including current financials, employees, business history) and projected cashflows\n2. Company Registration documents`}
+            label="Applicants are requested to attach the following mandatory supporting documents (where applicable):"
+            description={`1. Company registration documents (PACRA, Tax Registration) 
+              2. Business plan / Feasibility Study (project history, financials, staffing) 
+              3. Historical & Projected Financial Statements 
+              4. Existing partnership / Co-financing agreements / MoUs 
+              5. Technical Studies, Designs, or Permits
+              6. Other (Specify`}
             form={form}
           />
 
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section G: Declaration
+          </h2>
+
+          <TextField
+            form={form}
+            name="signedName"
+            label="Name"
+            placeholder="Signed..."
+          />
+
+          <TextField
+            form={form}
+            name="position"
+            label="Position"
+            placeholder="Your position"
+          />
           <Button type="submit">Submit</Button>
         </form>
       </Form>

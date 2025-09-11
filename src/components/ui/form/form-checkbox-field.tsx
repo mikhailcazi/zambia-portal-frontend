@@ -13,9 +13,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"; // uses shadcn/ui checkbox
 
 type FormType = z.infer<typeof FormSchema>;
-
 interface FormCheckboxFieldProps {
-  name: "biodiversityHotspot" | "protectedAreaExpansion" | "generatingRevenue";
+  name:
+    | "measureableImpact"
+    | "annualReporting"
+    | "keyIndicators"
+    | "monitoring";
   label: string;
   form: UseFormReturn<FormType>;
 }

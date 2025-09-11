@@ -36,17 +36,15 @@ export const FormSchema = z.object({
     ),
 
   // section c
-  categories: z.string(),
-  envImpact: z.string(),
-  socialImpact: z.string(),
-  compliance: z.string(),
-  fundingOptions: z.array(z.string()),
-  fundingSought: z.array(
-    z.object({
-      activity: z.string(),
-      amount: z.string(),
-    })
-  ),
+  categories: z.array(z.string()),
+  envImpact: z.array(z.string()),
+  envImpactIndicator: z.string(),
+  envImpactDescription: z.string(),
+  socialImpact: z.array(z.string()),
+  socialImpactDescription: z.string(),
+  compliance: z.record(z.string()),
+  fundingOptions: z.record(z.string()),
+  fundingSought: z.array(z.string()),
   scalable: z.string(),
 
   // section d
@@ -73,6 +71,9 @@ export const FormSchema = z.object({
         message: "Only PDF or DOCX files are allowed",
       }
     ),
+
+  signedName: z.string(),
+  position: z.string(),
 });
 
 export const FormDefaultValues: z.infer<typeof FormSchema> = {
@@ -88,12 +89,15 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
 
   projectOverview: [],
 
-  categories: "",
-  envImpact: "",
-  socialImpact: "",
-  compliance: "",
-  fundingOptions: [],
-  fundingSought: [{ activity: "", amount: "0" }],
+  categories: [],
+  envImpact: [],
+  envImpactIndicator: "",
+  envImpactDescription: "",
+  socialImpact: [],
+  socialImpactDescription: "",
+  compliance: {},
+  fundingOptions: {},
+  fundingSought: [],
   scalable: "",
 
   measureableImpact: false,
@@ -104,6 +108,8 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   monitoring: false,
 
   attachments: [],
+  position: "",
+  signedName: "",
 };
 
 export type StringFieldNames =
@@ -118,11 +124,16 @@ export type StringFieldNames =
   | "partners"
   | "categories"
   | "envImpact"
+  | "envImpactIndicator"
+  | "envImpactDescription"
+  | "socialImpactDescription"
   | "socialImpact"
   | "compliance"
-  | "scalable";
+  | "scalable"
+  | "signedName"
+  | "position";
 
-export const FundingOptions = [
+export const FinancialOptions = [
   "Grant",
   "Reimbursable grant",
   "Guarantees",
@@ -130,7 +141,6 @@ export const FundingOptions = [
   "Subordinated loan",
   "Senior loan",
   "Lease finance",
-  "Other",
 ];
 
 export const ProjectStages = [
@@ -153,7 +163,6 @@ export const CategoryValues = [
   "Climate Adaptation & Resilience",
   "Green Buildings",
   "Social Co-Benefits",
-  "Other",
 ];
 
 export const ClimateImpactValues = [
@@ -171,4 +180,21 @@ export const SocialImpactValues = [
   "Just Transition",
 ];
 
-export const ComplianceValues = ["Done", "Not Done", "Not Applicable"];
+export const ComplianceQuestions = [
+  "Legally registered in Zambia?",
+  "Environmental and Social Impact Assessment (ESIA) conducted?",
+  "Climate risk screening completed?",
+  "Compliant with national laws?",
+  "No adverse impacts on critical habitats, indigenous communities, cultural heritage?",
+  "Do No Significant Harm Principle met?",
+];
+
+export const ComplianceOptions = ["Done", "Not Done", "Not Applicable"];
+
+export const FundingQuestions = [
+  "Feasibility Study / Business Plan Developed?",
+  "No Estimated IRR / ROI available?",
+  "Any Co-financing secured?",
+];
+
+export const FundingOptions = ["Yes", "No"];
