@@ -43,6 +43,8 @@ import { Label } from "@radix-ui/react-label";
 import MultiRadioField from "@/components/ui/form/multi-radio-field";
 import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormFileUploadFieldSmall } from "@/components/ui/form/form-file-field-small";
+import { DatePicker } from "@/components/ui/date-picker";
 
 export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -77,17 +79,32 @@ export default function ProjectForm() {
 
   return (
     <>
-      <h1 className="text-3xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight mb-6">
+      <h1 className="text-3xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight">
         Project Eligibility Form
       </h1>
-      {/* <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
-        Project Eligibility Form
-      </h2> */}
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-3xl mx-auto py-10"
         >
+          <Card className="border-amber-500 text-sm ">
+            <CardHeader>
+              <CardTitle>Eligibility Note</CardTitle>
+            </CardHeader>
+            <CardContent>
+              To qualify, projects must:
+              <br />
+              1. Deliver clear positive environmental impacts (e.g., reduced
+              emissions, restored ecosystems, sustainable resource use). <br />
+              2. Align with the Green Finance Taxonomy and national/sectoral
+              priorities. <br />
+              3. Present measurable outcomes (e.g., CO₂ avoided, hectares
+              restored). <br />
+              4. Comply with environmental and social safeguards. <br />
+              <br /> All form fields are mandatory.
+            </CardContent>
+          </Card>
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section A: Basic Information
           </h2>
@@ -97,21 +114,18 @@ export default function ProjectForm() {
             label="Project Title"
             placeholder="Your project name"
           />
-
           <TextField
             form={form}
             name="organization"
             label="Organization / Proponent"
             placeholder="John Doe"
           />
-
           <TextField
             form={form}
             name="contactPerson"
             label="Contact Person & Details"
             placeholder="John Doe"
           />
-
           <TextField
             form={form}
             name="location"
@@ -119,13 +133,20 @@ export default function ProjectForm() {
             placeholder="Your project location"
           />
 
+          {/* Date Picker */}
+
+          <FormLabel>Implementation Date</FormLabel>
+          <div className="grid grid-cols-2">
+            <DatePicker name={"Start"} />
+            <DatePicker name={"End"} />
+          </div>
+
           <TextField
             form={form}
             name="sector"
             label="Sector / Subsector"
             placeholder="Your project sector"
           />
-
           <FormField
             control={form.control}
             name="stage"
@@ -156,23 +177,19 @@ export default function ProjectForm() {
               </FormItem>
             )}
           />
-
           <TextField
             form={form}
             name="estimatedInvestment"
             label="Estimated Required Investment (USD / ZMW)"
             placeholder="Estimated investment"
           />
-
           <TextField
             form={form}
             name="partners"
             label="Project Partners (if applicable)"
             placeholder="Partners"
           />
-
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
-
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section B: Investor-Friendly Project Overview (Pitch Deck Style)
           </h2>
@@ -182,9 +199,7 @@ export default function ProjectForm() {
             description={`Please upload a PDF deck which covers each of the following points, in 80 words or less\n1. Problem Statement\n2. Green Investment Opportunity\n3. Proposed Solution\n4. Innovation / Differentiation - What makes your project innovative or different? Briefly explain any new technology, approach, or co-benefits that go beyond “business as usual.”\n5. Expected Impact / Outcomes (Environmental, Social, Financial)\n6. Alignment with National Priorities (Zambia’s Green Growth Strategy, NDCs, NBSAP, Green Finance Strategy, or other relevant frameworks)\n7. Contribution to recognized environmental or social goals (e.g., climate action, biodiversity protection, sustainable livelihoods, community resilience etc.)`}
             form={form}
           />
-
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
-
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section C: Eligibility Screening
           </h2>
@@ -196,7 +211,6 @@ export default function ProjectForm() {
               otherOption={true}
             />
           </div>
-
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
               name="envImpact"
@@ -204,7 +218,6 @@ export default function ProjectForm() {
               options={ClimateImpactValues}
             />
           </div>
-
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
               name="socialImpact"
@@ -212,7 +225,6 @@ export default function ProjectForm() {
               options={SocialImpactValues}
             />
           </div>
-
           <div className="relative overflow-hidden grid gap-4 items-center">
             <MultiRadioField
               name="compliance"
@@ -221,7 +233,6 @@ export default function ProjectForm() {
               options={ComplianceOptions}
             />
           </div>
-
           <div className="relative overflow-hidden grid gap-4 items-center">
             <MultiRadioField
               name="fundingOptions"
@@ -230,7 +241,6 @@ export default function ProjectForm() {
               options={FundingOptions}
             />
           </div>
-
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
               name="fundingSought"
@@ -239,20 +249,16 @@ export default function ProjectForm() {
               otherOption={true}
             />
           </div>
-
           <TextAreaField
             form={form}
             name="scalable"
             label="Is the project scalable, replicable and sustainable?"
             placeholder="80 words or less..."
           />
-
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
-
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section D: Monitoring, Reporting and Verification (MRV)
           </h2>
-
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxField
               name="measureableImpact"
@@ -272,9 +278,7 @@ export default function ProjectForm() {
               form={form}
             />
           </div>
-
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
-
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section E: Commitment
           </h2>
@@ -285,57 +289,54 @@ export default function ProjectForm() {
               form={form}
             />
           </div>
-
-          <Card className=" border-amber-500 p-3 text-sm ">
-            <CardHeader>
-              <CardTitle>Eligibility Note</CardTitle>
-            </CardHeader>
-            <CardContent>
-              To qualify, projects must:
-              <br />
-              1. Deliver clear positive environmental impacts (e.g., reduced
-              emissions, restored ecosystems, sustainable resource use). <br />
-              2. Align with the Green Finance Taxonomy and national/sectoral
-              priorities. <br />
-              3. Present measurable outcomes (e.g., CO₂ avoided, hectares
-              restored). <br />
-              4. Comply with environmental and social safeguards. Cut-off:
-              Projects that do not meet these minimum criteria are ineligible
-              for financing.
-            </CardContent>
-          </Card>
-
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
-
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section F: Supporting Documents
           </h2>
-
-          <FormFileUploadField
+          <FormDescription>
+            Applicants are requested to attach the following supporting
+            documents (where applicable):
+          </FormDescription>
+          <FormFileUploadFieldSmall
             name="attachments"
-            label="Applicants are requested to attach the following mandatory supporting documents (where applicable):"
-            description={`1. Company registration documents (PACRA, Tax Registration) 
-              2. Business plan / Feasibility Study (project history, financials, staffing) 
-              3. Historical & Projected Financial Statements 
-              4. Existing partnership / Co-financing agreements / MoUs 
-              5. Technical Studies, Designs, or Permits
-              6. Other (Specify`}
+            label="1. Company registration documents (PACRA, Tax Registration)"
             form={form}
           />
-
+          <FormFileUploadFieldSmall
+            name="attachments"
+            label="2. Business plan / Feasibility Study (project history, financials, staffing)"
+            form={form}
+          />
+          <FormFileUploadFieldSmall
+            name="attachments"
+            label="3. Historical & Projected Financial Statements"
+            form={form}
+          />
+          <FormFileUploadFieldSmall
+            name="attachments"
+            label="4. Existing partnership / Co-financing agreements / MoUs"
+            form={form}
+          />
+          <FormFileUploadFieldSmall
+            name="attachments"
+            label="5. Technical Studies, Designs, or Permits"
+            form={form}
+          />
+          <FormFileUploadFieldSmall
+            name="attachments"
+            label="6. Other (Specify)"
+            form={form}
+          />
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
-
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section G: Declaration
           </h2>
-
           <TextField
             form={form}
             name="signedName"
             label="Name"
             placeholder="Signed..."
           />
-
           <TextField
             form={form}
             name="position"

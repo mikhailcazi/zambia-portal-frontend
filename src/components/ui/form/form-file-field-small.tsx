@@ -14,18 +14,17 @@ import { FormSchema } from "@/lib/schema/formSchema";
 type FormValues = z.infer<typeof FormSchema>;
 
 type FormFileUploadFieldProps = {
-  name: "projectOverview";
+  name: "attachments";
   form: UseFormReturn<FormValues>;
   label: string;
   description?: string;
   multiple?: boolean;
 };
 
-export function FormFileUploadField({
+export function FormFileUploadFieldSmall({
   name,
   form,
   label,
-  description,
 }: FormFileUploadFieldProps) {
   const { field } = useController({ name, control: form.control });
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -36,14 +35,9 @@ export function FormFileUploadField({
   };
 
   return (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      {description && (
-        <FormDescription className="whitespace-pre-line">
-          {description}
-        </FormDescription>
-      )}
-      <FormControl>
+    <FormItem className="grid grid-cols-3">
+      <FormLabel className="col-span-2">{label}</FormLabel>
+      <FormControl className="col-span-1">
         <div className="flex flex-col gap-2">
           <input
             type="file"

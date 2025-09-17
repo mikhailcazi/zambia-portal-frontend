@@ -23,13 +23,6 @@ export const columns: ColumnDef<Project>[] = [
     header: "Status",
   },
   {
-    accessorKey: "biodiversityHotspot",
-    header: "Hotspot",
-    cell: ({ row }) => (
-      <span>{row.getValue("biodiversityHotspot") ? "Yes" : "No"}</span>
-    ),
-  },
-  {
     accessorKey: "generatingRevenue",
     header: "Revenue",
     cell: ({ row }) => (
@@ -94,6 +87,5 @@ export const columns: ColumnDef<Project>[] = [
 ];
 
 export const getColumns = (isAdmin: boolean) => {
-  console.log("Admin: ", isAdmin);
-  return columns;
+  return isAdmin ? columns : columns.slice(0, 6);
 };

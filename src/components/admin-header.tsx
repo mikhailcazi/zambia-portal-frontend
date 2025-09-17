@@ -21,7 +21,7 @@ const AdminHeader: React.FC = () => {
         <div className="mr-6 hidden lg:flex">
           <ZambiaLogo />
           <a href="/" className="px-5 self-center text-2xl">
-            UNDP Zambia Investment Portal
+            Zambia Green Investment Portal
           </a>
         </div>
         {!route.includes("login") && (
