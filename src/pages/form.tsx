@@ -136,9 +136,10 @@ export default function ProjectForm() {
           {/* Date Picker */}
 
           <FormLabel>Implementation Date</FormLabel>
+
           <div className="grid grid-cols-2">
-            <DatePicker name={"Start"} />
-            <DatePicker name={"End"} />
+            <DatePicker name="startDate" label="Start Date" />
+            <DatePicker name="endDate" label="End Date" />
           </div>
 
           <TextField
@@ -152,7 +153,7 @@ export default function ProjectForm() {
             name="stage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Project Status</FormLabel>
+                <FormLabel>Project Stage</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -177,12 +178,40 @@ export default function ProjectForm() {
               </FormItem>
             )}
           />
-          <TextField
-            form={form}
-            name="estimatedInvestment"
-            label="Estimated Required Investment (USD / ZMW)"
-            placeholder="Estimated investment"
-          />
+          <FormLabel>Estimated Required Investment</FormLabel>
+          <div className="flex">
+            <FormField
+              control={form.control}
+              name="currency"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose a currency..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {["USD", "ZMW"].map((currency, index) => (
+                        <SelectItem key={index} value={currency}>
+                          {currency}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <TextField
+              form={form}
+              name="estimatedInvestment"
+              placeholder="Estimated investment"
+            />
+          </div>
           <TextField
             form={form}
             name="partners"

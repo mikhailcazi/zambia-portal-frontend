@@ -13,8 +13,11 @@ export const FormSchema = z.object({
   location: z.string(),
   implementationPeriod: z.string(),
   sector: z.string(),
+  startDate: z.date(),
+  endDate: z.date(),
   stage: z.string(),
   estimatedInvestment: z.string(),
+  currency: z.string(),
   partners: z.string(),
 
   // section b

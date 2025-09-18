@@ -11,34 +11,40 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useFormContext } from "react-hook-form";
 
-export function DatePicker({ name }: { name: string }) {
+export function DatePicker({ name, label }: { name: string; label: string }) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
+  // const [date, setDate] = React.useState<Date | undefined>(undefined);
+
+  const { setValue, watch } = useFormContext();
+  const value = watch(name);
 
   return (
     <div className="flex flex-col gap-3">
-      <Label htmlFor="date" className="px-1">
-        {name}
+      <Label htmlFor="date" className="px-1 font-normal">
+        {label}
       </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             id="date"
-            className="w-48 justify-between font-normal"
+            className="w-48 justify-between font-normal border-neutral-200"
           >
-            {date ? date.toLocaleDateString("en-GB") : "Select date"}
+            {value ? value.toLocaleDateString("en-GB") : "Select date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
             mode="single"
-            selected={date}
+            selected={value}
+            // onSelect={(date) => setValue(name, date)}
+            // selected={date}
             captionLayout="dropdown"
             onSelect={(date) => {
-              setDate(date);
+              setValue(name, date);
               setOpen(false);
             }}
           />

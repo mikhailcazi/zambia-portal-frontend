@@ -19,7 +19,7 @@ interface TextFieldProps {
   type?: string;
   form: UseFormReturn<FormValues>;
   name: StringFieldNames;
-  label: string;
+  label?: string;
   placeholder: string;
 }
 
@@ -36,7 +36,7 @@ function TextField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Input placeholder={placeholder} type={type} {...field} />
           </FormControl>

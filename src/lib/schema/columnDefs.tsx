@@ -41,7 +41,7 @@ export const columns: ColumnDef<Project>[] = [
         <div className="space-y-1">
           {funding.map((f, i) => (
             <div key={i}>
-              ₹{f.amount} – {f.activity}
+              ZMW {f.amount} – {f.activity}
             </div>
           ))}
         </div>
