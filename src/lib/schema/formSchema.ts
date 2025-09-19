@@ -40,6 +40,7 @@ export const FormSchema = z.object({
 
   // section c
   categories: z.array(z.string()),
+  categoriesOther: z.string(),
   envImpact: z.array(z.string()),
   envImpactIndicator: z.string(),
   envImpactDescription: z.string(),
@@ -47,7 +48,10 @@ export const FormSchema = z.object({
   socialImpactDescription: z.string(),
   compliance: z.record(z.string()),
   fundingOptions: z.record(z.string()),
+  fundingOptionsOther: z.string(),
+  totalCost: z.string(),
   fundingSought: z.array(z.string()),
+
   scalable: z.string(),
 
   // section d
@@ -113,6 +117,12 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   attachments: [],
   position: "",
   signedName: "",
+  startDate: new Date(),
+  endDate: new Date(),
+  currency: "",
+  categoriesOther: "",
+  fundingOptionsOther: "",
+  totalCost: "",
 };
 
 export type StringFieldNames =
@@ -124,7 +134,12 @@ export type StringFieldNames =
   | "estimatedInvestment"
   | "partners"
   | "signedName"
-  | "position";
+  | "position"
+  | "envImpactIndicator"
+  | "envImpactDescription"
+  | "socialImpactDescription"
+  | "scalable"
+  | "totalCost";
 
 export const FinancialOptions = [
   "Grant",

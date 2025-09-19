@@ -1,12 +1,13 @@
 // components/FormCheckboxGroupArrayField.tsx
-import {
-  ControllerRenderProps,
-  FieldValues,
-  useFormContext,
-} from "react-hook-form";
+import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox"; // adjust to your import
 import { Label } from "@/components/ui/label";
-import { FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "../input";
 import { useState } from "react";
 
@@ -23,23 +24,8 @@ export function FormCheckboxGroupArrayField({
   options,
   otherOption,
 }: Props) {
-  const { watch, setValue } = useFormContext();
-  // const selected: string[] = watch(name) || [];
-
-  const [otherText, setOtherText] = useState("");
+  const [otherSelected, setOtherSelected] = useState(false);
   const displayOptions = otherOption ? options.concat(["Other"]) : options;
-
-  // const handleOtherTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const textVal = e.target.value;
-  //   setOtherText(textVal);
-  // };
-
-  // function toggleOption(value: string) {
-  //   const newValues = selected.includes(value)
-  //     ? selected.filter((v) => v !== value)
-  //     : [...selected, value];
-  //   setValue(name, newValues);
-  // }
 
   const handleChange = (
     field: ControllerRenderProps<FieldValues, string>,
@@ -48,6 +34,9 @@ export function FormCheckboxGroupArrayField({
     const newValues = (field.value || []).includes(option)
       ? (field.value || []).filter((v: string) => v !== option)
       : [...(field.value || []), option];
+
+    setOtherSelected(newValues.includes("Other"));
+
     field.onChange(newValues);
   };
 
@@ -67,16 +56,26 @@ export function FormCheckboxGroupArrayField({
                   }}
                 />
                 <Label style={{ fontWeight: "400" }}>{option}</Label>
-                {/* {option === "Other" && selected.includes(option) && (
-                  <Input
-                    placeholder="Please specify"
-                    value={otherText}
-                    onChange={handleOtherTextChange}
-                  ></Input>
-                )} */}
               </div>
             ))}
           </div>
+          {otherSelected && (
+            <FormField
+              name={name + "Other"}
+              render={({ field }) => (
+                <FormItem>
+                  <Label style={{ fontWeight: "400" }}>
+                    Other, please specify:{" "}
+                  </Label>
+                  <FormControl>
+                    <Input type="text" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <FormMessage />
         </FormItem>
       )}

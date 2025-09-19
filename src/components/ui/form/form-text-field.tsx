@@ -20,7 +20,7 @@ interface TextFieldProps {
   form: UseFormReturn<FormValues>;
   name: StringFieldNames;
   label?: string;
-  placeholder: string;
+  placeholder?: string;
 }
 
 function TextField({

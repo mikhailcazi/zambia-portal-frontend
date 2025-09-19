@@ -35,7 +35,6 @@ import {
 } from "@/lib/schema/formSchema";
 import TextField from "@/components/ui/form/form-text-field";
 import TextAreaField from "@/components/ui/form/form-textarea-field";
-import FormArrayField from "@/components/ui/form/form-array-field";
 import { FormCheckboxGroupArrayField } from "@/components/ui/form/form-checkbox-array-field";
 import { FormFileUploadField } from "@/components/ui/form/form-file-field";
 import { api } from "@/services/api.service";
@@ -246,6 +245,16 @@ export default function ProjectForm() {
               label="Environmental & Climate Impact"
               options={ClimateImpactValues}
             />
+            <div className="flex">
+              <Label className="text-sm p-3">Targets/Indicators:</Label>
+              <TextField form={form} name="envImpactIndicator" />
+            </div>
+            <div className="flex">
+              <Label className="text-sm p-3">
+                Brief Description of Impact:
+              </Label>
+              <TextField form={form} name="envImpactDescription" />
+            </div>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
@@ -269,6 +278,12 @@ export default function ProjectForm() {
               questions={FundingQuestions}
               options={FundingOptions}
             />
+            <div className="flex">
+              <Label className="text-sm p-3">
+                Total Project Cost (USD/ZMW):
+              </Label>
+              <TextField form={form} name="totalCost" />
+            </div>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
             <FormCheckboxGroupArrayField
