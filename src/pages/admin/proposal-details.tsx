@@ -45,10 +45,10 @@ export function ProposalDetails() {
         <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Back
         </Button>
-        <h1 className="text-2xl font-bold">{proposal.projectName}</h1>
+        {/* <h1 className="text-2xl font-bold">{proposal.projectName}</h1> */}
         <div className="mx-auto p-6 space-y-6 max-w-6xl">
           {/* Basic Info */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Contact Information</CardTitle>
             </CardHeader>
@@ -68,11 +68,11 @@ export function ProposalDetails() {
                 <strong>Website:</strong> {proposal.website}
               </p>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Site & Advisor Info side by side */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Site Information</CardTitle>
               </CardHeader>
@@ -90,9 +90,9 @@ export function ProposalDetails() {
                   <strong>Site Email:</strong> {proposal.siteEmail}
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
 
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Advisor Information</CardTitle>
               </CardHeader>
@@ -107,11 +107,11 @@ export function ProposalDetails() {
                   <strong>Advisor Email:</strong> {proposal.advisorEmail}
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
 
           {/* Description */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Project Description</CardTitle>
             </CardHeader>
@@ -153,7 +153,7 @@ export function ProposalDetails() {
               </strong>
               <p>{proposal.challenges}</p>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Environmental Relevance */}
           <Card>
@@ -176,7 +176,7 @@ export function ProposalDetails() {
           </Card>
 
           {/* Financials */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Financials</CardTitle>
             </CardHeader>
@@ -207,9 +207,9 @@ export function ProposalDetails() {
                 </ul>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Further Concerns</CardTitle>
             </CardHeader>
@@ -247,10 +247,10 @@ export function ProposalDetails() {
               <strong>Profitability</strong>
               <p>{proposal.profitability}</p>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Metadata */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Metadata</CardTitle>
             </CardHeader>
@@ -264,7 +264,7 @@ export function ProposalDetails() {
                 {new Date(proposal.updatedAt).toLocaleDateString()}
               </p>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {isAdmin() && (
             <Card className="border-[#ddeab1]">

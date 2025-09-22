@@ -1,7 +1,6 @@
 import { Label } from "@radix-ui/react-label";
 import { FormField, FormItem } from "../form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useEffect, useState } from "react";
 
 interface Props {
   name: string;

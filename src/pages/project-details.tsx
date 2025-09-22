@@ -33,7 +33,7 @@ export function ProjectDetails() {
         <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Back
         </Button>
-        <h1 className="text-2xl font-bold">{project.projectName}</h1>
+        {/* <h1 className="text-2xl font-bold">{project.projectName}</h1> */}
         {/* Display other project fields as before */}
       </div>
     </>

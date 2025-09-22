@@ -1,6 +1,5 @@
-import React, { useDebugValue, useEffect } from "react";
+import React from "react";
 import { Button } from "./ui/button";
-import { JSX } from "react/jsx-runtime";
 import { Link, useLocation } from "react-router";
 
 const Header: React.FC = () => {
