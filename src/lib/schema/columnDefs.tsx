@@ -1,90 +1,88 @@
 import { Project } from "@/components/ProjectTable";
-import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
+import { FileFields } from "./formSchema";
+import { File } from "lucide-react";
 
 export const columns: ColumnDef<Project>[] = [
   {
-    accessorKey: "projectName",
-    header: "Project",
+    accessorKey: "projectTitle",
+    header: "Project Title",
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("projectName")}</div>
+      <div className="font-medium">{row.getValue("projectTitle")}</div>
     ),
   },
   {
-    accessorKey: "contactPerson",
-    header: "Contact",
+    accessorKey: "organization",
+    header: "Organisation",
   },
   {
-    accessorKey: "location",
-    header: "Location",
+    accessorKey: "sector",
+    header: "Sector",
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "stage",
+    header: "Stage",
   },
   {
-    accessorKey: "generatingRevenue",
-    header: "Revenue",
-    cell: ({ row }) => (
-      <span>{row.getValue("generatingRevenue") ? "Yes" : "No"}</span>
-    ),
-  },
-  {
-    accessorKey: "funding",
-    header: "Funding Activities",
+    id: "categories",
+    accessorKey: "categories",
+    header: "Eligible Categories",
     cell: ({ row }) => {
-      const funding = row.getValue("funding") as {
-        amount: string;
-        activity: string;
-      }[];
+      const categories: string[] = row.getValue("categories");
       return (
-        <div className="space-y-1">
-          {funding.map((f, i) => (
-            <div key={i}>
-              ZMW {f.amount} – {f.activity}
-            </div>
+        <div>
+          {categories.map((cat, i) => (
+            <div key={i}>• {cat}</div>
           ))}
         </div>
       );
     },
   },
   {
+    accessorKey: "estimatedInvestment",
+    header: "Estimated Investment",
+  },
+  {
+    accessorKey: "currency",
+    header: "Currency",
+  },
+  {
+    accessorKey: "location",
+    header: "Location",
+  },
+  {
+    accessorKey: "startDate",
+    header: "Implementation Start Date",
+    cell: ({ row }) =>
+      new Date(row.getValue("startDate")).toLocaleDateString("en-GB"),
+  },
+  {
+    accessorKey: "proposalStatus",
+    header: "Proposal Status",
+  },
+  {
+    accessorKey: "supportingDocuments",
+    header: "Supporting Documents",
+    cell: ({ row }) => {
+      let suppDocuments = false;
+      FileFields.forEach((field) => {
+        if (field !== "projectOverview" && row.original[field])
+          suppDocuments = true;
+      });
+      return suppDocuments ? <File className="h-4" /> : "";
+    },
+  },
+  {
     accessorKey: "createdAt",
     header: "Created",
-    cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleDateString(),
+    cell: ({ row }) =>
+      new Date(row.getValue("createdAt")).toLocaleDateString("en-GB"),
   },
-  // {
-  //   id: "actions", // custom column id since it's not in Project type
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     const project = row.original;
-  //     return (
-  //       <div className="flex gap-2">
-  //         <Button
-  //           variant="outline"
-  //           size="sm"
-  //           onClick={(e) => {
-  //             e.stopPropagation(); // prevent row click navigation
-  //             alert(`Viewing ${project.projectName}`);
-  //           }}
-  //         >
-  //           View
-  //         </Button>
-  //         <Button
-  //           variant="destructive"
-  //           size="sm"
-  //           onClick={(e) => {
-  //             e.stopPropagation();
-  //             alert(`Deleting ${project.projectName}`);
-  //           }}
-  //         >
-  //           Delete
-  //         </Button>
-  //       </div>
-  //     );
-  //   },
-  // },
 ];
+
+export const columnVisibility = {
+  categories: false,
+};
 
 export const getColumns = (isAdmin: boolean) => {
   return isAdmin ? columns : columns.slice(0, 6);

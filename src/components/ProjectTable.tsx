@@ -16,51 +16,10 @@ import {
   TableRow,
 } from "./ui/table";
 import { useNavigate } from "react-router";
-import { getColumns } from "@/lib/schema/columnDefs";
+import { columnVisibility, getColumns } from "@/lib/schema/columnDefs";
 
 export type Project = {
-  id: string;
-  projectName: string;
-  contactPerson: string;
-  location: string;
-  status: string;
-
-  siteName: string;
-  siteCapacity: string;
-  sitePhone: string;
-  siteEmail: string;
-  advisorName: string;
-  advisorPhone: string;
-  advisorEmail: string;
-
-  website: string;
-  description: string;
-  problems: string;
-  solution: string;
-  priorities: string;
-  outcomes: string;
-  challenges: string;
-
-  partners: string;
-
-  biodiversityHotspot: boolean;
-  protectedAreaExpansion: boolean;
-  generatingRevenue: boolean;
-
-  communities: string;
-  smmes: string;
-  org: string;
-  scalable: string;
-  envImpact: string;
-  socialImpact: string;
-  sustainability: string;
-  profitability: string;
-
-  funding: { amount: string; activity: string }[];
-  fundingOptions: string[];
-
-  createdAt: string;
-  updatedAt: string;
+  [key: string]: unknown;
 };
 
 interface ProjectTableProps {
@@ -83,6 +42,9 @@ export function ProjectTable({ data, isAdmin }: ProjectTableProps) {
     columns: getColumns(isAdmin),
     state: {
       globalFilter,
+    },
+    initialState: {
+      columnVisibility: columnVisibility,
     },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),

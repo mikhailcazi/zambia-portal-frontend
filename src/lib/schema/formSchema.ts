@@ -6,12 +6,28 @@ const ACCEPTED_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
 ];
 
+const singleFileType = z
+  .array(
+    z.custom<File>((file) => file instanceof File, {
+      message: "Invalid file",
+    })
+  )
+  // .min(1, { message: "At least one file is required" })
+  .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
+    message: "Each file must be under 5MB",
+  })
+  .refine(
+    (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
+    {
+      message: "Only PDF or DOCX files are allowed",
+    }
+  );
+
 export const FormSchema = z.object({
   projectTitle: z.string(),
   organization: z.string(),
   contactPerson: z.string(),
   location: z.string(),
-  implementationPeriod: z.string(),
   sector: z.string(),
   startDate: z.date(),
   endDate: z.date(),
@@ -62,22 +78,12 @@ export const FormSchema = z.object({
   // section e
   monitoring: z.boolean(),
 
-  attachments: z
-    .array(
-      z.custom<File>((file) => file instanceof File, {
-        message: "Invalid file",
-      })
-    )
-    // .min(1, { message: "At least one file is required" })
-    .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
-      message: "Each file must be under 5MB",
-    })
-    .refine(
-      (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
-      {
-        message: "Only PDF or DOCX files are allowed",
-      }
-    ),
+  companyRegistration: singleFileType,
+  businessPlan: singleFileType,
+  financialStatements: singleFileType,
+  partnerships: singleFileType,
+  techStudies: singleFileType,
+  other: singleFileType,
 
   signedName: z.string(),
   position: z.string(),
@@ -88,15 +94,20 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   organization: "",
   contactPerson: "",
   location: "",
-  implementationPeriod: "",
+  startDate: new Date(),
+  endDate: new Date(),
   sector: "",
   stage: "",
   estimatedInvestment: "",
+  currency: "",
+
   partners: "",
 
   projectOverview: [],
 
   categories: [],
+  categoriesOther: "",
+
   envImpact: [],
   envImpactIndicator: "",
   envImpactDescription: "",
@@ -104,6 +115,8 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   socialImpactDescription: "",
   compliance: {},
   fundingOptions: {},
+  fundingOptionsOther: "",
+  totalCost: "",
   fundingSought: [],
   scalable: "",
 
@@ -114,15 +127,14 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   // section e
   monitoring: false,
 
-  attachments: [],
+  companyRegistration: [],
+  businessPlan: [],
+  financialStatements: [],
+  partnerships: [],
+  techStudies: [],
+  other: [],
   position: "",
   signedName: "",
-  startDate: new Date(),
-  endDate: new Date(),
-  currency: "",
-  categoriesOther: "",
-  fundingOptionsOther: "",
-  totalCost: "",
 };
 
 export type StringFieldNames =
@@ -140,6 +152,16 @@ export type StringFieldNames =
   | "socialImpactDescription"
   | "scalable"
   | "totalCost";
+
+export const FileFields = [
+  "projectOverview",
+  "companyRegistration",
+  "businessPlan",
+  "financialStatements",
+  "partnerships",
+  "techStudies",
+  "other",
+];
 
 export const FinancialOptions = [
   "Grant",

@@ -13,7 +13,17 @@ import {
 } from "@/components/ui/popover";
 import { useFormContext } from "react-hook-form";
 
-export function DatePicker({ name, label }: { name: string; label: string }) {
+export function DatePicker({
+  name,
+  label,
+  startMonth = new Date(1925, 1),
+  endMonth = new Date(2025, 12),
+}: {
+  name: string;
+  label: string;
+  startMonth?: Date;
+  endMonth?: Date;
+}) {
   const [open, setOpen] = React.useState(false);
   // const [date, setDate] = React.useState<Date | undefined>(undefined);
 
@@ -38,6 +48,8 @@ export function DatePicker({ name, label }: { name: string; label: string }) {
         </PopoverTrigger>
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
+            startMonth={startMonth}
+            endMonth={endMonth}
             mode="single"
             selected={value}
             // onSelect={(date) => setValue(name, date)}

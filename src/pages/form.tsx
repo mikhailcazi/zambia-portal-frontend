@@ -52,13 +52,30 @@ export default function ProjectForm() {
   });
 
   const createFormData = (values: z.infer<typeof FormSchema>) => {
-    const attachments = values.attachments;
-    values.attachments = [];
-
     const formData = new FormData();
-
     formData.append("data", JSON.stringify(values));
-    attachments.forEach((file) => formData.append("files", file));
+
+    if (values.projectOverview) {
+      formData.append("projectOverview", values.projectOverview[0]);
+    }
+    if (values.companyRegistration) {
+      formData.append("companyRegistration", values.companyRegistration[0]);
+    }
+    if (values.businessPlan) {
+      formData.append("businessPlan", values.businessPlan[0]);
+    }
+    if (values.financialStatements) {
+      formData.append("financialStatements", values.financialStatements[0]);
+    }
+    if (values.partnerships) {
+      formData.append("partnerships", values.partnerships[0]);
+    }
+    if (values.techStudies) {
+      formData.append("techStudies", values.techStudies[0]);
+    }
+    if (values.other) {
+      formData.append("other", values.other[0]);
+    }
 
     return formData;
   };
@@ -137,8 +154,16 @@ export default function ProjectForm() {
           <FormLabel>Implementation Date</FormLabel>
 
           <div className="grid grid-cols-2">
-            <DatePicker name="startDate" label="Start Date" />
-            <DatePicker name="endDate" label="End Date" />
+            <DatePicker
+              name="startDate"
+              label="Start Date"
+              endMonth={new Date(2035, 12)}
+            />
+            <DatePicker
+              name="endDate"
+              label="End Date"
+              endMonth={new Date(2035, 12)}
+            />
           </div>
 
           <TextField
@@ -342,32 +367,32 @@ export default function ProjectForm() {
             documents (where applicable):
           </FormDescription>
           <FormFileUploadFieldSmall
-            name="attachments"
+            name="companyRegistration"
             label="1. Company registration documents (PACRA, Tax Registration)"
             form={form}
           />
           <FormFileUploadFieldSmall
-            name="attachments"
+            name="businessPlan"
             label="2. Business plan / Feasibility Study (project history, financials, staffing)"
             form={form}
           />
           <FormFileUploadFieldSmall
-            name="attachments"
+            name="financialStatements"
             label="3. Historical & Projected Financial Statements"
             form={form}
           />
           <FormFileUploadFieldSmall
-            name="attachments"
+            name="partnerships"
             label="4. Existing partnership / Co-financing agreements / MoUs"
             form={form}
           />
           <FormFileUploadFieldSmall
-            name="attachments"
+            name="techStudies"
             label="5. Technical Studies, Designs, or Permits"
             form={form}
           />
           <FormFileUploadFieldSmall
-            name="attachments"
+            name="other"
             label="6. Other (Specify)"
             form={form}
           />
@@ -387,6 +412,12 @@ export default function ProjectForm() {
             label="Position"
             placeholder="Your position"
           />
+
+          {Object.keys(form.formState.errors).length > 0 && (
+            <p className="text-red-500 text-sm mt-2">
+              Please fix the errors above before submitting.
+            </p>
+          )}
           <Button type="submit">Submit</Button>
         </form>
       </Form>
