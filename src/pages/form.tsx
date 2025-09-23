@@ -129,29 +129,35 @@ export default function ProjectForm() {
             name="projectTitle"
             label="Project Title"
             placeholder="Your project name"
+            mandatory={true}
           />
           <TextField
             form={form}
             name="organization"
             label="Organization / Proponent"
             placeholder="John Doe"
+            mandatory={true}
           />
           <TextField
             form={form}
             name="contactPerson"
             label="Contact Person & Details"
             placeholder="John Doe"
+            mandatory={true}
           />
           <TextField
             form={form}
             name="location"
             label="Project Location"
             placeholder="Your project location"
+            mandatory={true}
           />
 
           {/* Date Picker */}
 
-          <FormLabel>Implementation Date</FormLabel>
+          <FormLabel>
+            Implementation Date<span className="text-red-500"> *</span>
+          </FormLabel>
 
           <div className="grid grid-cols-2">
             <DatePicker
@@ -171,13 +177,16 @@ export default function ProjectForm() {
             name="sector"
             label="Sector / Subsector"
             placeholder="Your project sector"
+            mandatory={true}
           />
           <FormField
             control={form.control}
             name="stage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Project Stage</FormLabel>
+                <FormLabel>
+                  Project Stage<span className="text-red-500"> *</span>
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -202,7 +211,10 @@ export default function ProjectForm() {
               </FormItem>
             )}
           />
-          <FormLabel>Estimated Required Investment</FormLabel>
+          <FormLabel>
+            Estimated Required Investment
+            <span className="text-red-500"> *</span>
+          </FormLabel>
           <div className="flex">
             <FormField
               control={form.control}
@@ -234,6 +246,7 @@ export default function ProjectForm() {
               form={form}
               name="estimatedInvestment"
               placeholder="Estimated investment"
+              mandatory={true}
             />
           </div>
           <TextField
@@ -241,6 +254,7 @@ export default function ProjectForm() {
             name="partners"
             label="Project Partners (if applicable)"
             placeholder="Partners"
+            mandatory={true}
           />
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
@@ -262,6 +276,7 @@ export default function ProjectForm() {
               label="Eligible Categories"
               options={CategoryValues}
               otherOption={true}
+              mandatory={true}
             />
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
@@ -269,16 +284,28 @@ export default function ProjectForm() {
               name="envImpact"
               label="Environmental & Climate Impact"
               options={ClimateImpactValues}
+              mandatory={true}
             />
             <div className="flex">
-              <Label className="text-sm p-3">Targets/Indicators:</Label>
-              <TextField form={form} name="envImpactIndicator" />
+              <Label className="text-sm p-3">
+                Targets/Indicators:<span className="text-red-500"> *</span>
+              </Label>
+              <TextField
+                form={form}
+                name="envImpactIndicator"
+                mandatory={true}
+              />
             </div>
             <div className="flex">
               <Label className="text-sm p-3">
                 Brief Description of Impact:
+                <span className="text-red-500"> *</span>
               </Label>
-              <TextField form={form} name="envImpactDescription" />
+              <TextField
+                form={form}
+                name="envImpactDescription"
+                mandatory={true}
+              />
             </div>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
@@ -286,12 +313,18 @@ export default function ProjectForm() {
               name="socialImpact"
               label="Social & Developmental Impact"
               options={SocialImpactValues}
+              mandatory={true}
             />
             <div className="flex">
               <Label className="text-sm p-3">
                 Brief Description of Impact:
+                <span className="text-red-500"> *</span>
               </Label>
-              <TextField form={form} name="socialImpactDescription" />
+              <TextField
+                form={form}
+                name="socialImpactDescription"
+                mandatory={true}
+              />
             </div>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
@@ -300,6 +333,7 @@ export default function ProjectForm() {
               label="Governance & Compliance"
               questions={ComplianceQuestions}
               options={ComplianceOptions}
+              mandatory={true}
             />
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
@@ -313,7 +347,7 @@ export default function ProjectForm() {
               <Label className="text-sm p-3">
                 Total Project Cost (USD/ZMW):
               </Label>
-              <TextField form={form} name="totalCost" />
+              <TextField form={form} name="totalCost" mandatory={true} />
             </div>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
@@ -411,12 +445,14 @@ export default function ProjectForm() {
             name="signedName"
             label="Name"
             placeholder="Signed..."
+            mandatory={true}
           />
           <TextField
             form={form}
             name="position"
             label="Position"
             placeholder="Your position"
+            mandatory={true}
           />
 
           {Object.keys(form.formState.errors).length > 0 && (

@@ -21,6 +21,7 @@ interface TextFieldProps {
   name: StringFieldNames;
   label?: string;
   placeholder?: string;
+  mandatory?: boolean;
 }
 
 function TextField({
@@ -29,6 +30,7 @@ function TextField({
   label,
   placeholder,
   type = "text",
+  mandatory = false,
 }: TextFieldProps) {
   return (
     <FormField
@@ -36,7 +38,13 @@ function TextField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && (
+            <FormLabel>
+              {label}
+              {mandatory && <span className="text-red-500"> *</span>}
+            </FormLabel>
+          )}
+
           <FormControl>
             <Input placeholder={placeholder} type={type} {...field} />
           </FormControl>

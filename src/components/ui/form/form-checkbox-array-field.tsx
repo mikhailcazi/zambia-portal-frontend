@@ -16,6 +16,7 @@ interface Props {
   label?: string;
   options: string[];
   otherOption?: boolean;
+  mandatory?: boolean;
 }
 
 export function FormCheckboxGroupArrayField({
@@ -23,6 +24,7 @@ export function FormCheckboxGroupArrayField({
   label,
   options,
   otherOption,
+  mandatory = false,
 }: Props) {
   const [otherSelected, setOtherSelected] = useState(false);
   const displayOptions = otherOption ? options.concat(["Other"]) : options;
@@ -45,7 +47,12 @@ export function FormCheckboxGroupArrayField({
       name={name}
       render={({ field }) => (
         <FormItem className="space-y-2">
-          {label && <Label className="font-medium">{label}</Label>}
+          {label && (
+            <Label className="font-medium">
+              {label}
+              {mandatory && <span className="text-red-500"> *</span>}
+            </Label>
+          )}
           <div className="grid grid-cols-2 gap-2">
             {displayOptions.map((option) => (
               <div key={option} className="flex items-center space-x-2">

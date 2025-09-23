@@ -7,9 +7,16 @@ interface Props {
   label?: string;
   questions: string[];
   options: string[];
+  mandatory?: boolean;
 }
 
-function MultiRadioField({ name, label, questions, options }: Props) {
+function MultiRadioField({
+  name,
+  label,
+  questions,
+  options,
+  mandatory = false,
+}: Props) {
   // const [answers, setAnswers] = useState<Record<string, string>>({});
 
   // const handleChange = (q: string, v: string) => {
@@ -23,7 +30,12 @@ function MultiRadioField({ name, label, questions, options }: Props) {
       name={name}
       render={({ field }) => (
         <FormItem className="space-y-2">
-          {label && <Label className="font-medium">{label}</Label>}
+          {label && (
+            <Label className="font-medium">
+              {label}
+              {mandatory && <span className="text-red-500"> *</span>}
+            </Label>
+          )}
 
           <table className="table-fixed w-full border-collapse">
             <tbody>

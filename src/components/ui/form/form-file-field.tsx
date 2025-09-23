@@ -42,7 +42,10 @@ export function FormFileUploadField({
 
         return (
           <FormItem>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel>
+              {label}
+              <span className="text-red-500"> *</span>
+            </FormLabel>
             {description && (
               <FormDescription className="whitespace-pre-line">
                 {description}
