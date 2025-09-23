@@ -54,6 +54,7 @@ export function FormFileUploadFieldSmall({
                   className="hidden"
                   ref={inputRef}
                   onChange={(e) => {
+                    form.clearErrors(name);
                     const newFiles = e.target.files;
                     if (!newFiles || newFiles.length === 0) return;
                     const fileToAdd = newFiles[0];

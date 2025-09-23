@@ -1,5 +1,5 @@
 import { Label } from "@radix-ui/react-label";
-import { FormField, FormItem } from "../form";
+import { FormField, FormItem, FormMessage } from "../form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface Props {
@@ -66,6 +66,7 @@ function MultiRadioField({ name, label, questions, options }: Props) {
               ))}
             </tbody>
           </table>
+          <FormMessage />
         </FormItem>
       )}
     />

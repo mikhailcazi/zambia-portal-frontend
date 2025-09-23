@@ -287,6 +287,12 @@ export default function ProjectForm() {
               label="Social & Developmental Impact"
               options={SocialImpactValues}
             />
+            <div className="flex">
+              <Label className="text-sm p-3">
+                Brief Description of Impact:
+              </Label>
+              <TextField form={form} name="socialImpactDescription" />
+            </div>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
             <MultiRadioField

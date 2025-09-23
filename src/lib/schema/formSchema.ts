@@ -24,17 +24,17 @@ const singleFileType = z
   );
 
 export const FormSchema = z.object({
-  projectTitle: z.string(),
-  organization: z.string(),
-  contactPerson: z.string(),
-  location: z.string(),
-  sector: z.string(),
+  projectTitle: z.string().nonempty("Required field!"),
+  organization: z.string().nonempty("Required field!"),
+  contactPerson: z.string().nonempty("Required field!"),
+  location: z.string().nonempty("Required field!"),
+  sector: z.string().nonempty("Required field!"),
   startDate: z.date(),
   endDate: z.date(),
-  stage: z.string(),
-  estimatedInvestment: z.string(),
-  currency: z.string(),
-  partners: z.string(),
+  stage: z.string().nonempty("Required field!"),
+  estimatedInvestment: z.string().nonempty("Required field!"),
+  currency: z.string().nonempty("Required field!"),
+  partners: z.string().nonempty("Required field!"),
 
   // section b
   projectOverview: z
@@ -43,7 +43,7 @@ export const FormSchema = z.object({
         message: "Invalid file",
       })
     )
-    // .min(1, { message: "At least one file is required" })
+    .min(1, { message: "At least one file is required" })
     .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
       message: "Each file must be under 5MB",
     })
@@ -55,20 +55,36 @@ export const FormSchema = z.object({
     ),
 
   // section c
-  categories: z.array(z.string()),
+  categories: z
+    .array(z.string())
+    .min(1, { message: "Please select at least one option" }),
   categoriesOther: z.string(),
-  envImpact: z.array(z.string()),
-  envImpactIndicator: z.string(),
-  envImpactDescription: z.string(),
-  socialImpact: z.array(z.string()),
-  socialImpactDescription: z.string(),
-  compliance: z.record(z.string()),
-  fundingOptions: z.record(z.string()),
+  envImpact: z
+    .array(z.string())
+    .min(1, { message: "Please select at least one option" }),
+  envImpactIndicator: z.string().nonempty("Required field!"),
+  envImpactDescription: z.string().nonempty("Required field!"),
+  socialImpact: z
+    .array(z.string())
+    .min(1, { message: "Please select at least one option" }),
+  socialImpactDescription: z.string().nonempty("Required field!"),
+  compliance: z
+    .record(z.string())
+    .refine((val) => Object.keys(val).length >= 6, {
+      message: "Please answer all Government & Compliance questions",
+    }),
+  fundingOptions: z
+    .record(z.string())
+    .refine((val) => Object.keys(val).length >= 3, {
+      message: "Please answer all Financial Readiness questions",
+    }),
   fundingOptionsOther: z.string(),
-  totalCost: z.string(),
-  fundingSought: z.array(z.string()),
+  totalCost: z.string().nonempty("Required field!"),
+  fundingSought: z
+    .array(z.string())
+    .min(1, { message: "Please select at least one option" }),
 
-  scalable: z.string(),
+  scalable: z.string().nonempty("Required field!"),
 
   // section d
   measureableImpact: z.boolean(),
@@ -85,8 +101,8 @@ export const FormSchema = z.object({
   techStudies: singleFileType,
   other: singleFileType,
 
-  signedName: z.string(),
-  position: z.string(),
+  signedName: z.string().nonempty("Required field!"),
+  position: z.string().nonempty("Required field!"),
 });
 
 export const FormDefaultValues: z.infer<typeof FormSchema> = {
