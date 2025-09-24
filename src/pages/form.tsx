@@ -342,10 +342,12 @@ export default function ProjectForm() {
               label="Financial Readiness & Funding Options"
               questions={FundingQuestions}
               options={FundingOptions}
+              mandatory={true}
             />
             <div className="flex">
               <Label className="text-sm p-3">
                 Total Project Cost (USD/ZMW):
+                <span className="text-red-500"> *</span>
               </Label>
               <TextField form={form} name="totalCost" mandatory={true} />
             </div>
@@ -356,6 +358,7 @@ export default function ProjectForm() {
               label="Funding Instruments Sought After"
               options={FinancialOptions}
               otherOption={true}
+              mandatory={true}
             />
           </div>
           <TextAreaField
@@ -363,6 +366,7 @@ export default function ProjectForm() {
             name="scalable"
             label="Is the project scalable, replicable and sustainable?"
             placeholder="80 words or less..."
+            mandatory={true}
           />
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">

@@ -21,6 +21,7 @@ interface TextAreaFieldProps {
   name: StringFieldNames;
   label: string;
   placeholder: string;
+  mandatory?: boolean;
 }
 
 function TextAreaField({
@@ -29,6 +30,7 @@ function TextAreaField({
   label,
   placeholder,
   description,
+  mandatory = false,
 }: TextAreaFieldProps) {
   return (
     <FormField
@@ -36,7 +38,10 @@ function TextAreaField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label}
+            {mandatory && <span className="text-red-500"> *</span>}
+          </FormLabel>
           <FormControl>
             <Textarea
               placeholder={placeholder}
