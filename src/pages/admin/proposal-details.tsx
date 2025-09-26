@@ -2,7 +2,7 @@ import { Project } from "@/components/ProjectTable";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api.service";
 import { useParams, useNavigate } from "react-router";
-import { ChevronLeftIcon } from "lucide-react";
+import { Check, ChevronLeftIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,12 +12,25 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { FileIcon, DownloadIcon } from "lucide-react";
+
+export type UploadedFile = {
+  originalName: string;
+  id: string;
+  name: string;
+  url: string;
+  presignedURL: string;
+};
 
 export function ProposalDetails() {
   const { id } = useParams<{ id: string }>();
   const [proposal, setProposal] = useState<Project | null>(null);
   const navigate = useNavigate();
-
+  const [files, setFiles] = useState<
+    { fileData: UploadedFile; type: string }[]
+  >([]);
+  const [projectOverviewFile, setProjectOverviewFile] =
+    useState<UploadedFile>();
   const isAdmin = () => {
     return true;
   };
@@ -30,6 +43,33 @@ export function ProposalDetails() {
       .then((res) => setProposal(res.data))
       .catch(console.error);
   }, [id]);
+
+  useEffect(() => {
+    if (proposal) {
+      setProjectOverviewFile(proposal.projectOverview);
+
+      const fileNames = [
+        "companyRegistration",
+        "businessPlan",
+        "financialStatements",
+        "partnerships",
+        "techStudies",
+        "other",
+      ];
+      const projectFiles: { fileData: UploadedFile; type: string }[] = [];
+
+      fileNames.forEach((fName) => {
+        if (proposal[fName].key) {
+          projectFiles.push({
+            type: fName,
+            fileData: proposal[fName] as UploadedFile,
+          });
+        }
+      });
+
+      setFiles(projectFiles);
+    }
+  }, [proposal]);
 
   if (!proposal) {
     return (
@@ -45,247 +85,332 @@ export function ProposalDetails() {
         <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Back
         </Button>
-        {/* <h1 className="text-2xl font-bold">{proposal.projectName}</h1> */}
-        <div className="mx-auto p-6 space-y-6 max-w-6xl">
-          {/* Basic Info */}
-          {/* <Card>
+        <h1 className="text-2xl font-bold">{proposal.projectTitle}</h1>
+
+        <div className="grid grid-cols-3 space-x-6 max-w-6xl">
+          <Card className="col-span-2">
             <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
+              <CardTitle className="text-lg font-semibold mb-4">
+                Basic Information
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                <strong>Contact Person:</strong> {proposal.contactPerson}
-              </p>
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                <dt className="text-gray-600 font-medium">
+                  Organization / Proponent
+                </dt>
+                <dd>{proposal.organization}</dd>
 
-              <p>
-                <strong>Location:</strong> {proposal.location}
-              </p>
+                <dt className="text-gray-600 font-medium">
+                  Contact Person & Details
+                </dt>
+                <dd>{proposal.contactPerson}</dd>
 
-              <p>
-                <strong>Status:</strong> {proposal.status}
-              </p>
-              <p>
-                <strong>Website:</strong> {proposal.website}
-              </p>
-            </CardContent>
-          </Card> */}
+                <dt className="text-gray-600 font-medium">Project Location</dt>
+                <dd>{proposal.location}</dd>
 
-          {/* Site & Advisor Info side by side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* <Card>
-              <CardHeader>
-                <CardTitle>Site Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <p>
-                  <strong>Site Name:</strong> {proposal.siteName}
-                </p>
-                <p>
-                  <strong>Site Capacity:</strong> {proposal.siteCapacity}
-                </p>
-                <p>
-                  <strong>Site Phone:</strong> {proposal.sitePhone}
-                </p>
-                <p>
-                  <strong>Site Email:</strong> {proposal.siteEmail}
-                </p>
-              </CardContent>
-            </Card> */}
+                <dt className="text-gray-600 font-medium">
+                  Implementation Date
+                </dt>
+                <dd>
+                  {new Date(proposal.startDate).toLocaleDateString("en-gb") +
+                    " - " +
+                    new Date(proposal.endDate)?.toLocaleDateString("en-gb")}
+                </dd>
 
-            {/* <Card>
-              <CardHeader>
-                <CardTitle>Advisor Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <p>
-                  <strong>Advisor Name:</strong> {proposal.advisorName}
-                </p>
-                <p>
-                  <strong>Advisor Phone:</strong> {proposal.advisorPhone}
-                </p>
-                <p>
-                  <strong>Advisor Email:</strong> {proposal.advisorEmail}
-                </p>
-              </CardContent>
-            </Card> */}
-          </div>
+                <dt className="text-gray-600 font-medium">
+                  Sector / Subsector
+                </dt>
+                <dd>{proposal.sector}</dd>
 
-          {/* Description */}
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>Project Description</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{proposal.description}</p>
-            </CardContent>
+                <dt className="text-gray-600 font-medium">Project Stage</dt>
+                <dd>{proposal.stage}</dd>
 
-            <CardContent>
-              <strong>Project Partners</strong>
-              <p>{proposal.partners}</p>
-              <hr className="m-5"></hr>
-
-              <strong>What problem(s) is the project addressing?</strong>
-              <p>{proposal.problems}</p>
-              <hr className="m-5"></hr>
-
-              <strong>
-                What is the proposed solution (or nature of business)?
-              </strong>
-              <p>{proposal.solution}</p>
-              <hr className="m-5"></hr>
-
-              <strong>
-                What are the biodiversity and conservation priorities of the
-                project?
-              </strong>
-              <p>{proposal.priorities}</p>
-              <hr className="m-5"></hr>
-
-              <strong>
-                What are the expected outcomes / impact? (e.g. economic
-                development, job development)
-              </strong>
-              <p>{proposal.outcomes}</p>
-              <hr className="m-5"></hr>
-
-              <strong>
-                What barriers or challenges does the project face?
-              </strong>
-              <p>{proposal.challenges}</p>
-            </CardContent>
-          </Card> */}
-
-          {/* Environmental Relevance */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Environmental Relevance</CardTitle>
-            </CardHeader>
-            <CardContent className="">
-              <p>
-                Is the project located in a biodiversity hotspot or biodiversity
-                rich area?{" "}
-                <strong>{proposal.biodiversityHotspot ? "Yes" : "No"}</strong>
-              </p>
-              <p>
-                Does the project promote expansion of protected areas?{" "}
-                <strong>
-                  {proposal.protectedAreaExpansion ? "Yes" : "No"}
-                </strong>
-              </p>
+                <dt className="text-gray-600 font-medium">
+                  Estimated Required Investment
+                </dt>
+                <dd>{proposal.estimatedInvestment}</dd>
+              </dl>
             </CardContent>
           </Card>
 
-          {/* Financials */}
-          {/* <Card>
+          <Card className="col-span-1">
             <CardHeader>
-              <CardTitle>Financials</CardTitle>
+              <CardTitle className="text-lg font-semibold mb-4">
+                Project Overview
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p>
-                Is the project generating revenue?{" "}
-                <strong>{proposal.generatingRevenue ? "Yes" : "No"}</strong>
-              </p>
-              <div>
-                <p className="font-semibold">
-                  What is the nature of capital investment or support required?
+            <CardContent>
+              {projectOverviewFile ? (
+                <div className="flex items-center justify-between rounded-md border p-2">
+                  <div className="flex items-center space-x-2">
+                    <FileIcon className="h-4 w-4 text-gray-500" />
+                    <span>{projectOverviewFile.originalName}</span>
+                  </div>
+                  <a href={projectOverviewFile.presignedURL} target="_blank">
+                    <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
+                  </a>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <FileIcon className="h-4 w-4 text-gray-500" />
+                  <span>Project Overview Missing!</span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold mb-4">
+              Eligibility Screening
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+              <dt className="text-gray-600 font-medium">
+                Eligible Categories:
+              </dt>
+              <dd>
+                <ul>
+                  {proposal.categories.map((cat, i) => {
+                    if (cat !== "Other") {
+                      return <li key={i}>{"• " + cat}</li>;
+                    }
+                    return (
+                      <li key={i}>
+                        {"• " + cat + ": " + proposal.categoriesOther}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </dd>
+
+              <dt className="text-gray-600 font-medium">
+                Environmental & Climate Impact:
+              </dt>
+              <dd>
+                <ul>
+                  {proposal.envImpact.map((cat, i) => (
+                    <li key={i}>{"• " + cat}</li>
+                  ))}
+                </ul>
+              </dd>
+
+              <dt className="text-gray-600 font-medium">Targets/Indicators:</dt>
+              <dd>{proposal.envImpactIndicator}</dd>
+
+              <dt className="text-gray-600 font-medium">
+                Brief description of environmental impact
+              </dt>
+              <dd>{proposal.envImpactDescription}</dd>
+
+              <dt className="text-gray-600 font-medium">
+                Social & Developmental Impact:
+              </dt>
+              <dd>
+                <ul>
+                  {proposal.socialImpact.map((cat, i) => (
+                    <li key={i}>{"• " + cat}</li>
+                  ))}
+                </ul>
+              </dd>
+
+              <dt className="text-gray-600 font-medium">
+                Brief description of social impact
+              </dt>
+              <dd>{proposal.envImpactDescription}</dd>
+            </dl>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-2 space-x-6 max-w-6xl">
+          <Card>
+            <CardHeader>
+              <CardTitle>Governance & Compliance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid grid-cols-5 gap-x-4 gap-y-3 text-sm">
+                {Object.keys(proposal.compliance).map((key) => {
+                  return (
+                    <>
+                      <dt className="text-gray-600 font-medium col-span-4">
+                        {key}
+                      </dt>
+                      <dd>
+                        {proposal.compliance[key] == "Done" ? (
+                          <Check />
+                        ) : proposal.compliance[key] == "Not Done" ? (
+                          <X />
+                        ) : (
+                          "N/A"
+                        )}
+                      </dd>
+                    </>
+                  );
+                })}
+              </dl>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Financial Readiness & Funding Options</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid grid-cols-5 gap-x-4 gap-y-3 text-sm">
+                {Object.keys(proposal.fundingOptions).map((key) => {
+                  return (
+                    <>
+                      <dt className="text-gray-600 font-medium col-span-4">
+                        {key}
+                      </dt>
+                      <dd>
+                        {proposal.fundingOptions[key] == "Yes" ? (
+                          <Check />
+                        ) : (
+                          <X />
+                        )}
+                      </dd>
+                    </>
+                  );
+                })}
+                <dt className="text-gray-600 font-medium col-span-4">
+                  Total Project Cost:
+                </dt>
+                <dd>{proposal.totalCost}</dd>
+              </dl>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Project Finances</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+              <dt className="text-gray-600 font-medium">
+                Funding Instruments Sought
+              </dt>
+              <dd>
+                <ul>
+                  {proposal.fundingSought.map((funding, i) => (
+                    <li key={i}>{"• " + funding}</li>
+                  ))}
+                </ul>
+              </dd>
+
+              <dt className="text-gray-600 font-medium">
+                Is the project scalable, replicable and sustainable?
+              </dt>
+              <dd>{proposal.scalable}</dd>
+            </dl>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-2 space-x-6 max-w-6xl">
+          <div className="space-y-6">
+            <Card>
+              <CardContent>
+                <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                  <dt className="text-gray-600 font-medium">
+                    Measurable Impact Indicators Identified
+                  </dt>
+                  <dd>
+                    <ul>{proposal.measureableImpact ? <Check /> : <X />}</ul>
+                  </dd>
+
+                  <dt className="text-gray-600 font-medium">
+                    Commitment to Annual Reporting
+                  </dt>
+                  <dd>
+                    <ul>{proposal.annualReporting ? <Check /> : <X />}</ul>
+                  </dd>
+                  <dt className="text-gray-600 font-medium">
+                    Key Indicators to Track (Environmental, Social, Financial)
+                  </dt>
+                  <dd>
+                    <ul>{proposal.keyIndicators ? <Check /> : <X />}</ul>
+                  </dd>
+                  <dt className="text-gray-600 font-medium">
+                    Willingness to provide monitoring and annual impact reports
+                  </dt>
+                  <dd>
+                    <ul>{proposal.monitoring ? <Check /> : <X />}</ul>
+                  </dd>
+                </dl>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Metadata</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(proposal.createdAt).toLocaleDateString()}
                 </p>
-                <ul className="list-disc list-inside">
-                  {proposal.funding.map((f, idx) => (
-                    <li key={idx}>
-                      {f.amount} — {f.activity}
+                <p>
+                  <strong>Updated At:</strong>{" "}
+                  {new Date(proposal.updatedAt).toLocaleDateString()}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Supporting Documents Uploaded</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm">
+                  {files.map((file, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between rounded-md border p-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <FileIcon className="h-4 w-4 text-gray-500" />
+                        <span>{camelToTitle(file.type)}</span>
+                      </div>
+                      <a href={file.fileData?.presignedURL} target="_blank">
+                        <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
+                      </a>
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              <div>
-                <p className="font-semibold">Funding Options:</p>
-                <ul className="list-disc list-inside">
-                  {proposal.fundingOptions.map((option, idx) => (
-                    <li key={idx}>{option}</li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card> */}
-
-          {/* <Card>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        {isAdmin() && (
+          <Card className="border-[#ddeab1]">
             <CardHeader>
-              <CardTitle>Further Concerns</CardTitle>
+              <CardTitle>Proposal Review</CardTitle>
             </CardHeader>
             <CardContent>
-              <strong>
-                Does the project support communities (young people and women)?
-              </strong>
-              <p>{proposal.communities}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Does the project promote SMMEs?</strong>
-              <p>{proposal.smmes}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Organization and Governance</strong>
-              <p>{proposal.org}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Can the project be scaled and can it be copied?</strong>
-              <p>{proposal.scalable}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Environmental impact</strong>
-              <p>{proposal.envImpact}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Social impact</strong>
-              <p>{proposal.socialImpact}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Sustainability</strong>
-              <p>{proposal.sustainability}</p>
-              <hr className="m-5"></hr>
-
-              <strong>Profitability</strong>
-              <p>{proposal.profitability}</p>
+              <p>Comments:</p>
+              <Textarea className="bg-white" />
             </CardContent>
-          </Card> */}
-
-          {/* Metadata */}
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>Metadata</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p>
-                <strong>Created At:</strong>{" "}
-                {new Date(proposal.createdAt).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Updated At:</strong>{" "}
-                {new Date(proposal.updatedAt).toLocaleDateString()}
-              </p>
-            </CardContent>
-          </Card> */}
-
-          {isAdmin() && (
-            <Card className="border-[#ddeab1]">
-              <CardHeader>
-                <CardTitle>Proposal Review</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Comments:</p>
-                <Textarea className="bg-white" />
-              </CardContent>
-              <CardFooter className="flex justify-end gap-2">
-                <Button>Accept</Button>
-                <Button>Needs Changes</Button>
-                <Button variant="destructive" className="bg-orange-900">
-                  Reject
-                </Button>
-              </CardFooter>
-            </Card>
-          )}
-        </div>
+            <CardFooter className="flex justify-end gap-2">
+              <Button>Accept</Button>
+              <Button>Needs Changes</Button>
+              <Button variant="destructive" className="bg-orange-900">
+                Reject
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
       </div>
     </>
   );
+}
+
+function camelToTitle(str: string): string {
+  return str
+    .replace(/([A-Z])/g, " $1") // insert space before capitals
+    .replace(/^./, (s) => s.toUpperCase()); // capitalize first letter
 }

@@ -13,7 +13,7 @@ export const columns: ColumnDef<Project>[] = [
   },
   {
     accessorKey: "organization",
-    header: "Organisation",
+    header: "Organization",
   },
   {
     accessorKey: "sector",

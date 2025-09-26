@@ -17,8 +17,48 @@ import {
 } from "./ui/table";
 import { useNavigate } from "react-router";
 import { columnVisibility, getColumns } from "@/lib/schema/columnDefs";
+import { UploadedFile } from "@/pages/admin/proposal-details";
 
 export type Project = {
+  id: string;
+  projectTitle: string;
+  organization: string;
+  contactPerson: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  sector: string;
+  stage: string;
+  currency: string;
+  estimatedInvestment: string;
+  partners: string;
+  projectOverview: UploadedFile;
+  categories: string[];
+  categoriesOther: string;
+  envImpact: string[];
+  envImpactIndicator: string;
+  envImpactDescription: string;
+  socialImpact: string[];
+  socialImpactDescription: string;
+  compliance: { [key: string]: string };
+  fundingOptions: { [key: string]: string };
+  totalCost: string;
+  fundingSought: string[];
+  scalable: string;
+  measureableImpact: boolean;
+  annualReporting: boolean;
+  keyIndicators: boolean;
+  monitoring: boolean;
+  companyRegistration: { [key: string]: string };
+  businessPlan: { [key: string]: string };
+  financialStatements: { [key: string]: string };
+  partnerships: { [key: string]: string };
+  techStudies: { [key: string]: string };
+  other: { [key: string]: string };
+  signedName: string;
+  position: string;
+  createdAt: string;
+  updatedAt: string;
   [key: string]: unknown;
 };
 
