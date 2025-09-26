@@ -49,17 +49,16 @@ export type Project = {
   annualReporting: boolean;
   keyIndicators: boolean;
   monitoring: boolean;
-  companyRegistration: { [key: string]: string };
-  businessPlan: { [key: string]: string };
-  financialStatements: { [key: string]: string };
-  partnerships: { [key: string]: string };
-  techStudies: { [key: string]: string };
-  other: { [key: string]: string };
+  companyRegistration: UploadedFile;
+  businessPlan: UploadedFile;
+  financialStatements: UploadedFile;
+  partnerships: UploadedFile;
+  techStudies: UploadedFile;
+  other: UploadedFile;
   signedName: string;
   position: string;
   createdAt: string;
   updatedAt: string;
-  [key: string]: unknown;
 };
 
 interface ProjectTableProps {

@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { FileIcon, DownloadIcon } from "lucide-react";
+import { FileFieldKeys } from "@/lib/schema/formSchema";
 
 export type UploadedFile = {
   originalName: string;
+  key: string;
   id: string;
   name: string;
   url: string;
@@ -48,7 +50,7 @@ export function ProposalDetails() {
     if (proposal) {
       setProjectOverviewFile(proposal.projectOverview);
 
-      const fileNames = [
+      const fileNames: FileFieldKeys[] = [
         "companyRegistration",
         "businessPlan",
         "financialStatements",

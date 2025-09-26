@@ -169,7 +169,16 @@ export type StringFieldNames =
   | "scalable"
   | "totalCost";
 
-export const FileFields = [
+export type FileFieldKeys =
+  | "projectOverview"
+  | "companyRegistration"
+  | "businessPlan"
+  | "financialStatements"
+  | "partnerships"
+  | "techStudies"
+  | "other";
+
+export const FileFields: FileFieldKeys[] = [
   "projectOverview",
   "companyRegistration",
   "businessPlan",
