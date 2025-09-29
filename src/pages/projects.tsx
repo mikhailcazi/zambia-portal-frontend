@@ -2,9 +2,15 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import { ProjectTable } from "@/components/ProjectTable";
+import { FilterBar } from "@/components/filter-bar";
 
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+
+  const handleGlobalFilterChange = (newGlobalFilter: string) => {
+    setGlobalFilter(newGlobalFilter);
+  };
 
   useEffect(() => {
     api
@@ -16,7 +22,16 @@ export default function ProjectList() {
   return (
     <div>
       <h1 className="my-5 font-bold">Investment Opportunities</h1>
-      <ProjectTable data={projects} isAdmin={false} />
+      <FilterBar
+        isAdmin={false}
+        onGlobalFilterChange={handleGlobalFilterChange}
+      />
+      <ProjectTable
+        data={projects}
+        isAdmin={false}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
     </div>
   );
 }

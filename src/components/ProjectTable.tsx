@@ -5,8 +5,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
-import { Input } from "./ui/input";
 import {
   Table,
   TableBody,
@@ -18,6 +16,7 @@ import {
 import { useNavigate } from "react-router";
 import { columnVisibility, getColumns } from "@/lib/schema/columnDefs";
 import { UploadedFile } from "@/pages/admin/proposal-details";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 export type Project = {
   id: string;
@@ -64,10 +63,16 @@ export type Project = {
 interface ProjectTableProps {
   data: Project[];
   isAdmin: boolean;
+  globalFilter: string;
+  setGlobalFilter: (value: string) => void;
 }
 
-export function ProjectTable({ data, isAdmin }: ProjectTableProps) {
-  const [globalFilter, setGlobalFilter] = useState("");
+export function ProjectTable({
+  data,
+  isAdmin,
+  globalFilter,
+  setGlobalFilter,
+}: ProjectTableProps) {
   const navigate = useNavigate();
 
   const handleRowClick = (project: Project) => {
@@ -92,14 +97,7 @@ export function ProjectTable({ data, isAdmin }: ProjectTableProps) {
   });
 
   return (
-    <div className="space-y-4">
-      <Input
-        placeholder="Search..."
-        value={globalFilter}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        className="max-w-sm"
-      />
-
+    <div className="">
       <Table>
         <TableHeader className="bg-[#c5e6dc]">
           {table.getHeaderGroups().map((hg) => (
@@ -108,14 +106,23 @@ export function ProjectTable({ data, isAdmin }: ProjectTableProps) {
                 <TableHead
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
-                  className="cursor-pointer select-none"
+                  className={
+                    (header.column.getIsSorted() && "bg-[#a5d8c7] ") +
+                    "cursor-pointer select-none text-xs text-[#4e6e54]"
+                  }
                 >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                  {header.column.getIsSorted() === "asc" && " ↑"}
-                  {header.column.getIsSorted() === "desc" && " ↓"}
+                  <div className="flex items-center">
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {header.column.getIsSorted() === "asc" && (
+                      <ArrowUp className="h-3" />
+                    )}
+                    {header.column.getIsSorted() === "desc" && (
+                      <ArrowDown className="h-3" />
+                    )}
+                  </div>
                 </TableHead>
               ))}
             </TableRow>
@@ -127,10 +134,13 @@ export function ProjectTable({ data, isAdmin }: ProjectTableProps) {
             <TableRow
               key={row.id}
               onClick={() => handleRowClick(row.original)}
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-neutral-100/50"
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell
+                  key={cell.id}
+                  className={cell.column.id == "status" ? "" : "p-2"}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

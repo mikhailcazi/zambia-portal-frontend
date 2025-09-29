@@ -81,13 +81,23 @@ export function ProposalDetails() {
     );
   }
 
+  const approveProposal = () => {
+    api.approveProposal(proposal.id);
+    navigate(-1);
+  };
+
   return (
     <>
       <div className="p-6 space-y-4 max-w-6xl mx-auto">
         <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Back
         </Button>
-        <h1 className="text-2xl font-bold">{proposal.projectTitle}</h1>
+        <div className="bg-[#c5e6dc] rounded-sm p-4">
+          <span className="font-bold">Project Title:</span>
+          <h1 className="text-2xl font-bold text-[#4e6e54]">
+            {proposal.projectTitle}
+          </h1>
+        </div>
 
         <div className="grid grid-cols-3 space-x-6 max-w-6xl">
           <Card className="col-span-2">
@@ -398,10 +408,10 @@ export function ProposalDetails() {
               <Textarea className="bg-white" />
             </CardContent>
             <CardFooter className="flex justify-end gap-2">
-              <Button>Accept</Button>
-              <Button>Needs Changes</Button>
+              <Button onClick={approveProposal}>APPROVE</Button>
+              <Button>NEEDS CHANGES</Button>
               <Button variant="destructive" className="bg-orange-900">
-                Reject
+                REJECT
               </Button>
             </CardFooter>
           </Card>
