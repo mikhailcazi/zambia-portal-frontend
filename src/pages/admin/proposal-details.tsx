@@ -75,8 +75,8 @@ export function ProposalDetails() {
 
   if (!proposal) {
     return (
-      <div className="p-4">
-        <p>Loading proposal...</p>
+      <div className="flex justify-center p-10">
+        <span className="loader" />
       </div>
     );
   }

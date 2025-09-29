@@ -39,7 +39,7 @@ export const columns: ColumnDef<Project>[] = [
   },
   {
     accessorKey: "stage",
-    header: "PROPOSAL STAGE",
+    header: "PROJECT STAGE",
   },
   {
     id: "categories",
