@@ -1,4 +1,4 @@
-import { ProjectTable } from "@/components/ProjectTable";
+import { ProjectTable } from "@/components/project-table";
 import { api } from "../../services/api.service";
 import { useEffect, useState } from "react";
 import {
@@ -6,6 +6,7 @@ import {
   FilterBar,
   FilterPair,
 } from "@/components/filter-bar";
+import Loading from "@/components/ui/loading";
 
 export default function Dashboard() {
   const [proposals, setProposals] = useState([]);
@@ -41,9 +42,7 @@ export default function Dashboard() {
           onGlobalFilterChange={handleGlobalFilterChange}
         />
         {loading ? (
-          <div className="flex justify-center p-10">
-            <span className="loader" />
-          </div>
+          <Loading />
         ) : (
           <ProjectTable
             data={proposals}

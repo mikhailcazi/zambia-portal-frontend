@@ -1,4 +1,4 @@
-import { Project } from "@/components/ProjectTable";
+import { Project } from "@/components/project-table";
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import { useParams, useNavigate } from "react-router";

@@ -3,27 +3,46 @@ import { FormSchema } from "@/lib/schema/formSchema";
 import axios from "axios";
 import * as z from "zod";
 
-const API_BASE = "https://undp-backend.onrender.com";
-// const API_BASE = "http://localhost:3000"; // or from env
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://undp-backend.onrender.com";
+
+const protectedRoutes = ["/proposals"];
+
+// Create an Axios instance
+const axiosInstance = axios.create({ baseURL: API_BASE });
+
+// Add a request interceptor to attach JWT for protected routes
+axiosInstance.interceptors.request.use((config) => {
+  const token = window.localStorage.getItem("token");
+  if (token && protectedRoutes.some((path) => config.url?.startsWith(path))) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export const api = {
-  getProposals: (filters: FilterPair) =>
-    axios.get(`${API_BASE}/proposals`, {
-      params: filters,
-    }),
-  getProposal: (id: string) => axios.get(`${API_BASE}/proposals/${id}`),
-  createProposal: (data: FormData) =>
-    axios.post(`${API_BASE}/proposals`, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }),
-  approveProposal: (id: string) =>
-    axios.patch(`${API_BASE}/proposals/${id}/approve`),
+  login: (username: string, password: string) =>
+    axiosInstance.post("/auth/login", { username, password }),
 
-  //
-  getProjects: () => axios.get(`${API_BASE}/projects`),
-  getProject: (id: string) => axios.get(`${API_BASE}/projects/${id}`),
+  getProposals: (filters: FilterPair) =>
+    axiosInstance.get("/proposals", { params: filters }),
+
+  getProposal: (id: string) => axiosInstance.get(`/proposals/${id}`),
+
+  createProposal: (data: FormData) =>
+    axiosInstance.post("/proposals", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+
+  approveProposal: (id: string) =>
+    axiosInstance.patch(`/proposals/${id}/approve`),
+
+  getProjects: () => axiosInstance.get("/projects"),
+
+  getProject: (id: string) => axiosInstance.get(`/projects/${id}`),
+
   createProject: (data: z.infer<typeof FormSchema>) =>
-    axios.post(`${API_BASE}/projects`, data),
+    axiosInstance.post("/projects", data),
 };

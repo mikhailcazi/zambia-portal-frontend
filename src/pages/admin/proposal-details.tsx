@@ -1,4 +1,4 @@
-import { Project } from "@/components/ProjectTable";
+import { Project } from "@/components/project-table";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api.service";
 import { useParams, useNavigate } from "react-router";
@@ -14,6 +14,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { FileIcon, DownloadIcon } from "lucide-react";
 import { FileFieldKeys } from "@/lib/schema/formSchema";
+import Loading from "@/components/ui/loading";
 
 export type UploadedFile = {
   originalName: string;
@@ -74,11 +75,7 @@ export function ProposalDetails() {
   }, [proposal]);
 
   if (!proposal) {
-    return (
-      <div className="flex justify-center p-10">
-        <span className="loader" />
-      </div>
-    );
+    return <Loading />;
   }
 
   const approveProposal = () => {

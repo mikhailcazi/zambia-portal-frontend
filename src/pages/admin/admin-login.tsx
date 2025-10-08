@@ -6,16 +6,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { api } from "../../services/api.service";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 export default function AdminLogin() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // <-- error state
+
   const nav = useNavigate();
   const login = () => {
-    // Implement login logic here
-    nav("/admin/dashboard"); // Redirect to dashboard after login
+    setError(""); // clear previous errors
+    api
+      .login(username, password)
+      .then((res) => {
+        localStorage.setItem("token", res.data.access_token);
+        console.log(res.data);
+        // Redirect after successful login
+        nav("/admin/dashboard");
+      })
+      .catch((err) => {
+        setError("Invalid username or password"); // <-- set error
+      });
   };
+
   return (
     <div className="flex items-center justify-center h-full">
       <Card className="w-full max-w-sm">
@@ -32,30 +49,27 @@ export default function AdminLogin() {
                   type="text"
                   placeholder="john.doe"
                   required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
               </div>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full" onClick={login}>
+          <Button type="button" className="w-full" onClick={login}>
             Login
           </Button>
-          {/* <Button variant="outline" className="w-full">
-            Login with Google
-          </Button> */}
         </CardFooter>
       </Card>
     </div>

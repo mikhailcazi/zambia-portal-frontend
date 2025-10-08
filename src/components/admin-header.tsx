@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const AdminHeader: React.FC = () => {
   const links = [
@@ -12,7 +12,13 @@ const AdminHeader: React.FC = () => {
     },
   ];
 
+  const nav = useNavigate();
   const route = useLocation().pathname.slice(1);
+
+  const logout = () => {
+    window.localStorage.removeItem("token");
+    nav("/admin/login");
+  };
 
   return (
     <div className="container mx-auto px-4 md:px-6 lg:px-8">
@@ -38,7 +44,11 @@ const AdminHeader: React.FC = () => {
             ))}
 
             <Button className="justify-self-end">Log In</Button>
-            <Button variant="outline" className="justify-self-end">
+            <Button
+              variant="outline"
+              className="justify-self-end"
+              onClick={logout}
+            >
               Log Out
             </Button>
           </div>

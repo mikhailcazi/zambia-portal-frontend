@@ -94,7 +94,7 @@ export default function ProjectForm() {
   }
 
   return (
-    <>
+    <div className="m-5 bg-white w-3xl p-5 rounded-xl mx-auto">
       <h1 className="text-3xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight">
         Project Eligibility Form
       </h1>
@@ -467,6 +467,6 @@ export default function ProjectForm() {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 }

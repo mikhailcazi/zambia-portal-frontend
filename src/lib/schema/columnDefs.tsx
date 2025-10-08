@@ -1,4 +1,4 @@
-import { Project } from "@/components/ProjectTable";
+import { Project } from "@/components/project-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { FileFields } from "./formSchema";
 import { File } from "lucide-react";
