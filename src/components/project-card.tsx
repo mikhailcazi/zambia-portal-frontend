@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, TrendingUp, DollarSign, MapPin, Building } from "lucide-react";
+import { TrendingUp, MapPin, Building } from "lucide-react";
 import { Project } from "./project-table";
 
 export default function ProjectCard({ data }: { data: Project }) {

@@ -29,7 +29,8 @@ export default function AdminLogin() {
         nav("/admin/dashboard");
       })
       .catch((err) => {
-        setError("Invalid username or password"); // <-- set error
+        setError("Invalid username or password");
+        console.log(err); // <-- set error
       });
   };
 
