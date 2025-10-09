@@ -7,7 +7,7 @@ import { Project } from "./project-table";
 export default function ProjectCard({ data }: { data: Project }) {
   console.log(data);
   return (
-    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
+    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div>
           <CardTitle className="text-lg font-semibold text-gray-900">
@@ -48,12 +48,12 @@ export default function ProjectCard({ data }: { data: Project }) {
           {data.categories.map((c) => (
             <Badge variant="outline">{c}</Badge>
           ))}
-          <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
+          <Badge className="bg-[#c5e6dc] text-green-700 hover:bg-[#a5d8c7]">
             {data.stage}
           </Badge>
         </div>
 
-        <Button className="w-full mt-3 bg-gray-800 hover:bg-gray-700 text-white">
+        <Button className="w-full mt-3 bg-[#4e6e54] hover:bg-[#849b3f] text-white">
           View Details
         </Button>
       </CardContent>

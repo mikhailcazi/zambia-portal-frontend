@@ -48,10 +48,10 @@ const Header: React.FC = () => {
             </Link>
           ))}
 
-          <Button variant="outline" className="justify-self-end">
+          {/* <Button variant="outline" className="justify-self-end">
             Sign in
           </Button>
-          <Button className="justify-self-end">Sign Up</Button>
+          <Button className="justify-self-end">Sign Up</Button> */}
         </div>
       </header>
     </div>
