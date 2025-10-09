@@ -5,15 +5,21 @@ import { FilterBar } from "@/components/filter-bar";
 import ProjectCard from "@/components/project-card";
 import Loading from "@/components/ui/loading";
 import { Project } from "@/components/project-table";
+import { Input } from "@/components/ui/input";
 
 export default function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [filterText, setFilterText] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleGlobalFilterChange = (newGlobalFilter: string) => {
-    console.log(globalFilter);
-    setGlobalFilter(newGlobalFilter);
+  const updateTextFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const text = event.target.value;
+    setFilterText(text);
+  };
+
+  const getFilteredList = (projectList: Project[]) => {
+    return projectList;
   };
 
   useEffect(() => {
@@ -22,6 +28,8 @@ export default function ProjectList() {
       .getProjects()
       .then((res) => {
         setProjects(res.data);
+        const filtered = getFilteredList(res.data);
+        setFilteredProjects(filtered);
         setLoading(false);
       })
       .catch((err) => {
@@ -31,19 +39,28 @@ export default function ProjectList() {
   }, []);
 
   return (
-    <div className="m-5 w-5xl p-5 rounded-xl mx-auto">
-      <h1 className="my-5 font-bold">Investment Opportunities</h1>
-      <FilterBar
-        isAdmin={false}
-        onGlobalFilterChange={handleGlobalFilterChange}
-      />
+    <div className="m-5 w-10/12 p-5 rounded-xl mx-auto">
+      <h1 className="my-5 font-bold text-3xl">Investment Opportunities</h1>
+      <div className="my-5">
+        <Input
+          placeholder="Search projects, sectors or keywords..."
+          value={filterText}
+          onChange={updateTextFilter}
+          className="max-w-sm bg-white"
+        />
+      </div>
       {loading ? (
         <Loading />
       ) : (
-        <div className="grid gap-6 grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} data={project} />
-          ))}
+        <div className="grid gap-6 grid-cols-4">
+          <div className="col-span-1 bg-white rounded-xl">
+            <h2 className="my-5 font-bold text-3xl">Filters</h2>
+          </div>
+          <div className="col-span-3 grid gap-6 grid-cols-2">
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.id} data={project} />
+            ))}
+          </div>
         </div>
       )}
     </div>
