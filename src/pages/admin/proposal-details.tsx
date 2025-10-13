@@ -37,6 +37,8 @@ export function ProposalDetails() {
   const isAdmin = () => {
     return true;
   };
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -79,8 +81,36 @@ export function ProposalDetails() {
   }
 
   const approveProposal = () => {
-    api.approveProposal(proposal.id);
-    navigate(-1);
+    api
+      .approveProposal(proposal.id, comment)
+      .then((res) => {
+        navigate(-1);
+      })
+      .catch((err) => {
+        setError("Something went wrong... Try again! ERR Code: " + err);
+      });
+  };
+
+  const addComment = () => {
+    api
+      .addComment(proposal.id, comment)
+      .then((res) => {
+        navigate(-1);
+      })
+      .catch((err) => {
+        setError("Something went wrong... Try again! ERR Code: " + err);
+      });
+  };
+
+  const rejectProposal = () => {
+    api
+      .rejectProposal(proposal.id, comment)
+      .then((res) => {
+        navigate(-1);
+      })
+      .catch((err) => {
+        setError("Something went wrong... Try again! ERR Code: " + err);
+      });
   };
 
   return (
@@ -402,14 +432,23 @@ export function ProposalDetails() {
             </CardHeader>
             <CardContent>
               <p>Comments:</p>
-              <Textarea className="bg-white" />
+              <Textarea
+                className="bg-white"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
             </CardContent>
             <CardFooter className="flex justify-end gap-2">
               <Button onClick={approveProposal}>APPROVE</Button>
-              <Button>NEEDS CHANGES</Button>
-              <Button variant="destructive" className="bg-orange-900">
+              <Button onClick={addComment}>NEEDS CHANGES</Button>
+              <Button
+                onClick={rejectProposal}
+                variant="destructive"
+                className="bg-orange-900"
+              >
                 REJECT
               </Button>
+              {error && <p className="text-sm text-red-600">{error}</p>}
             </CardFooter>
           </Card>
         )}

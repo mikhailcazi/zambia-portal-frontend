@@ -7,7 +7,7 @@ import { Project } from "./project-table";
 export default function ProjectCard({ data }: { data: Project }) {
   console.log(data);
   return (
-    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0">
+    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0 max-h-[344px]">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div>
           <CardTitle className="text-lg font-semibold text-gray-900">
@@ -22,7 +22,7 @@ export default function ProjectCard({ data }: { data: Project }) {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-sm text-gray-600 leading-relaxed min-h-10">
           {data.envImpactDescription}
         </p>
 
@@ -45,7 +45,7 @@ export default function ProjectCard({ data }: { data: Project }) {
         </div>
 
         <div className="flex flex-wrap gap-2 pt-2">
-          {data.categories.map((c) => (
+          {data.categories.slice(0, 3).map((c) => (
             <Badge variant="outline">{c}</Badge>
           ))}
           <Badge className="bg-[#c5e6dc] text-green-700 hover:bg-[#a5d8c7]">

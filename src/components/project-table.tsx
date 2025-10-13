@@ -58,6 +58,7 @@ export type Project = {
   position: string;
   createdAt: string;
   updatedAt: string;
+  proposalStatus?: string;
 };
 
 interface ProjectTableProps {

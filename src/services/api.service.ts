@@ -36,8 +36,26 @@ export const api = {
       headers: { "Content-Type": "multipart/form-data" },
     }),
 
-  approveProposal: (id: string) =>
-    axiosInstance.patch(`/proposals/${id}/approve`),
+  approveProposal: (id: string, comment: string) =>
+    axiosInstance.patch(
+      `/proposals/${id}/approve`,
+      { comment },
+      { headers: { "Content-Type": "application/json" } }
+    ),
+
+  rejectProposal: (id: string, comment: string) =>
+    axiosInstance.patch(
+      `/proposals/${id}/reject`,
+      { comment },
+      { headers: { "Content-Type": "application/json" } }
+    ),
+
+  addComment: (id: string, comment: string) =>
+    axiosInstance.post(
+      `/proposals/${id}/comments`,
+      { comment },
+      { headers: { "Content-Type": "application/json" } }
+    ),
 
   getProjects: () => axiosInstance.get("/projects"),
 

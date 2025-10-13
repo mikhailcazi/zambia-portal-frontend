@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
+import { Search } from "lucide-react";
 
 export type FilterPair = { [key: string]: boolean | string };
 type FilterBarProps = {
@@ -58,12 +59,14 @@ export function FilterBar({
         </div>
       )}
 
-      <div className="">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 w-5 h-5 pointer-events-none" />
+
         <Input
           placeholder="Type here to filter results..."
           value={globalFilter}
           onChange={updateGlobalFilter}
-          className="max-w-sm bg-white"
+          className="max-w-sm bg-white pl-9"
         />
       </div>
     </div>
