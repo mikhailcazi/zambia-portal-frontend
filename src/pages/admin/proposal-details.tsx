@@ -1,5 +1,5 @@
 import { Project } from "@/components/project-table";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { api } from "../../services/api.service";
 import { useParams, useNavigate } from "react-router";
 import { Check, ChevronLeftIcon, X } from "lucide-react";
@@ -46,7 +46,12 @@ export function ProposalDetails() {
     api
       .getProposal(id)
       .then((res) => setProposal(res.data))
-      .catch(console.error);
+      .catch((err) => {
+        console.error(err);
+        if (err.status === 401) {
+          navigate("/admin/login");
+        }
+      });
   }, [id]);
 
   useEffect(() => {
@@ -64,7 +69,7 @@ export function ProposalDetails() {
       const projectFiles: { fileData: UploadedFile; type: string }[] = [];
 
       fileNames.forEach((fName) => {
-        if (proposal[fName].key) {
+        if (proposal[fName]?.key) {
           projectFiles.push({
             type: fName,
             fileData: proposal[fName] as UploadedFile,
@@ -273,7 +278,7 @@ export function ProposalDetails() {
               <dl className="grid grid-cols-5 gap-x-4 gap-y-3 text-sm">
                 {Object.keys(proposal.compliance).map((key) => {
                   return (
-                    <>
+                    <Fragment key={key}>
                       <dt className="text-gray-600 font-medium col-span-4">
                         {key}
                       </dt>
@@ -286,7 +291,7 @@ export function ProposalDetails() {
                           "N/A"
                         )}
                       </dd>
-                    </>
+                    </Fragment>
                   );
                 })}
               </dl>
@@ -300,7 +305,7 @@ export function ProposalDetails() {
               <dl className="grid grid-cols-5 gap-x-4 gap-y-3 text-sm">
                 {Object.keys(proposal.fundingOptions).map((key) => {
                   return (
-                    <>
+                    <Fragment key={key}>
                       <dt className="text-gray-600 font-medium col-span-4">
                         {key}
                       </dt>
@@ -311,7 +316,7 @@ export function ProposalDetails() {
                           <X />
                         )}
                       </dd>
-                    </>
+                    </Fragment>
                   );
                 })}
                 <dt className="text-gray-600 font-medium col-span-4">
