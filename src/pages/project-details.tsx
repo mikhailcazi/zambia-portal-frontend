@@ -67,7 +67,11 @@ export function ProjectDetails() {
   return (
     <>
       <div className="p-6 max-w-7xl mx-auto space-y-4">
-        <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate("/projects")}
+        >
           <ChevronLeftIcon /> Back
         </Button>
 
