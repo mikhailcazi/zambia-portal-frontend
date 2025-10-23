@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, MapPin, Building } from "lucide-react";
+import { TrendingUp, MapPin, Building, CircleDollarSign } from "lucide-react";
 import { Project } from "./project-table";
 import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
 export default function ProjectCard({
   data,
@@ -13,52 +14,121 @@ export default function ProjectCard({
   showButton?: boolean;
 }) {
   const nav = useNavigate();
+  const [duration, setDuration] = useState("");
 
   const navigateToProject = () => {
     nav("/projects/" + data.id);
   };
   // console.log(data);
+
+  useEffect(() => {
+    console.log(data);
+    const start = new Date(data.startDate);
+    const end = new Date(data.endDate);
+    const totalMonths =
+      (end.getFullYear() - start.getFullYear()) * 12 +
+      (end.getMonth() - start.getMonth());
+
+    if (totalMonths >= 12) {
+      const years = totalMonths / 12;
+      setDuration(`${years.toFixed(1)} year${years >= 2 ? "s" : ""}`);
+    } else {
+      setDuration(`${totalMonths} month${totalMonths > 1 ? "s" : ""}`);
+    }
+  });
+
   return (
-    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0">
+    <Card
+      className={
+        "rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0 " +
+        (!showButton && "bg-[#849b3f]")
+      }
+    >
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div>
-          <CardTitle className="text-lg font-semibold text-gray-900">
+          <CardTitle
+            className={
+              "text-lg font-semibold " +
+              (showButton ? "text-gray-900" : "text-white")
+            }
+          >
             {data.projectTitle}
           </CardTitle>
-          <p className="text-sm text-gray-500">{data.sector}</p>
+          <p
+            className={
+              "text-sm " + (showButton ? "text-gray-500" : "text-white")
+            }
+          >
+            {data.sector}
+          </p>
         </div>
         <div className="text-right">
-          <p className="text-xl font-semibold text-gray-900">{`${data.currency} ${data.estimatedInvestment}`}</p>
-          <p className="text-xs text-gray-500">{`Total Cost: ${data.currency} ${data.totalCost}`}</p>
+          <p
+            className={"text-xl font-semibold text-black"}
+          >{`${data.currency} ${data.estimatedInvestment}`}</p>
+          <p
+            className={"text-xs text-gray-900"}
+          >{`Total Cost: ${data.currency} ${data.totalCost}`}</p>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <p className="text-sm text-gray-600 leading-relaxed min-h-10">
+        <p
+          className={
+            "text-sm leading-relaxed min-h-10 " +
+            (showButton ? "text-gray-600" : "text-white")
+          }
+        >
           {data.envImpactDescription}
         </p>
 
-        <div className="grid grid-cols-2 text-sm text-gray-600 gap-y-1">
+        <div
+          className={
+            "grid grid-cols-2 text-sm gap-y-1 " +
+            (showButton ? "text-gray-600" : "text-white")
+          }
+        >
           <div className="flex items-center gap-1">
-            <MapPin className="h-4 w-4 text-gray-500" />
+            <MapPin
+              className={
+                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
+              }
+            />
             <span>{data.location}</span>
           </div>
           <div className="flex items-center gap-1">
-            <TrendingUp className="h-4 w-4 text-gray-500" />
-            <span>{"6 years"}</span>
+            <TrendingUp
+              className={
+                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
+              }
+            />
+            <span>{duration}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Building className="h-4 w-4 text-gray-500" />
+            <Building
+              className={
+                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
+              }
+            />
             <span>{data.organization}</span>
           </div>
-          <div>
-            <span>{"Scalable? " + data.scalable}</span>
+          <div className="flex items-center gap-1">
+            <CircleDollarSign
+              className={
+                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
+              }
+            />
+            <span>{data.fundingSought[0]}</span>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2 pt-2 min-h-[60px]">
           {data.categories.slice(0, 3).map((c, i) => (
-            <Badge key={i} variant="outline" className="max-h-[21.33px]">
+            <Badge
+              key={i}
+              variant="outline"
+              className="max-h-[21.33px] bg-white"
+            >
               {c}
             </Badge>
           ))}

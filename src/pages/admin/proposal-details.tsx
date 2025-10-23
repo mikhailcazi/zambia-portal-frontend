@@ -465,7 +465,7 @@ export function ProposalDetails() {
   );
 }
 
-function camelToTitle(str: string): string {
+export function camelToTitle(str: string): string {
   return str
     .replace(/([A-Z])/g, " $1") // insert space before capitals
     .replace(/^./, (s) => s.toUpperCase()); // capitalize first letter

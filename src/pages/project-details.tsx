@@ -2,11 +2,11 @@ import { Project } from "@/components/project-table";
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import { useParams, useNavigate } from "react-router";
-import { ChevronLeftIcon, FileIcon } from "lucide-react";
+import { Car, ChevronLeftIcon, DownloadIcon, FileIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProjectCard from "@/components/project-card";
 import { FileFieldKeys } from "@/lib/schema/formSchema";
-import { UploadedFile } from "./admin/proposal-details";
+import { camelToTitle, UploadedFile } from "./admin/proposal-details";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ProjectDetails() {
@@ -66,41 +66,67 @@ export function ProjectDetails() {
 
   return (
     <>
-      <div className="p-6 space-y-4 max-w-3xl mx-auto">
+      <div className="p-6 max-w-7xl mx-auto space-y-4">
         <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Back
         </Button>
 
-        <ProjectCard data={project} showButton={false} />
+        <div className="flex gap-6">
+          {/* Left Column - Project Card */}
+          <div className="w-1/3">
+            <ProjectCard data={project} showButton={false} />
+            <Card className="my-4">
+              <CardHeader>
+                <CardTitle>Supporting Documents Uploaded</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm">
+                  {files.map((file, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between rounded-md border p-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <FileIcon className="h-4 w-4 text-gray-500" />
+                        <span>{camelToTitle(file.type)}</span>
+                      </div>
+                      <a href={file.fileData?.presignedURL} target="_blank">
+                        <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold mb-4">
-              Project Overview
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {projectOverviewFile ? (
-              <div className="flex items-center justify-between rounded-md border p-2">
-                <span>{projectOverviewFile.originalName}</span>
-
-                <FileIcon className="h-4 w-4 text-gray-500" />
-                {/* <div className="flex items-center space-x-2">
-                  <FileIcon className="h-4 w-4 text-gray-500" />
-                  <span>{projectOverviewFile.originalName}</span>
-                </div>
-                <a href={projectOverviewFile.presignedURL} target="_blank">
-                  <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
-                </a> */}
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <FileIcon className="h-4 w-4 text-gray-500" />
-                <span>Project Overview Missing!</span>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          {/* Right Column - Project Overview */}
+          <div className="w-2/3">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold mb-4">
+                  Project Overview
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {projectOverviewFile ? (
+                  <iframe
+                    src={projectOverviewFile.presignedURL}
+                    width="100%"
+                    height="600px"
+                    className="rounded-md border"
+                    title={projectOverviewFile.originalName}
+                  />
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <FileIcon className="h-4 w-4 text-gray-500" />
+                    <span>Project Overview Missing!</span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </>
   );
