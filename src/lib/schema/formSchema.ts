@@ -35,7 +35,7 @@ export const FormSchema = z.object({
   estimatedInvestment: z.string().nonempty("Required field!"),
   currency: z.string().nonempty("Required field!"),
   partners: z.string().nonempty("Required field!"),
-
+  genderDetails: z.string().nonempty("Required field!"),
   // section b
   projectOverview: z
     .array(
@@ -116,8 +116,8 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   stage: "",
   estimatedInvestment: "",
   currency: "",
-
   partners: "",
+  genderDetails: "",
 
   projectOverview: [],
 
@@ -161,6 +161,7 @@ export type StringFieldNames =
   | "sector"
   | "estimatedInvestment"
   | "partners"
+  | "genderDetails"
   | "signedName"
   | "position"
   | "envImpactIndicator"
@@ -196,6 +197,7 @@ export const FinancialOptions = [
   "Subordinated loan",
   "Senior loan",
   "Lease finance",
+  "Seeking gender-responsive or gender-lens investment opportunities",
 ];
 
 export const ProjectStages = [

@@ -7,26 +7,60 @@ import { Project } from "@/components/project-table";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import ProjectFilter from "@/components/filter";
-import {
-  CategoryValues,
-  FinancialOptions,
-  ProjectStages,
-} from "@/lib/schema/formSchema";
+import { filterList } from "@/lib/schema/filterSchema";
+
+type FilterObject = {
+  [k: string]: string[];
+};
 
 export default function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [filterText, setFilterText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState<FilterObject>(
+    Object.fromEntries(filterList.map((k) => [k, []]))
+  );
 
   const updateTextFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value;
     setFilterText(text);
-    const newFilteredProjects = getFilteredList(projects, text);
+    const newFilteredProjects = getTextFilteredList(projects, text);
     setFilteredProjects(newFilteredProjects);
   };
 
-  const getFilteredList = (projectList: Project[], text: string | null) => {
+  const handleFilterChanged = (field: string, values: string[]) => {
+    const newFilters = {
+      ...filters,
+      [field]: values,
+    };
+    setFilters(newFilters);
+
+    const newFilteredProjects = getCheckFilteredList(projects, newFilters);
+    setFilteredProjects(newFilteredProjects);
+  };
+
+  const getCheckFilteredList = (
+    projectList: Project[],
+    newFilters: FilterObject
+  ) => {
+    console.log(projectList);
+    return projectList.filter((project) =>
+      Object.entries(newFilters).every(([key, values]) => {
+        if (values.length === 0) return true; // no filter on this key
+
+        const field = project[key as keyof Project];
+        if (Array.isArray(field)) {
+          // check if any of the filter values exist in the project array
+          return field.some((v) => values.includes(v));
+        }
+
+        // otherwise, just do a direct match
+        return values.includes(field as string);
+      })
+    );
+  };
+  const getTextFilteredList = (projectList: Project[], text: string | null) => {
     if (text == null) return projectList;
 
     const filterValue = text.toLowerCase();
@@ -63,7 +97,7 @@ export default function ProjectList() {
       .getProjects()
       .then((res) => {
         setProjects(res.data);
-        const filtered = getFilteredList(res.data, null);
+        const filtered = getTextFilteredList(res.data, null);
         setFilteredProjects(filtered);
         setLoading(false);
       })
@@ -89,28 +123,20 @@ export default function ProjectList() {
       <div className="grid gap-6 grid-cols-4">
         <div className="col-span-1 bg-white rounded-xl">
           <h2 className="mx-4 mt-4 font-bold text-xl">Filter by:</h2>
-          <ProjectFilter
-            field={"stage"}
-            name={"Stage"}
-            values={ProjectStages}
-          />
-          <ProjectFilter
-            field={"categories"}
-            name={"Categories"}
-            values={CategoryValues}
-          />
-          <ProjectFilter
-            field={"fundingSought"}
-            name={"Funding Sought"}
-            values={FinancialOptions}
-          />
+          {filterList.map((filter, index) => (
+            <ProjectFilter
+              key={index}
+              field={filter}
+              onFilterChanged={handleFilterChanged}
+            />
+          ))}
         </div>
         <div className="col-span-3 grid gap-6 grid-cols-2 auto-rows-min content-start items-start">
           {loading ? (
             <Loading />
           ) : (
             filteredProjects.map((project) => (
-              <ProjectCard key={project.id} data={project} />
+              <ProjectCard key={project.id} data={project} showButton={true} />
             ))
           )}
         </div>

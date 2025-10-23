@@ -1,25 +1,36 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { filterNames, filterValuesList } from "@/lib/schema/filterSchema";
 
 type ProjectFilterProps = {
   field: string;
-  values: string[];
-  name: string;
+  values?: string[];
+  name?: string;
+  onFilterChanged: (field: string, values: string[]) => void;
 };
 
 export default function ProjectFilter({
   field,
   values,
   name,
+  onFilterChanged,
 }: ProjectFilterProps) {
   const [open, setOpen] = useState(true);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [filterName] = useState(
+    name ?? filterNames[field as keyof typeof filterNames]
+  );
+  const [filterValues] = useState(
+    values ?? filterValuesList[field as keyof typeof filterValuesList]
+  );
 
   const toggleValue = (value: string) => {
-    setSelectedValues((prev) =>
-      prev.includes(value) ? prev.filter((s) => s !== value) : [...prev, value]
-    );
+    const newSelected = selectedValues.includes(value)
+      ? selectedValues.filter((s) => s !== value)
+      : [...selectedValues, value];
+    setSelectedValues(newSelected);
+    onFilterChanged(field, newSelected);
   };
 
   return (
@@ -28,7 +39,7 @@ export default function ProjectFilter({
         className="flex justify-between items-center cursor-pointer"
         onClick={() => setOpen(!open)}
       >
-        <h3 className="font-semibold text-gray-800">{name}</h3>
+        <h3 className="font-semibold text-gray-800">{filterName}</h3>
         <ChevronDown
           className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
         />
@@ -36,7 +47,7 @@ export default function ProjectFilter({
 
       {open && (
         <div className="mt-3 space-y-2">
-          {values.map((value) => (
+          {filterValues.map((value) => (
             <label
               key={value}
               className="flex justify-between items-center cursor-pointer"

@@ -13,7 +13,8 @@ const AdminHeader: React.FC = () => {
   ];
 
   const nav = useNavigate();
-  const route = useLocation().pathname.slice(1);
+  const route = useLocation().pathname.slice(7);
+  const token = window.localStorage.getItem("token");
 
   const logout = () => {
     window.localStorage.removeItem("token");
@@ -43,14 +44,17 @@ const AdminHeader: React.FC = () => {
               </Link>
             ))}
 
-            <Button className="justify-self-end">Log In</Button>
-            <Button
-              variant="outline"
-              className="justify-self-end"
-              onClick={logout}
-            >
-              Log Out
-            </Button>
+            {token ? (
+              <Button
+                variant="outline"
+                className="justify-self-end"
+                onClick={logout}
+              >
+                Log Out
+              </Button>
+            ) : (
+              <Button className="justify-self-end">Log In</Button>
+            )}
           </div>
         )}
       </header>

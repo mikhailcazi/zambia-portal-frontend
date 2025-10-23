@@ -44,12 +44,18 @@ import FormCheckboxField from "@/components/ui/form/form-checkbox-field";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormFileUploadFieldSmall } from "@/components/ui/form/form-file-field-small";
 import { DatePicker } from "@/components/ui/date-picker";
+import { useNavigate } from "react-router";
+import { useState } from "react";
+import Loading from "@/components/ui/loading";
 
 export default function ProjectForm() {
+  const nav = useNavigate();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: FormDefaultValues,
   });
+
+  const [loading, setLoading] = useState(false);
 
   const createFormData = (values: z.infer<typeof FormSchema>) => {
     const formData = new FormData();
@@ -82,12 +88,17 @@ export default function ProjectForm() {
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
+      setLoading(true);
       console.log(values);
 
       const formData = createFormData(values);
-
-      await api.createProposal(formData);
+      const data = await api.createProposal(formData);
+      console.log(data);
+      const id = data?.data.id;
+      setLoading(false);
+      nav("/submitted?proposalID=" + id);
     } catch (error) {
+      setLoading(false);
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
     }
@@ -118,7 +129,6 @@ export default function ProjectForm() {
               3. Present measurable outcomes (e.g., CO₂ avoided, hectares
               restored). <br />
               4. Comply with environmental and social safeguards. <br />
-              <br /> All form fields are mandatory.
             </CardContent>
           </Card>
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
@@ -148,7 +158,7 @@ export default function ProjectForm() {
           <TextField
             form={form}
             name="location"
-            label="Project Location"
+            label="Project Location (Province / District / Coordinates)"
             placeholder="Your project location"
             mandatory={true}
           />
@@ -256,6 +266,15 @@ export default function ProjectForm() {
             placeholder="Partners"
             mandatory={true}
           />
+
+          <TextAreaField
+            form={form}
+            label="Gender Inclusion Details"
+            description="(e.g % of women in project leadership or workforce)"
+            name="genderDetails"
+            placeholder="Gender Inclusion"
+            mandatory={true}
+          />
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
             Section B: Investor-Friendly Project Overview (Pitch Deck Style)
@@ -263,7 +282,7 @@ export default function ProjectForm() {
           <FormFileUploadField
             name="projectOverview"
             label="Project Overview"
-            description={`Please upload a PDF deck which covers each of the following points, in 80 words or less\n1. Problem Statement\n2. Green Investment Opportunity\n3. Proposed Solution\n4. Innovation / Differentiation - What makes your project innovative or different? Briefly explain any new technology, approach, or co-benefits that go beyond “business as usual.”\n5. Expected Impact / Outcomes (Environmental, Social, Financial)\n6. Alignment with National Priorities (Zambia’s Green Growth Strategy, NDCs, NBSAP, Green Finance Strategy, or other relevant frameworks)\n7. Contribution to recognized environmental or social goals (e.g., climate action, biodiversity protection, sustainable livelihoods, community resilience etc.)`}
+            description={`Please upload a PDF deck which covers each of the following points, in 80 words or less\n1. Problem Statement\n2. Green Investment Opportunity\n3. Proposed Solution\n4. Innovation / Differentiation - What makes your project innovative or different? Briefly explain any new technology, approach, or co-benefits that go beyond “business as usual.”\n5. Expected Impact / Outcomes (Environmental, Social, Financial)\n6. Alignment with National Priorities (Zambia’s Green Growth Strategy, NDCs, NBSAP, Green Finance Strategy, or other relevant frameworks)\n7. Contribution to recognized environmental or social goals (e.g., climate action, biodiversity protection, sustainable livelihoods, community resilience promoting women’s participation in green jobs, enhancing women’s access to finance, improving gender equality etc.)`}
             form={form}
           />
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
@@ -320,12 +339,18 @@ export default function ProjectForm() {
                 Brief Description of Impact:
                 <span className="text-red-500"> *</span>
               </Label>
+
               <TextField
                 form={form}
                 name="socialImpactDescription"
                 mandatory={true}
               />
             </div>
+            <FormDescription>
+              If gender is ticked, please specify how the project promotes
+              gender equality (e.g., women beneficiaries, leadership, targeted
+              training, improved access to finance, etc)
+            </FormDescription>
           </div>
           <div className="relative overflow-hidden grid gap-4 items-center">
             <MultiRadioField
@@ -465,6 +490,7 @@ export default function ProjectForm() {
             </p>
           )}
           <Button type="submit">Submit</Button>
+          {loading && <Loading />}
         </form>
       </Form>
     </div>

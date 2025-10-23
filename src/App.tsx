@@ -9,6 +9,8 @@ import AdminLayout from "./AdminLayout";
 import AdminLogin from "./pages/admin/admin-login";
 import { ProposalDetails } from "./pages/admin/proposal-details";
 import ProtectedRoute from "./lib/protected-route";
+import { ProjectDetails } from "./pages/project-details";
+import { Submission } from "./pages/submission";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -19,7 +21,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="login" replace />} />
+              <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="login" element={<AdminLogin />} />
               <Route
                 path="dashboard"
@@ -42,7 +44,9 @@ function App() {
               <Route index element={<Navigate to="home" replace />} />
               <Route path="home" element={<HomePage />} />
               <Route path="projects" element={<ProjectList />} />
+              <Route path="projects/:id" element={<ProjectDetails />} />
               <Route path="form" element={<ProjectForm />} />
+              <Route path="submitted" element={<Submission />} />
             </Route>
           </Routes>
         </BrowserRouter>

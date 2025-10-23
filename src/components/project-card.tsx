@@ -3,11 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, MapPin, Building } from "lucide-react";
 import { Project } from "./project-table";
+import { useNavigate } from "react-router";
 
-export default function ProjectCard({ data }: { data: Project }) {
-  console.log(data);
+export default function ProjectCard({
+  data,
+  showButton = true,
+}: {
+  data: Project;
+  showButton?: boolean;
+}) {
+  const nav = useNavigate();
+
+  const navigateToProject = () => {
+    nav("/projects/" + data.id);
+  };
+  // console.log(data);
   return (
-    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0 max-h-[344px]">
+    <Card className="rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div>
           <CardTitle className="text-lg font-semibold text-gray-900">
@@ -44,18 +56,25 @@ export default function ProjectCard({ data }: { data: Project }) {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-2">
-          {data.categories.slice(0, 3).map((c) => (
-            <Badge variant="outline">{c}</Badge>
+        <div className="flex flex-wrap gap-2 pt-2 min-h-[60px]">
+          {data.categories.slice(0, 3).map((c, i) => (
+            <Badge key={i} variant="outline" className="max-h-[21.33px]">
+              {c}
+            </Badge>
           ))}
-          <Badge className="bg-[#c5e6dc] text-green-700 hover:bg-[#a5d8c7]">
+          <Badge className="bg-[#c5e6dc] text-green-700 hover:bg-[#a5d8c7] max-h-[21.33px]">
             {data.stage}
           </Badge>
         </div>
 
-        <Button className="w-full mt-3 bg-[#4e6e54] hover:bg-[#849b3f] text-white">
-          View Details
-        </Button>
+        {showButton && (
+          <Button
+            className="w-full mt-3 bg-[#4e6e54] hover:bg-[#849b3f] text-white cursor-pointer"
+            onClick={navigateToProject}
+          >
+            View Details
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
