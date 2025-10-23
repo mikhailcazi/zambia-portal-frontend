@@ -89,6 +89,7 @@ export function ProposalDetails() {
     api
       .approveProposal(proposal.id, comment)
       .then((res) => {
+        console.log(res);
         navigate(-1);
       })
       .catch((err) => {
@@ -100,6 +101,7 @@ export function ProposalDetails() {
     api
       .addComment(proposal.id, comment)
       .then((res) => {
+        console.log(res);
         navigate(-1);
       })
       .catch((err) => {
@@ -111,6 +113,7 @@ export function ProposalDetails() {
     api
       .rejectProposal(proposal.id, comment)
       .then((res) => {
+        console.log(res);
         navigate(-1);
       })
       .catch((err) => {

@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "./ui/button";
 import { Link, useLocation } from "react-router";
 
 const Header: React.FC = () => {

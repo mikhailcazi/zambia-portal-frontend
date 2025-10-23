@@ -2,7 +2,7 @@ import { Project } from "@/components/project-table";
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import { useParams, useNavigate } from "react-router";
-import { ChevronLeftIcon, DownloadIcon, FileIcon } from "lucide-react";
+import { ChevronLeftIcon, FileIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProjectCard from "@/components/project-card";
 import { FileFieldKeys } from "@/lib/schema/formSchema";
@@ -52,6 +52,7 @@ export function ProjectDetails() {
       });
 
       setFiles(projectFiles);
+      console.log(files);
     }
   }, [project]);
 
