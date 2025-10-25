@@ -40,84 +40,46 @@ export default function ProjectCard({
   return (
     <Card
       className={
-        "rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0 " +
-        (!showButton && "bg-[#849b3f]")
+        "rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition gap-0 bg-gradient-to-br from-[#c5e6dc] to-[#adc5c5]"
       }
     >
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div>
-          <CardTitle
-            className={
-              "text-lg font-semibold " +
-              (showButton ? "text-gray-900" : "text-white")
-            }
-          >
+          <CardTitle className={"text-lg font-semibold text-gray-900"}>
             {data.projectTitle}
           </CardTitle>
-          <p
-            className={
-              "text-sm " + (showButton ? "text-gray-500" : "text-white")
-            }
-          >
-            {data.sector}
-          </p>
+          <p className={"text-sm text-gray-500"}>{data.sector}</p>
         </div>
         <div className="text-right">
           <p
             className={"text-xl font-semibold text-black"}
           >{`${data.currency} ${data.estimatedInvestment}`}</p>
           <p
-            className={"text-xs text-gray-900"}
+            className={"text-xs text-grey-900"}
           >{`Total Cost: ${data.currency} ${data.totalCost}`}</p>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <p
-          className={
-            "text-sm leading-relaxed min-h-10 " +
-            (showButton ? "text-gray-600" : "text-white")
-          }
-        >
+        <p className={"text-sm leading-relaxed min-h-10 text-gray-600"}>
           {data.envImpactDescription}
         </p>
 
-        <div
-          className={
-            "grid grid-cols-2 text-sm gap-y-1 " +
-            (showButton ? "text-gray-600" : "text-white")
-          }
-        >
+        <div className={"grid grid-cols-2 text-sm gap-y-1 text-gray-600"}>
           <div className="flex items-center gap-1">
-            <MapPin
-              className={
-                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
-              }
-            />
+            <MapPin className={"h-4 w-4 text-gray-500"} />
             <span>{data.location}</span>
           </div>
           <div className="flex items-center gap-1">
-            <TrendingUp
-              className={
-                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
-              }
-            />
+            <TrendingUp className={"h-4 w-4 text-gray-500"} />
             <span>{duration}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Building
-              className={
-                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
-              }
-            />
+            <Building className={"h-4 w-4 text-gray-500"} />
             <span>{data.organization}</span>
           </div>
           <div className="flex items-center gap-1">
-            <CircleDollarSign
-              className={
-                "h-4 w-4 " + (showButton ? "text-gray-500" : "text-white")
-              }
-            />
+            <CircleDollarSign className={"h-4 w-4 text-gray-500"} />
             <span>{data.fundingSought[0]}</span>
           </div>
         </div>

@@ -79,7 +79,7 @@ export function ProjectDetails() {
           {/* Left Column - Project Card */}
           <div className="w-1/3">
             <ProjectCard data={project} showButton={false} />
-            <Card className="my-4">
+            <Card className="my-4 bg-[#F7F8FA]">
               <CardHeader>
                 <CardTitle>Supporting Documents Uploaded</CardTitle>
               </CardHeader>
@@ -88,15 +88,17 @@ export function ProjectDetails() {
                   {files.map((file, index) => (
                     <li
                       key={index}
-                      className="flex items-center justify-between rounded-md border p-2"
+                      className="bg-[#a5d8c7] flex items-center justify-between rounded-3xl p-2"
                     >
                       <div className="flex items-center space-x-2">
                         <FileIcon className="h-4 w-4 text-gray-500" />
                         <span>{camelToTitle(file.type)}</span>
                       </div>
-                      <a href={file.fileData?.presignedURL} target="_blank">
-                        <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
-                      </a>
+                      <div className="bg-[#4e6e54] hover:bg-[#1ab46f] p-1 rounded-xl">
+                        <a href={file.fileData?.presignedURL} target="_blank">
+                          <DownloadIcon className="h-4 w-4 text-white" />
+                        </a>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -108,7 +110,7 @@ export function ProjectDetails() {
           <div className="w-2/3">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg font-semibold mb-4">
+                <CardTitle className="text-lg font-semibold border-b-2 border-[#a5d8c7] pb-1">
                   Project Overview
                 </CardTitle>
               </CardHeader>
