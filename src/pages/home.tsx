@@ -23,22 +23,12 @@ export default function HomePage() {
         opportunities across Zambia. <br /> Connecting investors, project
         developers, and stakeholders with initiatives that promote environmental
         sustainability. <br />
-        {/* <br />
-        All projects listed on this portal are assessed against national and
-        sectoral environmental standards, ensuring transparency, accountability,
-        and measurable outcomes. Users can review project details, monitor
-        progress, and make informed decisions to support initiatives that align
-        with national green finance priorities. <br />
-        <br />
-        The Zambia Green Investment Portal is part of the government’s effort to
-        channel investments towards sustainable development and environmental
-        protection. */}
       </div>
 
       <div className="mx-60 text-center my-20 flex justify-center gap-5">
         <Button
           onClick={navToProjects}
-          className="text-xl bg-[#4e6e54] hover:bg-[#849b3f] text-white px-6 py-3 rounded-md font-semibold  cursor-pointer"
+          className="text-xl bg-gradient-to-br from-[#1ab46f] to-[#4e6e54] hover:from-[#bed62f] hover:to-[#849b3f] text-white px-6 py-3 rounded-2xl font-semibold  cursor-pointer"
         >
           Explore Projects
           <ArrowRight className="ml-2 h-4 w-4" />
@@ -46,7 +36,7 @@ export default function HomePage() {
 
         <Button
           onClick={navToForm}
-          className="border-[#4e6e54] border-1 bg-transparent hover:bg-[#c5e6dc] text-[#4e6e54] px-6 py-3 rounded-md text-xl  cursor-pointer"
+          className="border-[#4e6e54] border-1 bg-transparent hover:bg-[#c5e6dc] hover:border-none text-[#4e6e54] px-6 py-3 rounded-2xl text-xl  cursor-pointer"
         >
           Submit a Proposal
         </Button>
