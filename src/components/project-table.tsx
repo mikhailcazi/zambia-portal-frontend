@@ -59,7 +59,14 @@ export type Project = {
   createdAt: string;
   updatedAt: string;
   proposalStatus?: string;
+  comments?: Comment[];
 };
+
+export interface Comment {
+  comment: string;
+  timeStamp: string;
+  user: { username: string };
+}
 
 interface ProjectTableProps {
   data: Project[];

@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { FileIcon, DownloadIcon } from "lucide-react";
 import { FileFieldKeys } from "@/lib/schema/formSchema";
 import Loading from "@/components/ui/loading";
+import CommentList from "@/components/comment-list";
 
 export type UploadedFile = {
   originalName: string;
@@ -123,18 +124,18 @@ export function ProposalDetails() {
 
   return (
     <>
-      <div className="p-6 space-y-4 max-w-6xl mx-auto">
+      <div className="p-6 space-y-4 max-w-7xl mx-auto">
         <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Back
         </Button>
-        <div className="bg-[#c5e6dc] rounded-sm p-4">
+        <div className="bg-gradient-to-br from-[#c5e6dc] to-[#adc5c5] rounded-sm p-4">
           <span className="font-bold">Project Title:</span>
           <h1 className="text-2xl font-bold text-[#4e6e54]">
             {proposal.projectTitle}
           </h1>
         </div>
 
-        <div className="grid grid-cols-3 space-x-6 max-w-6xl">
+        <div className="grid grid-cols-3 space-x-6 max-w-4xl">
           <Card className="col-span-2">
             <CardHeader>
               <CardTitle className="text-lg font-semibold mb-4">
@@ -208,7 +209,7 @@ export function ProposalDetails() {
           </Card>
         </div>
 
-        <Card>
+        <Card className="max-w-4xl">
           <CardHeader>
             <CardTitle className="text-lg font-semibold mb-4">
               Eligibility Screening
@@ -432,6 +433,8 @@ export function ProposalDetails() {
               </CardContent>
             </Card>
           </div>
+
+          {proposal.comments && <CommentList comments={proposal.comments} />}
         </div>
         {isAdmin() && (
           <Card className="border-[#ddeab1]">

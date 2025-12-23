@@ -49,7 +49,7 @@ export default function ProjectList() {
       Object.entries(newFilters).every(([key, values]) => {
         if (values.length === 0) return true; // no filter on this key
 
-        const field = project[key as keyof Project];
+        const field = project[key as keyof Project] as string;
         if (Array.isArray(field)) {
           // check if any of the filter values exist in the project array
           return field.some((v) => values.includes(v));
