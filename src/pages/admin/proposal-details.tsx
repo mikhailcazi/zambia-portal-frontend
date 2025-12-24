@@ -285,14 +285,20 @@ export function ProposalDetails() {
             </Card>
           </div>
 
-          <div className="col-span-1 bg-gradient-to-b from-[#c5e6dc] to-[#5a8495] p-4 rounded-b-xl mb-4 mt-[-16px]">
+          <div className="h-full col-span-1 bg-gradient-to-b from-[#c5e6dc] to-[#5a8495] px-4  rounded-b-xl mb-4 mt-[-16px]">
             <CardTitle className="my-4 text-lg font-semibold">
               Comments
             </CardTitle>
             {/* <div className="max-h-[1000px] overflow-y-auto"> */}
-            <div>
-              {proposal.comments && (
+            <div className="">
+              {proposal.comments ? (
                 <CommentList comments={proposal.comments} />
+              ) : (
+                <Card>
+                  <CardContent className="text-sm">
+                    There are no comments to display
+                  </CardContent>
+                </Card>
               )}
             </div>
           </div>
@@ -460,7 +466,7 @@ export function ProposalDetails() {
           </div>
         </div>
         {isAdmin() && (
-          <Card className="border-[#ddeab1]">
+          <Card className="border-[#ddeab1] bg-gradient-to-br from-[#e4e9dd] to-[#c5e6dc]">
             <CardHeader>
               <CardTitle>Proposal Review</CardTitle>
             </CardHeader>
@@ -473,12 +479,22 @@ export function ProposalDetails() {
               />
             </CardContent>
             <CardFooter className="flex justify-end gap-2">
-              <Button onClick={approveProposal}>APPROVE</Button>
-              <Button onClick={addComment}>NEEDS CHANGES</Button>
+              <Button
+                className="bg-gradient-to-br from-[#9dc8b2] to-[#3d7e7d] cursor-pointer"
+                onClick={approveProposal}
+              >
+                APPROVE
+              </Button>
+              <Button
+                className="bg-gradient-to-br from-[#b8c89d] to-[#797e3d] cursor-pointer"
+                onClick={addComment}
+              >
+                NEEDS CHANGES
+              </Button>
               <Button
                 onClick={rejectProposal}
                 variant="destructive"
-                className="bg-orange-900"
+                className="bg-gradient-to-br from-[#c8a09d] to-[#7e3d3d] cursor-pointer"
               >
                 REJECT
               </Button>
