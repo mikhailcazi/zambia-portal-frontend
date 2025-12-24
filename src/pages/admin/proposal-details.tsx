@@ -294,11 +294,9 @@ export function ProposalDetails() {
               {proposal.comments ? (
                 <CommentList comments={proposal.comments} />
               ) : (
-                <Card>
-                  <CardContent className="text-sm">
-                    There are no comments to display
-                  </CardContent>
-                </Card>
+                <span className="text-gray-500 text-sm">
+                  There are no comments to display.
+                </span>
               )}
             </div>
           </div>
