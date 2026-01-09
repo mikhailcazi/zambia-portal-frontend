@@ -9,6 +9,9 @@ import { FileFieldKeys } from "@/lib/schema/formSchema";
 import { camelToTitle, UploadedFile } from "./admin/proposal-details";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+const BACKEND_BASE_URL =
+  process.env.BACKEND_BASE_URL || "http://localhost:3000";
+
 export function ProjectDetails() {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<Project | null>(null);
@@ -95,7 +98,10 @@ export function ProjectDetails() {
                         <span>{camelToTitle(file.type)}</span>
                       </div>
                       <div className="bg-[#4e6e54] hover:bg-[#1ab46f] p-1 rounded-xl">
-                        <a href={file.fileData?.presignedURL} target="_blank">
+                        <a
+                          href={BACKEND_BASE_URL + file.fileData?.presignedURL}
+                          target="_blank"
+                        >
                           <DownloadIcon className="h-4 w-4 text-white" />
                         </a>
                       </div>
@@ -117,7 +123,7 @@ export function ProjectDetails() {
               <CardContent>
                 {projectOverviewFile ? (
                   <iframe
-                    src={projectOverviewFile.presignedURL}
+                    src={BACKEND_BASE_URL + projectOverviewFile.presignedURL}
                     width="100%"
                     height="600px"
                     className="rounded-md border"

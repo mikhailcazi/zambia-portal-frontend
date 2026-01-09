@@ -26,6 +26,9 @@ export type UploadedFile = {
   presignedURL: string;
 };
 
+const BACKEND_BASE_URL =
+  process.env.BACKEND_BASE_URL || "http://localhost:3000";
+
 export function ProposalDetails() {
   const { id } = useParams<{ id: string }>();
   const [proposal, setProposal] = useState<Project | null>(null);
@@ -202,7 +205,9 @@ export function ProposalDetails() {
                         <span>{projectOverviewFile.originalName}</span>
                       </div>
                       <a
-                        href={projectOverviewFile.presignedURL}
+                        href={
+                          BACKEND_BASE_URL + projectOverviewFile.presignedURL
+                        }
                         target="_blank"
                       >
                         <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
@@ -453,7 +458,10 @@ export function ProposalDetails() {
                         <FileIcon className="h-4 w-4 text-gray-500" />
                         <span>{camelToTitle(file.type)}</span>
                       </div>
-                      <a href={file.fileData?.presignedURL} target="_blank">
+                      <a
+                        href={BACKEND_BASE_URL + file.fileData?.presignedURL}
+                        target="_blank"
+                      >
                         <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
                       </a>
                     </li>
