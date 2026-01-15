@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import ProjectCard from "@/components/project-card";
 import Loading from "@/components/ui/loading";
 import { Project } from "@/components/project-table";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, ChevronDown, ChevronUp } from "lucide-react";
 import ProjectFilter from "@/components/filter";
 import { filterList } from "@/lib/schema/filterSchema";
 
@@ -21,6 +20,9 @@ export default function ProjectList() {
   const [filters, setFilters] = useState<FilterObject>(
     Object.fromEntries(filterList.map((k) => [k, []]))
   );
+
+  // Mobile filter collapse state
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const updateTextFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value;
@@ -44,51 +46,39 @@ export default function ProjectList() {
     projectList: Project[],
     newFilters: FilterObject
   ) => {
-    console.log(projectList);
     return projectList.filter((project) =>
       Object.entries(newFilters).every(([key, values]) => {
-        if (values.length === 0) return true; // no filter on this key
-
+        if (values.length === 0) return true;
         const field = project[key as keyof Project] as string;
         if (Array.isArray(field)) {
-          // check if any of the filter values exist in the project array
           return field.some((v) => values.includes(v));
         }
-
-        // otherwise, just do a direct match
         return values.includes(field as string);
       })
     );
   };
-  const getTextFilteredList = (projectList: Project[], text: string | null) => {
-    if (text == null) return projectList;
 
+  const getTextFilteredList = (projectList: Project[], text: string | null) => {
+    if (!text) return projectList;
     const filterValue = text.toLowerCase();
 
-    const filteredRows = projectList.filter((row) => {
-      return (Object.keys(row) as (keyof Project)[]).some((key) => {
+    return projectList.filter((row) =>
+      (Object.keys(row) as (keyof Project)[]).some((key) => {
         const value = row[key];
-
         if (value == null) return false;
-
         if (Array.isArray(value)) {
           return value.some((v) =>
             String(v).toLowerCase().includes(filterValue)
           );
         }
-
         if (typeof value === "object") {
-          // for nested objects
           return Object.values(value).some((v) =>
             String(v).toLowerCase().includes(filterValue)
           );
         }
-
         return String(value).toLowerCase().includes(filterValue);
-      });
-    });
-
-    return filteredRows;
+      })
+    );
   };
 
   useEffect(() => {
@@ -108,9 +98,13 @@ export default function ProjectList() {
   }, []);
 
   return (
-    <div className="m-5 w-10/12 p-5 rounded-xl mx-auto">
-      <h1 className="my-5 font-bold text-3xl">Investment Opportunities</h1>
-      <div className="relative my-5 w-full max-w-sm">
+    <div className="m-5 w-full md:w-10/12 p-5 rounded-xl mx-auto">
+      <h1 className="my-5 font-bold text-3xl text-center md:text-left">
+        Investment Opportunities
+      </h1>
+
+      {/* Search */}
+      <div className="relative my-5 w-full max-w-sm mx-auto md:mx-0">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 w-5 h-5 pointer-events-none" />
         <Input
           placeholder="Search projects, sectors or keywords..."
@@ -120,20 +114,41 @@ export default function ProjectList() {
         />
       </div>
 
-      <div className="grid gap-6 grid-cols-4">
-        <div className="col-span-1 bg-white rounded-xl">
-          <h2 className="mx-4 mt-4 font-bold text-xl">Filter by:</h2>
-          {filterList.map((filter, index) => (
-            <ProjectFilter
-              key={index}
-              field={filter}
-              onFilterChanged={handleFilterChanged}
-            />
-          ))}
+      {/* Main grid */}
+      <div className="grid gap-6 md:grid-cols-4">
+        {/* Filters */}
+        <div className="col-span-4 md:col-span-1 bg-white rounded-xl p-4">
+          {/* Mobile toggle */}
+          <h2 className="font-bold text-xl">Filter by:</h2>
+          <div
+            className="flex items-center justify-between md:hidden cursor-pointer mb-2"
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          >
+            {filtersOpen ? (
+              <ChevronUp className="w-5 h-5" />
+            ) : (
+              <ChevronDown className="w-5 h-5" />
+            )}
+          </div>
+
+          {/* Filter content */}
+          <div className={`${filtersOpen ? "block" : "hidden"} md:block`}>
+            {filterList.map((filter, index) => (
+              <ProjectFilter
+                key={index}
+                field={filter}
+                onFilterChanged={handleFilterChanged}
+              />
+            ))}
+          </div>
         </div>
-        <div className="col-span-3 grid gap-6 grid-cols-2 auto-rows-min content-start items-start">
+
+        {/* Project cards */}
+        <div className="col-span-4 md:col-span-3 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 auto-rows-min content-start items-start">
           {loading ? (
             <Loading />
+          ) : filteredProjects.length === 0 ? (
+            <p className="text-center col-span-full">No projects found.</p>
           ) : (
             filteredProjects.map((project) => (
               <ProjectCard key={project.id} data={project} showButton={true} />
