@@ -3,7 +3,8 @@ import { FormSchema } from "@/lib/schema/formSchema";
 import axios from "axios";
 import * as z from "zod";
 
-const API_BASE = process.env.BACKEND_BASE_URL || "http://localhost:3000";
+const API_BASE =
+  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
 const protectedRoutes = ["/proposals"];
 

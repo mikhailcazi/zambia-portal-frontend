@@ -27,7 +27,7 @@ export type UploadedFile = {
 };
 
 const BACKEND_BASE_URL =
-  process.env.BACKEND_BASE_URL || "http://localhost:3000";
+  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
 export function ProposalDetails() {
   const { id } = useParams<{ id: string }>();
