@@ -1,6 +1,7 @@
 import React from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Home, FolderKanban, FileText } from "lucide-react";
+import { Button } from "./ui/button";
 
 const Header: React.FC = () => {
   const links = [
@@ -23,8 +24,17 @@ const Header: React.FC = () => {
       icon: FileText,
     },
   ];
-
+  const nav = useNavigate();
   const route = useLocation().pathname.slice(1);
+  const userToken = window.localStorage.getItem("user-token");
+  const logout = () => {
+    window.localStorage.removeItem("user-token");
+    nav("/user/login");
+  };
+
+  const login = () => {
+    nav("/user/login");
+  };
 
   return (
     <div className="container mx-auto px-4 md:px-6 lg:px-8">
@@ -32,9 +42,11 @@ const Header: React.FC = () => {
         {/* Logo always visible */}
         <div className="mr-4 flex items-center gap-3">
           <ZambiaLogo />
-          <span className="hidden lg:inline text-2xl">
-            Zambia Green Investment Portal
-          </span>
+          <a href="/">
+            <span className="hidden lg:inline text-2xl">
+              Zambia Green Investment Portal
+            </span>
+          </a>
         </div>
 
         {/* Nav */}
@@ -74,6 +86,19 @@ const Header: React.FC = () => {
               </Link>
             );
           })}
+          {userToken ? (
+            <Button
+              variant="outline"
+              className="justify-self-end"
+              onClick={logout}
+            >
+              Log Out
+            </Button>
+          ) : (
+            <Button className="justify-self-end" onClick={login}>
+              Log In / Register
+            </Button>
+          )}
         </div>
       </header>
     </div>

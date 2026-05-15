@@ -6,23 +6,56 @@ import * as z from "zod";
 const API_BASE =
   import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
-const protectedRoutes = ["/proposals"];
+const protectedRoutesAdmin = ["/proposals"];
+const protectedRoutesUser = ["/user/profile"];
 
 // Create an Axios instance
 const axiosInstance = axios.create({ baseURL: API_BASE });
 
 // Add a request interceptor to attach JWT for protected routes
 axiosInstance.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem("token");
-  if (token && protectedRoutes.some((path) => config.url?.startsWith(path))) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+  const adminToken = window.localStorage.getItem("admin-token");
+  if (
+    adminToken &&
+    protectedRoutesAdmin.some((path) => config.url?.startsWith(path))
+  ) {
+    config.headers["Authorization"] = `Bearer ${adminToken}`;
   }
+
+  const userToken = window.localStorage.getItem("user-token");
+  if (
+    userToken &&
+    protectedRoutesUser.some((path) => config.url?.startsWith(path))
+  ) {
+    config.headers["Authorization"] = `Bearer ${userToken}`;
+  }
+
   return config;
 });
 
 export const api = {
-  login: (username: string, password: string) =>
+  adminLogin: (username: string, password: string) =>
+    axiosInstance.post("/auth/admin/login", { username, password }),
+
+  userLogin: (username: string, password: string) =>
     axiosInstance.post("/auth/login", { username, password }),
+
+  userRegister: (
+    email: string,
+    password: string,
+    name: string,
+    organization: string,
+    location: string,
+    position: string,
+  ) =>
+    axiosInstance.post("/user/register", {
+      email,
+      password,
+      name,
+      organization,
+      location,
+      position,
+    }),
 
   getProposals: (filters: FilterPair) =>
     axiosInstance.get("/proposals", { params: filters }),
@@ -38,21 +71,21 @@ export const api = {
     axiosInstance.patch(
       `/proposals/${id}/approve`,
       { comment },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     ),
 
   rejectProposal: (id: string, comment: string) =>
     axiosInstance.patch(
       `/proposals/${id}/reject`,
       { comment },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     ),
 
   addComment: (id: string, comment: string) =>
     axiosInstance.post(
       `/proposals/${id}/comments`,
       { comment },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     ),
 
   getProjects: () => axiosInstance.get("/projects"),

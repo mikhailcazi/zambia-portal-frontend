@@ -25,9 +25,9 @@ export default function AdminLogin() {
     event.preventDefault();
     setError(""); // clear previous errors
     api
-      .login(username, password)
+      .adminLogin(username, password)
       .then((res) => {
-        localStorage.setItem("token", res.data.access_token);
+        localStorage.setItem("admin-token", res.data.access_token);
         console.log(res.data);
         // Redirect after successful login
         nav("/admin/dashboard");

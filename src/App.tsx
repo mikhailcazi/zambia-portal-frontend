@@ -11,6 +11,9 @@ import { ProposalDetails } from "./pages/admin/proposal-details";
 import ProtectedRoute from "./lib/protected-route";
 import { ProjectDetails } from "./pages/project-details";
 import { Submission } from "./pages/submission";
+import { UserLoginForm } from "./pages/user/user-login";
+import { UserRegister } from "./pages/user/user-register-form";
+import { ProposalLandingPage } from "./pages/submit-proposal";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -45,8 +48,18 @@ function App() {
               <Route path="home" element={<HomePage />} />
               <Route path="projects" element={<ProjectList />} />
               <Route path="projects/:id" element={<ProjectDetails />} />
+              <Route path="proposals/:id" element={<ProposalDetails />} />
+              <Route
+                path="submit-your-proposal"
+                element={<ProposalLandingPage />}
+              />
               <Route path="form" element={<ProjectForm />} />
               <Route path="submitted" element={<Submission />} />
+            </Route>
+            <Route path="/user" element={<Layout />}>
+              <Route path="login" element={<UserLoginForm />} />
+              <Route path="register" element={<UserRegister />} />
+              <Route path="home" element={<UserRegister />} />
             </Route>
           </Routes>
         </BrowserRouter>

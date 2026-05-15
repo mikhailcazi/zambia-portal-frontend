@@ -14,10 +14,10 @@ const AdminHeader: React.FC = () => {
 
   const nav = useNavigate();
   const route = useLocation().pathname.slice(7);
-  const token = window.localStorage.getItem("token");
+  const adminToken = window.localStorage.getItem("admin-token");
 
   const logout = () => {
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("admin-token");
     nav("/admin/login");
   };
 
@@ -44,7 +44,7 @@ const AdminHeader: React.FC = () => {
               </Link>
             ))}
 
-            {token ? (
+            {adminToken ? (
               <Button
                 variant="outline"
                 className="justify-self-end"

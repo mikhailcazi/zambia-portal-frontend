@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -6,24 +7,27 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="mt-10 px-4 sm:px-8 lg:px-60">
-        <h1
-          className="
-          text-3xl
-          sm:text-4xl
-          lg:text-6xl
-          font-bold
-          text-center
-          text-transparent
-          bg-clip-text
-          bg-gradient-to-r
-          from-[#245e2e]
-          via-[#007a76]
-          to-[#001522]
-        "
-        >
-          Zambia Green Investment Portal
-        </h1>
+      <div
+        className="h-[60vh] w-full bg-cover bg-center flex items-center justify-center"
+        style={{
+          backgroundImage: "url('/images/victoria-falls.jpg')",
+        }}
+      >
+        <div className="bg-black/40 w-full h-full flex items-center justify-center">
+          <h1
+            className="
+              text-3xl
+              sm:text-4xl
+              lg:text-6xl
+              font-bold
+              text-center
+              text-white
+              px-4
+            "
+          >
+            Zambia Green Investment Portal
+          </h1>
+        </div>
       </div>
 
       <div
@@ -49,6 +53,7 @@ export default function HomePage() {
       <div
         className="
         mt-12
+        mb-30
         px-4
         sm:px-8
         lg:px-60
@@ -81,7 +86,11 @@ export default function HomePage() {
         </Button>
 
         <Button
-          onClick={() => nav("/form")}
+          onClick={() => {
+            document.getElementById("submit-your-proposal")?.scrollIntoView({
+              behavior: "smooth",
+            });
+          }}
           className="
             text-base
             sm:text-lg
@@ -98,6 +107,74 @@ export default function HomePage() {
           Submit a Proposal
         </Button>
       </div>
+
+      <div
+        id="submit-your-proposal"
+        className="h-[80vh] w-full bg-cover bg-center flex items-center justify-center bg-fixed"
+        style={{
+          backgroundImage: "url('/images/giraffes.jpg')",
+        }}
+      >
+        <div className="bg-gradient-to-b from-black/60 via-black/40 to-black/60 w-full h-full flex items-center justify-center">
+          <h1
+            className="
+                text-3xl
+                sm:text-4xl
+                lg:text-6xl
+                font-bold
+                text-center
+                text-white
+                px-4
+            "
+          >
+            Submit your proposal now!
+          </h1>
+          <div>
+            <h2
+              className="
+                text-xl
+                sm:text-2xl
+                lg:text-3xl
+                font-bold
+                text-white
+                px-4
+            "
+            >
+              <span className="text-[#c1dd8c] underline cursor-pointer hover:text-[#8eaf51]">
+                Register
+              </span>{" "}
+              as a proposer
+            </h2>
+            <br />
+            <h2
+              className="
+                text-xl
+                sm:text-2xl
+                lg:text-3xl
+                font-bold
+                text-white
+                px-4
+            "
+            >
+              Submit your proposal details
+            </h2>
+            <br />
+            <h2
+              className="
+                text-xl
+                sm:text-2xl
+                lg:text-3xl
+                font-bold
+                text-white
+                px-4
+            "
+            >
+              Get approved and listed
+            </h2>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </>
   );
 }
