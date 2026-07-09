@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <div
-        className="h-[60vh] w-full bg-cover bg-center flex items-center justify-center"
+        className="h-[65vh] w-full bg-cover bg-center flex items-center justify-center"
         style={{
           backgroundImage: "url('/images/victoria-falls.jpg')",
         }}
@@ -52,7 +52,7 @@ export default function HomePage() {
 
       <div
         className="
-        mt-12
+        my-12
         mb-30
         px-4
         sm:px-8
@@ -140,7 +140,10 @@ export default function HomePage() {
                 px-4
             "
             >
-              <span className="text-[#c1dd8c] underline cursor-pointer hover:text-[#8eaf51]">
+              <span
+                className="text-[#c1dd8c] underline cursor-pointer hover:text-[#8eaf51]"
+                onClick={() => nav("/user/register")}
+              >
                 Register
               </span>{" "}
               as a proposer

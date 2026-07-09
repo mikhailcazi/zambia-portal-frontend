@@ -98,30 +98,33 @@ export function UserRegister({
                 />
                 <FieldDescription></FieldDescription>
               </Field>
-              <Field>
-                <FieldLabel htmlFor="name">Location</FieldLabel>
-                <Input
-                  id="location"
-                  type="text"
-                  placeholder="Your city here..."
-                  required
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-                <FieldDescription></FieldDescription>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="name">Position</FieldLabel>
-                <Input
-                  id="position"
-                  type="text"
-                  placeholder="Manager"
-                  required
-                  value={position}
-                  onChange={(e) => setPosition(e.target.value)}
-                />
-                <FieldDescription></FieldDescription>
-              </Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field>
+                  <FieldLabel htmlFor="name">Location</FieldLabel>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder="Your city here..."
+                    required
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  />
+                  <FieldDescription></FieldDescription>
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="name">Position</FieldLabel>
+                  <Input
+                    id="position"
+                    type="text"
+                    placeholder="Manager"
+                    required
+                    value={position}
+                    onChange={(e) => setPosition(e.target.value)}
+                  />
+                  <FieldDescription></FieldDescription>
+                </Field>
+              </div>
+
               <Field>
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>

@@ -33,7 +33,12 @@ export function UserLoginForm({
         localStorage.setItem("user-token", res.data.access_token);
         console.log(res.data);
         // Redirect after successful login
-        nav("/user/home");
+
+        if (res.data.user?.role === "ADMIN") {
+          nav("/admin/dashboard");
+        } else {
+          nav("/user/home");
+        }
       })
       .catch((err) => {
         setLoading(false);
