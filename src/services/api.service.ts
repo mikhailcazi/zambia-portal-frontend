@@ -6,32 +6,34 @@ import * as z from "zod";
 const API_BASE =
   import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
-const protectedRoutesAdmin = ["/proposals"];
-const protectedRoutesUser = ["/user/profile"];
 
 // Create an Axios instance
 const axiosInstance = axios.create({ baseURL: API_BASE });
 
 // Add a request interceptor to attach JWT for protected routes
 axiosInstance.interceptors.request.use((config) => {
-  const adminToken = window.localStorage.getItem("admin-token");
-  if (
-    adminToken &&
-    protectedRoutesAdmin.some((path) => config.url?.startsWith(path))
-  ) {
-    config.headers["Authorization"] = `Bearer ${adminToken}`;
-  }
+  const token = localStorage.getItem("accessToken");
 
-  const userToken = window.localStorage.getItem("user-token");
-  if (
-    userToken &&
-    protectedRoutesUser.some((path) => config.url?.startsWith(path))
-  ) {
-    config.headers["Authorization"] = `Bearer ${userToken}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+
+      window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export const api = {
   adminLogin: (username: string, password: string) =>

@@ -1,16 +1,19 @@
-// ProtectedRoute.tsx
-import { JSX } from "react";
+import { useAuth } from "@/context/auth-context";
 import { Navigate } from "react-router";
 
 export default function ProtectedRoute({
   children,
 }: {
-  children: JSX.Element;
+  children: React.ReactElement;
 }) {
-  const adminToken = localStorage.getItem("admin-token");
+  const { isAuthenticated, user } = useAuth();
 
-  if (!adminToken) {
-    return <Navigate to="/admin/login" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/user/login" replace />;
+  }
+
+  if (user?.role !== "ADMIN") {
+    return <Navigate to="/home" replace />;
   }
 
   return children;

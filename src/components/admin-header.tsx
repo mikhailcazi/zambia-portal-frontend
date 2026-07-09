@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Link, useLocation, useNavigate } from "react-router";
+import { useAuth } from "@/context/auth-context";
 
 const AdminHeader: React.FC = () => {
   const links = [
@@ -14,11 +15,11 @@ const AdminHeader: React.FC = () => {
 
   const nav = useNavigate();
   const route = useLocation().pathname.slice(7);
-  const adminToken = window.localStorage.getItem("admin-token");
+  const { authLogout, isAuthenticated } = useAuth();
 
   const logout = () => {
-    window.localStorage.removeItem("admin-token");
-    nav("/admin/login");
+    authLogout();
+    nav("/home");
   };
 
   return (
@@ -44,7 +45,7 @@ const AdminHeader: React.FC = () => {
               </Link>
             ))}
 
-            {adminToken ? (
+            {isAuthenticated ? (
               <Button
                 variant="outline"
                 className="justify-self-end"

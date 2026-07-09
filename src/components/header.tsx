@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Home, FolderKanban, FileText } from "lucide-react";
 import { Button } from "./ui/button";
+import { useAuth } from "@/context/auth-context";
 
 const Header: React.FC = () => {
   const links = [
@@ -26,10 +27,11 @@ const Header: React.FC = () => {
   ];
   const nav = useNavigate();
   const route = useLocation().pathname.slice(1);
-  const userToken = window.localStorage.getItem("user-token");
+  const { authLogout, isAuthenticated } = useAuth();
+
   const logout = () => {
-    window.localStorage.removeItem("user-token");
-    nav("/user/login");
+    authLogout();
+    nav("/home");
   };
 
   const login = () => {
@@ -86,7 +88,7 @@ const Header: React.FC = () => {
               </Link>
             );
           })}
-          {userToken ? (
+          {isAuthenticated ? (
             <Button
               variant="outline"
               className="justify-self-end"

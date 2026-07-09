@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { api } from "../../services/api.service";
 import Loading from "../../components/ui/loading";
+import { useAuth } from "@/context/auth-context";
 
 export function UserLoginForm({
   className,
@@ -23,6 +24,8 @@ export function UserLoginForm({
   const [loading, setLoading] = useState(false);
 
   const nav = useNavigate();
+  const { authLogin } = useAuth();
+
   const login = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
@@ -30,10 +33,11 @@ export function UserLoginForm({
     api
       .userLogin(email, password)
       .then((res) => {
-        localStorage.setItem("user-token", res.data.access_token);
         console.log(res.data);
-        // Redirect after successful login
 
+        authLogin(res.data.access_token, res.data.user);
+
+        // Redirect after successful login
         if (res.data.user?.role === "ADMIN") {
           nav("/admin/dashboard");
         } else {
