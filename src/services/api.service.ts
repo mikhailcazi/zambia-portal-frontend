@@ -6,7 +6,6 @@ import * as z from "zod";
 const API_BASE =
   import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
-
 // Create an Axios instance
 const axiosInstance = axios.create({ baseURL: API_BASE });
 
@@ -32,7 +31,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const api = {
@@ -50,7 +49,7 @@ export const api = {
     location: string,
     position: string,
   ) =>
-    axiosInstance.post("/user/register", {
+    axiosInstance.post("/auth/register", {
       email,
       password,
       name,
@@ -58,6 +57,9 @@ export const api = {
       location,
       position,
     }),
+
+  verifyEmail: (token: string) =>
+    axiosInstance.post("/auth/verify-email", { token }),
 
   getProposals: (filters: FilterPair) =>
     axiosInstance.get("/proposals", { params: filters }),

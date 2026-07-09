@@ -14,6 +14,9 @@ import { Submission } from "./pages/submission";
 import { UserLoginForm } from "./pages/user/user-login";
 import { UserRegister } from "./pages/user/user-register-form";
 import { ProposalLandingPage } from "./pages/submit-proposal";
+import { UserHome } from "./pages/user/user-home";
+import { UserVerify } from "./pages/user/user-verify";
+import { UserRegisterSuccess } from "./pages/user/user-register-success";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -58,8 +61,12 @@ function App() {
             </Route>
             <Route path="/user" element={<Layout />}>
               <Route path="login" element={<UserLoginForm />} />
-              <Route path="register" element={<UserRegister />} />
-              <Route path="home" element={<UserRegister />} />
+              <Route path="register">
+                <Route index element={<UserRegister />} />
+                <Route path="success" element={<UserRegisterSuccess />} />
+              </Route>
+              <Route path="verify-email" element={<UserVerify />} />
+              <Route path="home" element={<UserHome />} />
             </Route>
           </Routes>
         </BrowserRouter>

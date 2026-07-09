@@ -38,7 +38,11 @@ export function UserRegister({
       .then((res) => {
         console.log(res.data);
         // Redirect after successful login
-        // nav("/admin/dashboard");
+        nav("/user/register/success", {
+          state: {
+            email: res.data.email,
+          },
+        });
       })
       .catch((err) => {
         setLoading(false);
