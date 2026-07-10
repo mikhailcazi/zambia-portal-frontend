@@ -140,6 +140,7 @@ export default function HomePage() {
                 px-4
             "
             >
+              -{" "}
               <span
                 className="text-[#c1dd8c] underline cursor-pointer hover:text-[#8eaf51]"
                 onClick={() => nav("/user/register")}
@@ -159,7 +160,7 @@ export default function HomePage() {
                 px-4
             "
             >
-              Submit your proposal details
+              - Submit your proposal details
             </h2>
             <br />
             <h2
@@ -172,7 +173,7 @@ export default function HomePage() {
                 px-4
             "
             >
-              Get approved and listed
+              - Get approved and listed
             </h2>
           </div>
         </div>

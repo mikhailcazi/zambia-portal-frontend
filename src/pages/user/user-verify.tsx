@@ -2,22 +2,29 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2, CircleX } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { api } from "../../services/api.service";
 import Loading from "@/components/ui/loading";
 import { Button } from "@/components/ui/button";
 
 export function UserVerify() {
   const token = new URLSearchParams(location.search).get("token");
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(""); // <-- error state
+  const nav = useNavigate();
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // <-- error state
   const [loading, setLoading] = useState(false);
+  const [resendFlag, setResendFlag] = useState(false);
+  const [resendText, setResendText] = useState("");
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      nav("/home");
+      return;
+    }
 
     verifyEmail(token);
-  }, [token]);
+  }, [nav, token]);
 
   const verifyEmail = (token: string) => {
     setLoading(true);
@@ -25,20 +32,42 @@ export function UserVerify() {
       .verifyEmail(token)
       .then((res) => {
         setLoading(false);
+        setSuccessMessage(res.data.message);
+
         console.log(res.data);
-        setSuccess(true);
       })
       .catch((err) => {
         setLoading(false);
-        setError("Something went wrong!");
-        console.log(err); // <-- set error
+        const errResponse = err.response.data;
+        setErrorMessage(errResponse.message);
+
+        if (errResponse.code === "TOKEN_EXPIRED") {
+          setResendFlag(true);
+        }
+        console.log(err.message);
+      });
+  };
+
+  const sendResendLink = () => {
+    setLoading(true);
+    api
+      .resendEmail(token!)
+      .then((res) => {
+        setLoading(false);
+        setResendText(res.data.message);
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setResendText(err.response.data.message);
+        console.log(err);
       });
   };
 
   return (
     <div className={cn("my-10 px-4 sm:px-8 lg:px-60")}>
       <Card className="overflow-hidden p-0">
-        <CardContent>
+        <CardContent className="p-4">
           {loading && (
             <>
               <Loading className="h-2" />
@@ -46,23 +75,41 @@ export function UserVerify() {
             </>
           )}
 
-          {success && (
+          {successMessage && (
             <>
-              <CheckCircle2 />
-              <h1>Email verified!</h1>
-              <p>Your account has been verified successfully.</p>
-              <Button asChild>
-                <Link to="/login">Continue to login</Link>
-              </Button>
+              <div className="flex items-center justify-center gap-2 text-green-600">
+                <span className="text-2xl font-bold">Email verified!</span>
+                <CheckCircle2 className="h-7 w-7" />
+              </div>
+
+              <p className="mt-3">{successMessage}</p>
+
+              <div className="mt-6">
+                <Button asChild>
+                  <Link to="/user/login">Continue to login</Link>
+                </Button>
+              </div>
             </>
           )}
 
-          {error && (
+          {errorMessage && (
             <>
-              <CircleX />
-              <h1>Verification failed</h1>
-              <p>{"errorMessage"}</p>
-              <Button>Resend verification email</Button>
+              <div className="flex items-center justify-center gap-2 text-red-600">
+                <span className="text-2xl font-bold">Something's wrong...</span>
+                <CircleX className="h-7 w-7" />
+              </div>
+
+              <p className="mt-3">{errorMessage}</p>
+
+              {resendFlag && (
+                <div className="mt-6">
+                  <Button onClick={sendResendLink}>
+                    Resend verification email
+                  </Button>
+                </div>
+              )}
+
+              {resendText}
             </>
           )}
         </CardContent>

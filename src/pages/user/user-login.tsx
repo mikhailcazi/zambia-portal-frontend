@@ -46,7 +46,7 @@ export function UserLoginForm({
       })
       .catch((err) => {
         setLoading(false);
-        setError("Invalid email or password");
+        setError(err.response.data.message);
         console.log(err); // <-- set error
       });
   };

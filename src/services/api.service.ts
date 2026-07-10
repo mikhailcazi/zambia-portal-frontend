@@ -27,7 +27,8 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("accessToken");
       localStorage.removeItem("user");
 
-      window.location.href = "/login";
+      console.log(error);
+      // window.location.href = "/user/login";
     }
 
     return Promise.reject(error);
@@ -60,6 +61,9 @@ export const api = {
 
   verifyEmail: (token: string) =>
     axiosInstance.post("/auth/verify-email", { token }),
+
+  resendEmail: (token: string) =>
+    axiosInstance.post("/auth/resend-email", { token }),
 
   getProposals: (filters: FilterPair) =>
     axiosInstance.get("/proposals", { params: filters }),
