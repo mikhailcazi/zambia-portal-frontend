@@ -87,9 +87,7 @@ export default function HomePage() {
 
         <Button
           onClick={() => {
-            document.getElementById("submit-your-proposal")?.scrollIntoView({
-              behavior: "smooth",
-            });
+            nav("/submit-your-proposal");
           }}
           className="
             text-base

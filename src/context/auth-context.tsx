@@ -8,7 +8,7 @@ import {
   ReactNode,
 } from "react";
 
-type Role = "ADMIN" | "USER";
+export type Role = "ADMIN" | "USER";
 
 interface User {
   id: number;

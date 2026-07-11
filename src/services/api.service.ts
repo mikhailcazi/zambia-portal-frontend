@@ -102,4 +102,6 @@ export const api = {
 
   createProject: (data: z.infer<typeof FormSchema>) =>
     axiosInstance.post("/projects", data),
+
+  getUser: (id: number) => axiosInstance.get(`/users/${id}`),
 };

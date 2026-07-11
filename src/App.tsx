@@ -13,10 +13,11 @@ import { ProjectDetails } from "./pages/project-details";
 import { Submission } from "./pages/submission";
 import { UserLoginForm } from "./pages/user/user-login";
 import { UserRegister } from "./pages/user/user-register-form";
-import { ProposalLandingPage } from "./pages/submit-proposal";
-import { UserHome } from "./pages/user/user-home";
 import { UserVerify } from "./pages/user/user-verify";
 import { UserRegisterSuccess } from "./pages/user/user-register-success";
+import UserHome from "./pages/user/user-home";
+import ProposalLandingPage from "./pages/submit-proposal";
+import UserProfile from "./pages/user/user-profile";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
               </Route>
               <Route path="verify-email" element={<UserVerify />} />
               <Route path="home" element={<UserHome />} />
+              <Route path="profile" element={<UserProfile />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -47,9 +47,15 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import Loading from "@/components/ui/loading";
+import { useAuth } from "@/context/auth-context";
 
 export default function ProjectForm() {
   const nav = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    nav("/submit-your-proposal");
+  }
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: FormDefaultValues,

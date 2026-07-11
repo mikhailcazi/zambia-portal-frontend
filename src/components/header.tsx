@@ -3,38 +3,61 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { Home, FolderKanban, FileText } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAuth } from "@/context/auth-context";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+
+import { CircleUser } from "lucide-react";
 
 const Header: React.FC = () => {
+  const { authLogout, isAuthenticated } = useAuth();
+  const nav = useNavigate();
+  const route = useLocation().pathname.slice(1);
+
   const links = [
     {
       key: "home",
       label: "Home",
       href: "/home",
       icon: Home,
+      show: !isAuthenticated,
+    },
+    {
+      key: "user/home",
+      label: "Home",
+      href: "/user/home",
+      icon: Home,
+      show: isAuthenticated,
     },
     {
       key: "projects",
       label: "Projects",
       href: "/projects",
       icon: FolderKanban,
+      show: true,
     },
     {
       key: "form",
       label: "Form",
       href: "/form",
       icon: FileText,
+      show: isAuthenticated,
+    },
+    {
+      key: "submit-your-proposal",
+      label: "Submit",
+      href: "/submit-your-proposal",
+      icon: FileText,
+      show: !isAuthenticated,
     },
   ];
-  const nav = useNavigate();
-  const route = useLocation().pathname.slice(1);
-  const { authLogout, isAuthenticated } = useAuth();
 
   const logout = () => {
     authLogout();
-    nav("/home");
-  };
-
-  const login = () => {
     nav("/user/login");
   };
 
@@ -44,7 +67,7 @@ const Header: React.FC = () => {
         {/* Logo always visible */}
         <div className="mr-4 flex items-center gap-3">
           <ZambiaLogo />
-          <a href="/">
+          <a href={isAuthenticated ? "/user/home" : "/"}>
             <span className="hidden lg:inline text-2xl">
               Zambia Green Investment Portal
             </span>
@@ -53,15 +76,17 @@ const Header: React.FC = () => {
 
         {/* Nav */}
         <div className="ml-auto flex gap-2">
-          {links.map((link) => {
-            const Icon = link.icon;
+          {links
+            .filter((x) => x.show)
+            .map((link) => {
+              const Icon = link.icon;
 
-            return (
-              <Link
-                key={link.key}
-                to={link.href}
-                data-active={link.key === route}
-                className="
+              return (
+                <Link
+                  key={link.key}
+                  to={link.href}
+                  data-active={link.key === route}
+                  className="
                   group
                   inline-flex
                   h-9
@@ -79,26 +104,46 @@ const Header: React.FC = () => {
                   hover:bg-gray-100
                   data-[active=true]:bg-gray-100
                 "
-              >
-                {/* Icon on mobile */}
-                <Icon className="h-5 w-5 md:hidden" />
+                >
+                  {/* Icon on mobile */}
+                  <Icon className="h-5 w-5 md:hidden" />
 
-                {/* Text on desktop */}
-                <span className="hidden md:inline">{link.label}</span>
-              </Link>
-            );
-          })}
+                  {/* Text on desktop */}
+                  <span className="hidden md:inline">{link.label}</span>
+                </Link>
+              );
+            })}
           {isAuthenticated ? (
-            <Button
-              variant="outline"
-              className="justify-self-end"
-              onClick={logout}
-            >
-              Log Out
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="border-black">
+                  <CircleUser className="h-6 w-6" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end">
+                {/* <DropdownMenuItem onClick={() => nav("/user/home")}>
+                  My Home
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator /> */}
+                <DropdownMenuItem onClick={() => nav("/user/profile")}>
+                  Profile
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  onClick={logout}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  Log Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
-            <Button className="justify-self-end" onClick={login}>
-              Log In / Register
+            <Button className="justify-self-end">
+              <Link to={"/user/login"}>Login</Link>
             </Button>
           )}
         </div>
