@@ -9,9 +9,11 @@ import { useEffect, useState } from "react";
 export default function ProjectCard({
   data,
   showButton = true,
+  isProposal = false,
 }: {
   data: Project;
   showButton?: boolean;
+  isProposal: boolean;
 }) {
   const nav = useNavigate();
   const [duration, setDuration] = useState("");
@@ -20,6 +22,10 @@ export default function ProjectCard({
     nav("/projects/" + data.id);
   };
   // console.log(data);
+
+  const navigateToProposal = () => {
+    nav(data.id);
+  };
 
   useEffect(() => {
     console.log(data);
@@ -102,7 +108,7 @@ export default function ProjectCard({
         {showButton && (
           <Button
             className="w-full mt-3 bg-[#4e6e54] hover:bg-[#849b3f] text-white cursor-pointer"
-            onClick={navigateToProject}
+            onClick={isProposal ? navigateToProposal : navigateToProject}
           >
             View Details
           </Button>

@@ -22,7 +22,10 @@ export type Project = {
   id: string;
   projectTitle: string;
   organization: string;
-  contactPerson: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  website: string;
   location: string;
   startDate: string;
   endDate: string;
@@ -122,7 +125,7 @@ export function ProjectTable({
                   <div className="flex items-center">
                     {flexRender(
                       header.column.columnDef.header,
-                      header.getContext()
+                      header.getContext(),
                     )}
                     {header.column.getIsSorted() === "asc" && (
                       <ArrowUp className="h-3" />

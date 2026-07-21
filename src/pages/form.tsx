@@ -151,14 +151,7 @@ export default function ProjectForm() {
             form={form}
             name="organization"
             label="Organization / Proponent"
-            placeholder="John Doe"
-            mandatory={true}
-          />
-          <TextField
-            form={form}
-            name="contactPerson"
-            label="Contact Person & Details"
-            placeholder="John Doe"
+            placeholder="Organization name"
             mandatory={true}
           />
           <TextField
@@ -473,7 +466,40 @@ export default function ProjectForm() {
           />
           <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
           <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
-            Section G: Declaration
+            Section G: Contact Information
+          </h2>
+          <TextField
+            form={form}
+            name="contactName"
+            label="Contact Person Name"
+            placeholder="John Doe"
+            mandatory={true}
+          />
+          <TextField
+            form={form}
+            name="contactEmail"
+            label="Email ID"
+            placeholder="johndoe@example.com"
+            mandatory={true}
+          />
+          <TextField
+            form={form}
+            name="contactPhone"
+            label="Contact Phone Number"
+            placeholder="...."
+            mandatory={false}
+          />
+          <TextField
+            form={form}
+            name="website"
+            label="Website"
+            placeholder="www.example.com"
+            mandatory={false}
+          />
+
+          <hr className="my-8 border-t border-neutral-300 dark:border-neutral-700" />
+          <h2 className="text-xl font-medium text-neutral-800 dark:text-neutral-200 mb-4">
+            Section H: Declaration
           </h2>
           <TextField
             form={form}

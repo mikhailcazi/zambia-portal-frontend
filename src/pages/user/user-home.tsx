@@ -1,4 +1,3 @@
-import { HelpCard } from "@/components/help-card";
 import { QuickActions } from "@/components/quick-actions";
 import { UserWelcome } from "@/components/welcome";
 

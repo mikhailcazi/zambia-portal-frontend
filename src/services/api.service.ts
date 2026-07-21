@@ -1,4 +1,4 @@
-import { FilterPair, FilterStatus } from "@/components/filter-bar";
+import { FilterStatus } from "@/components/filter-bar";
 import { FormSchema } from "@/lib/schema/formSchema";
 import { UpdateProfileFormData } from "@/pages/user/user-profile";
 import axios from "axios";

@@ -29,7 +29,7 @@ export type UploadedFile = {
 const BACKEND_BASE_URL =
   import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
-export function ProposalDetails() {
+export function ProposalDetails({ isAdmin }) {
   const { id } = useParams<{ id: string }>();
   const [proposal, setProposal] = useState<Project | null>(null);
   const navigate = useNavigate();
@@ -38,9 +38,7 @@ export function ProposalDetails() {
   >([]);
   const [projectOverviewFile, setProjectOverviewFile] =
     useState<UploadedFile>();
-  const isAdmin = () => {
-    return true;
-  };
+
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
 
@@ -155,11 +153,6 @@ export function ProposalDetails() {
                     <dd>{proposal.organization}</dd>
 
                     <dt className="text-gray-600 font-medium">
-                      Contact Person & Details
-                    </dt>
-                    <dd>{proposal.contactPerson}</dd>
-
-                    <dt className="text-gray-600 font-medium">
                       Project Location
                     </dt>
                     <dd>{proposal.location}</dd>
@@ -169,7 +162,7 @@ export function ProposalDetails() {
                     </dt>
                     <dd>
                       {new Date(proposal.startDate).toLocaleDateString(
-                        "en-gb"
+                        "en-gb",
                       ) +
                         " - " +
                         new Date(proposal.endDate)?.toLocaleDateString("en-gb")}
@@ -440,6 +433,26 @@ export function ProposalDetails() {
                 </p>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Contact Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p>
+                  <strong>Contact Person:</strong> {proposal.contactName}
+                </p>
+                <p>
+                  <strong>Email:</strong> {proposal.contactEmail}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {proposal.contactPhone}
+                </p>
+                <p>
+                  <strong>Website:</strong> {proposal.website}
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
           <div>
@@ -471,7 +484,7 @@ export function ProposalDetails() {
             </Card>
           </div>
         </div>
-        {isAdmin() && (
+        {isAdmin && (
           <Card className="border-[#ddeab1] bg-gradient-to-br from-[#e4e9dd] to-[#c5e6dc]">
             <CardHeader>
               <CardTitle>Proposal Review</CardTitle>

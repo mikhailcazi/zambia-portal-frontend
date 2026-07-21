@@ -143,7 +143,7 @@ export default function UserProfile() {
                 <InfoRow
                   icon={<Mail className="h-4 w-4" />}
                   label="Email"
-                  value={user.email}
+                  value={user.email || ""}
                 />
               </CardContent>
             </Card>

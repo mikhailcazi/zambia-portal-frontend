@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-import { Card } from "./ui/card";
 
 export function UserWelcome() {
   return (

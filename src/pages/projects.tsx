@@ -18,7 +18,7 @@ export default function ProjectList() {
   const [filterText, setFilterText] = useState("");
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<FilterObject>(
-    Object.fromEntries(filterList.map((k) => [k, []]))
+    Object.fromEntries(filterList.map((k) => [k, []])),
   );
 
   // Mobile filter collapse state
@@ -44,7 +44,7 @@ export default function ProjectList() {
 
   const getCheckFilteredList = (
     projectList: Project[],
-    newFilters: FilterObject
+    newFilters: FilterObject,
   ) => {
     return projectList.filter((project) =>
       Object.entries(newFilters).every(([key, values]) => {
@@ -54,7 +54,7 @@ export default function ProjectList() {
           return field.some((v) => values.includes(v));
         }
         return values.includes(field as string);
-      })
+      }),
     );
   };
 
@@ -68,16 +68,16 @@ export default function ProjectList() {
         if (value == null) return false;
         if (Array.isArray(value)) {
           return value.some((v) =>
-            String(v).toLowerCase().includes(filterValue)
+            String(v).toLowerCase().includes(filterValue),
           );
         }
         if (typeof value === "object") {
           return Object.values(value).some((v) =>
-            String(v).toLowerCase().includes(filterValue)
+            String(v).toLowerCase().includes(filterValue),
           );
         }
         return String(value).toLowerCase().includes(filterValue);
-      })
+      }),
     );
   };
 
@@ -151,7 +151,12 @@ export default function ProjectList() {
             <p className="text-center col-span-full">No projects found.</p>
           ) : (
             filteredProjects.map((project) => (
-              <ProjectCard key={project.id} data={project} showButton={true} />
+              <ProjectCard
+                key={project.id}
+                data={project}
+                showButton={true}
+                isProposal={false}
+              />
             ))
           )}
         </div>

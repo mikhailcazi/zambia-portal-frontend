@@ -2,7 +2,15 @@ import { Project } from "@/components/project-table";
 import { useEffect, useState } from "react";
 import { api } from "../services/api.service";
 import { useParams, useNavigate } from "react-router";
-import { ChevronLeftIcon, DownloadIcon, FileIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  DownloadIcon,
+  FileIcon,
+  GlobeIcon,
+  MailIcon,
+  PhoneIcon,
+  UserIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProjectCard from "@/components/project-card";
 import { FileFieldKeys } from "@/lib/schema/formSchema";
@@ -24,6 +32,7 @@ export function ProjectDetails() {
 
   useEffect(() => {
     if (!id) return;
+
     api
       .getProject(id)
       .then((res) => setProject(res.data))
@@ -63,7 +72,7 @@ export function ProjectDetails() {
   }
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-4">
+    <div className="max-w-7xl mx-auto space-y-4 p-4 md:p-6">
       <Button
         variant="outline"
         size="sm"
@@ -74,11 +83,71 @@ export function ProjectDetails() {
         Back
       </Button>
 
-      {/* Main layout */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col gap-6 lg:flex-row">
         {/* Left column */}
-        <div className="w-full lg:w-1/3 space-y-4">
+        <div className="w-full space-y-4 lg:w-1/3">
           <ProjectCard data={project} showButton={false} />
+
+          <Card className="bg-[#F7F8FA]">
+            <CardHeader>
+              <CardTitle className="text-base">Contact Information</CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-4 text-sm">
+              <div className="flex items-start gap-3">
+                <UserIcon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">Contact Name</p>
+                  <p className="font-medium">{project.contactName}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <MailIcon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">Email</p>
+                  <a
+                    href={`mailto:${project.contactEmail}`}
+                    className="font-medium text-[#4e6e54] hover:underline break-all"
+                  >
+                    {project.contactEmail}
+                  </a>
+                </div>
+              </div>
+
+              {project.contactPhone && (
+                <div className="flex items-start gap-3">
+                  <PhoneIcon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">Phone</p>
+                    <a
+                      href={`tel:${project.contactPhone}`}
+                      className="font-medium text-[#4e6e54] hover:underline"
+                    >
+                      {project.contactPhone}
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {project.website && (
+                <div className="flex items-start gap-3">
+                  <GlobeIcon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">Website</p>
+                    <a
+                      href={project.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-[#4e6e54] hover:underline break-all"
+                    >
+                      {project.website}
+                    </a>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           <Card className="bg-[#F7F8FA]">
             <CardHeader>
@@ -86,23 +155,26 @@ export function ProjectDetails() {
                 Supporting Documents Uploaded
               </CardTitle>
             </CardHeader>
+
             <CardContent>
               <ul className="space-y-2 text-sm">
                 {files.map((file, index) => (
                   <li
                     key={index}
-                    className="bg-[#a5d8c7] flex items-center justify-between rounded-2xl px-3 py-2"
+                    className="flex items-center justify-between rounded-2xl bg-[#a5d8c7] px-3 py-2"
                   >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <FileIcon className="h-4 w-4 text-gray-600 shrink-0" />
+                    <div className="flex min-w-0 items-center gap-2">
+                      <FileIcon className="h-4 w-4 shrink-0 text-gray-600" />
                       <span className="truncate">
                         {camelToTitle(file.type)}
                       </span>
                     </div>
+
                     <a
                       href={BACKEND_BASE_URL + file.fileData.presignedURL}
                       target="_blank"
-                      className="bg-[#4e6e54] hover:bg-[#1ab46f] p-2 rounded-xl"
+                      rel="noopener noreferrer"
+                      className="rounded-xl bg-[#4e6e54] p-2 hover:bg-[#1ab46f]"
                     >
                       <DownloadIcon className="h-4 w-4 text-white" />
                     </a>
@@ -117,16 +189,17 @@ export function ProjectDetails() {
         <div className="w-full lg:w-2/3">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold border-b border-[#a5d8c7] pb-2">
+              <CardTitle className="border-b border-[#a5d8c7] pb-2 text-lg font-semibold">
                 Project Overview
               </CardTitle>
             </CardHeader>
+
             <CardContent>
               {projectOverviewFile ? (
                 <iframe
                   src={BACKEND_BASE_URL + projectOverviewFile.presignedURL}
-                  className="w-full rounded-md border h-[400px] md:h-[600px]"
                   title={projectOverviewFile.originalName}
+                  className="h-[400px] w-full rounded-md border md:h-[600px]"
                 />
               ) : (
                 <div className="flex items-center gap-2 text-sm">

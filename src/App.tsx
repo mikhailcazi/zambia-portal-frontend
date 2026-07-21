@@ -34,7 +34,10 @@ function App() {
               <Route path="login" element={<AdminLogin />} />
               <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="proposals/:id" element={<ProposalDetails />} />
+                <Route
+                  path="proposals/:id"
+                  element={<ProposalDetails isAdmin={true} />}
+                />
               </Route>
             </Route>
             {/* USER ROUTES */}
@@ -49,6 +52,10 @@ function App() {
                 <Route path="home" element={<UserHome />} />
                 <Route path="profile" element={<UserProfile />} />
                 <Route path="proposals" element={<UserProposals />} />
+                <Route
+                  path="proposals/:id"
+                  element={<ProposalDetails isAdmin={false} />}
+                />
               </Route>
             </Route>
             {/* OPEN ROUTES */}
@@ -57,7 +64,10 @@ function App() {
               <Route path="home" element={<HomePage />} />
               <Route path="projects" element={<ProjectList />} />
               <Route path="projects/:id" element={<ProjectDetails />} />
-              <Route path="proposals/:id" element={<ProposalDetails />} />
+              <Route
+                path="proposals/:id"
+                element={<ProposalDetails isAdmin={true} />}
+              />
               <Route
                 path="submit-your-proposal"
                 element={<ProposalLandingPage />}

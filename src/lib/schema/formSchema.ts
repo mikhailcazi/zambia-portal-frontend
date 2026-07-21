@@ -10,7 +10,7 @@ const singleFileType = z
   .array(
     z.custom<File>((file) => file instanceof File, {
       message: "Invalid file",
-    })
+    }),
   )
   // .min(1, { message: "At least one file is required" })
   .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
@@ -20,13 +20,12 @@ const singleFileType = z
     (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
     {
       message: "Only PDF or DOCX files are allowed",
-    }
+    },
   );
 
 export const FormSchema = z.object({
   projectTitle: z.string().nonempty("Required field!"),
   organization: z.string().nonempty("Required field!"),
-  contactPerson: z.string().nonempty("Required field!"),
   location: z.string().nonempty("Required field!"),
   sector: z.string().nonempty("Required field!"),
   startDate: z.date(),
@@ -36,12 +35,17 @@ export const FormSchema = z.object({
   currency: z.string().nonempty("Required field!"),
   partners: z.string().nonempty("Required field!"),
   genderDetails: z.string().nonempty("Required field!"),
+  //contact
+  contactName: z.string().nonempty("Required field!"),
+  contactEmail: z.string().email().nonempty("Required field!"),
+  contactPhone: z.string(),
+  website: z.string(),
   // section b
   projectOverview: z
     .array(
       z.custom<File>((file) => file instanceof File, {
         message: "Invalid file",
-      })
+      }),
     )
     .min(1, { message: "At least one file is required" })
     .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
@@ -51,7 +55,7 @@ export const FormSchema = z.object({
       (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
       {
         message: "Only PDF or DOCX files are allowed",
-      }
+      },
     ),
 
   // section c
@@ -108,7 +112,6 @@ export const FormSchema = z.object({
 export const FormDefaultValues: z.infer<typeof FormSchema> = {
   projectTitle: "",
   organization: "",
-  contactPerson: "",
   location: "",
   startDate: new Date(),
   endDate: new Date(),
@@ -118,6 +121,11 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
   currency: "",
   partners: "",
   genderDetails: "",
+
+  contactName: "",
+  contactEmail: "",
+  contactPhone: "",
+  website: "",
 
   projectOverview: [],
 
@@ -156,12 +164,15 @@ export const FormDefaultValues: z.infer<typeof FormSchema> = {
 export type StringFieldNames =
   | "projectTitle"
   | "organization"
-  | "contactPerson"
   | "location"
   | "sector"
   | "estimatedInvestment"
   | "partners"
   | "genderDetails"
+  | "contactName"
+  | "contactEmail"
+  | "contactPhone"
+  | "website"
   | "signedName"
   | "position"
   | "envImpactIndicator"
