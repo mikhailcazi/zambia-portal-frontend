@@ -13,7 +13,7 @@ export default function ProjectCard({
 }: {
   data: Project;
   showButton?: boolean;
-  isProposal: boolean;
+  isProposal?: boolean;
 }) {
   const nav = useNavigate();
   const [duration, setDuration] = useState("");

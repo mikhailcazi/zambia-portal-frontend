@@ -29,7 +29,7 @@ export type UploadedFile = {
 const BACKEND_BASE_URL =
   import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
-export function ProposalDetails({ isAdmin }) {
+export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
   const { id } = useParams<{ id: string }>();
   const [proposal, setProposal] = useState<Project | null>(null);
   const navigate = useNavigate();
