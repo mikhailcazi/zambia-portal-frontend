@@ -258,13 +258,13 @@ export default function ProposalLandingPage() {
             <ChecklistItem text="Contact details" />
             <ChecklistItem text="Supporting documents (where applicable)" />
           </div>
-
+          {/* 
           <Separator className="my-6" />
 
           <p className="text-muted-foreground">
-            Application should take <strong>20-30 minutes</strong> when all
+            Application should take <strong>5-10 minutes</strong> when all
             information has been prepared beforehand.
-          </p>
+          </p> */}
         </CardContent>
       </Card>
 

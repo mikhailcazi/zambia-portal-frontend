@@ -17,7 +17,7 @@ export function QuickActions() {
         <QuickActionCard
           title="My Proposals"
           description="View submitted proposals and track their review status."
-          href="/my-proposals"
+          href="/user/proposals"
           icon={<FolderKanban className="h-6 w-6" />}
         />
 
@@ -31,7 +31,7 @@ export function QuickActions() {
         <QuickActionCard
           title="Submission Guidelines"
           description="Review eligibility criteria and required documentation."
-          href="#"
+          href="/submit-your-proposal"
           icon={<BookOpen className="h-6 w-6" />}
         />
       </div>

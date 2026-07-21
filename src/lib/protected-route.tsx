@@ -1,20 +1,25 @@
 import { useAuth } from "@/context/auth-context";
-import { Navigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 
-export default function ProtectedRoute({
-  children,
-}: {
-  children: React.ReactElement;
-}) {
+type ProtectedRouteProps = {
+  allowedRoles: ("USER" | "ADMIN")[];
+};
+
+export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
   const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/user/login" replace />;
   }
 
-  if (user?.role !== "ADMIN") {
-    return <Navigate to="/home" replace />;
+  if (!user || !allowedRoles.includes(user.role)) {
+    return (
+      <Navigate
+        to={user?.role === "ADMIN" ? "/admin/dashboard" : "/user/home"}
+        replace
+      />
+    );
   }
 
-  return children;
+  return <Outlet />;
 }

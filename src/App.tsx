@@ -18,6 +18,7 @@ import { UserRegisterSuccess } from "./pages/user/user-register-success";
 import UserHome from "./pages/user/user-home";
 import ProposalLandingPage from "./pages/submit-proposal";
 import UserProfile from "./pages/user/user-profile";
+import UserProposals from "./pages/user/user-proposals";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -27,26 +28,30 @@ function App() {
         {/* <Toaster /> */}
         <BrowserRouter>
           <Routes>
+            {/* ADMIN ROUTES */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="login" element={<AdminLogin />} />
-              <Route
-                path="dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="proposals/:id"
-                element={
-                  <ProtectedRoute>
-                    <ProposalDetails />
-                  </ProtectedRoute>
-                }
-              />
+              <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="proposals/:id" element={<ProposalDetails />} />
+              </Route>
             </Route>
+            {/* USER ROUTES */}
+            <Route path="/user" element={<Layout />}>
+              <Route path="login" element={<UserLoginForm />} />
+              <Route path="register">
+                <Route index element={<UserRegister />} />
+                <Route path="success" element={<UserRegisterSuccess />} />
+              </Route>
+              <Route path="verify-email" element={<UserVerify />} />
+              <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
+                <Route path="home" element={<UserHome />} />
+                <Route path="profile" element={<UserProfile />} />
+                <Route path="proposals" element={<UserProposals />} />
+              </Route>
+            </Route>
+            {/* OPEN ROUTES */}
             <Route path="/" element={<Layout />}>
               <Route index element={<Navigate to="home" replace />} />
               <Route path="home" element={<HomePage />} />
@@ -59,16 +64,6 @@ function App() {
               />
               <Route path="form" element={<ProjectForm />} />
               <Route path="submitted" element={<Submission />} />
-            </Route>
-            <Route path="/user" element={<Layout />}>
-              <Route path="login" element={<UserLoginForm />} />
-              <Route path="register">
-                <Route index element={<UserRegister />} />
-                <Route path="success" element={<UserRegisterSuccess />} />
-              </Route>
-              <Route path="verify-email" element={<UserVerify />} />
-              <Route path="home" element={<UserHome />} />
-              <Route path="profile" element={<UserProfile />} />
             </Route>
           </Routes>
         </BrowserRouter>

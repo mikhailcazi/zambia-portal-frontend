@@ -1,5 +1,6 @@
 import { FilterPair } from "@/components/filter-bar";
 import { FormSchema } from "@/lib/schema/formSchema";
+import { UpdateProfileFormData } from "@/pages/user/user-profile";
 import axios from "axios";
 import * as z from "zod";
 
@@ -65,8 +66,13 @@ export const api = {
   resendEmail: (token: string) =>
     axiosInstance.post("/auth/resend-email", { token }),
 
+  updateProfile: (newProfileData: UpdateProfileFormData) =>
+    axiosInstance.patch("/project-owner/profile", newProfileData),
+
   getProposals: (filters: FilterPair) =>
     axiosInstance.get("/proposals", { params: filters }),
+
+  getProposalsByUser: () => axiosInstance.get("/proposals/user"),
 
   getProposal: (id: string) => axiosInstance.get(`/proposals/${id}`),
 
@@ -99,6 +105,8 @@ export const api = {
   getProjects: () => axiosInstance.get("/projects"),
 
   getProject: (id: string) => axiosInstance.get(`/projects/${id}`),
+
+  getProjectsByUser: () => axiosInstance.get("/projects/user"),
 
   createProject: (data: z.infer<typeof FormSchema>) =>
     axiosInstance.post("/projects", data),

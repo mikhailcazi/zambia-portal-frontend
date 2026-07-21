@@ -38,7 +38,7 @@ const Header: React.FC = () => {
       label: "Projects",
       href: "/projects",
       icon: FolderKanban,
-      show: true,
+      show: !isAuthenticated,
     },
     {
       key: "form",
@@ -67,11 +67,11 @@ const Header: React.FC = () => {
         {/* Logo always visible */}
         <div className="mr-4 flex items-center gap-3">
           <ZambiaLogo />
-          <a href={isAuthenticated ? "/user/home" : "/"}>
+          <Link to="/user/home" className="px-5 self-center text-2xl">
             <span className="hidden lg:inline text-2xl">
               Zambia Green Investment Portal
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* Nav */}
@@ -122,11 +122,11 @@ const Header: React.FC = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
-                {/* <DropdownMenuItem onClick={() => nav("/user/home")}>
-                  My Home
+                <DropdownMenuItem onClick={() => nav("/user/proposals")}>
+                  My Proposals
                 </DropdownMenuItem>
 
-                <DropdownMenuSeparator /> */}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => nav("/user/profile")}>
                   Profile
                 </DropdownMenuItem>
