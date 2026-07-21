@@ -1,23 +1,19 @@
 import { ProjectTable } from "@/components/project-table";
 import { api } from "../../services/api.service";
 import { useEffect, useState } from "react";
-import {
-  DEFAULT_FILTERS,
-  FilterBar,
-  FilterPair,
-} from "@/components/filter-bar";
+import { FilterBar, FilterStatus } from "@/components/filter-bar";
 import Loading from "@/components/ui/loading";
 import { useNavigate } from "react-router";
 
 export default function Dashboard() {
   const [proposals, setProposals] = useState([]);
-  const [filters, setFilters] = useState<FilterPair>(DEFAULT_FILTERS);
+  const [status, setStatus] = useState<FilterStatus>("pending");
   const [globalFilter, setGlobalFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
-  const handleFilterChanges = (newfilters: FilterPair) => {
-    setFilters(newfilters);
+  const handleStatusChange = (newStatus: FilterStatus) => {
+    setStatus(newStatus);
   };
 
   const handleGlobalFilterChange = (newGlobalFilter: string) => {
@@ -26,8 +22,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     setLoading(true);
+
     api
-      .getProposals(filters)
+      .getProposals(status)
       .then((res) => {
         setProposals(res.data);
         setLoading(false);
@@ -36,15 +33,16 @@ export default function Dashboard() {
         if (err.status === 401) {
           nav("/admin/login");
         }
+        setLoading(false);
       });
-  }, [filters]);
+  }, [status]);
 
   return (
     <>
       <div className="border-b-1">
         <FilterBar
           isAdmin={true}
-          onFilterChange={handleFilterChanges}
+          onStatusChange={handleStatusChange}
           onGlobalFilterChange={handleGlobalFilterChange}
         />
         {loading ? (

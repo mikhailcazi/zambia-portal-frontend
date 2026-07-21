@@ -116,7 +116,7 @@ export default function UserProfile() {
               <CardHeader className="text-center">
                 <div className="flex justify-center">
                   <Avatar className="h-20 w-20">
-                    <AvatarFallback className="text-2xl">
+                    <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
                       {user.projectOwner!.name.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>

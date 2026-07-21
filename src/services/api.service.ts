@@ -1,4 +1,4 @@
-import { FilterPair } from "@/components/filter-bar";
+import { FilterPair, FilterStatus } from "@/components/filter-bar";
 import { FormSchema } from "@/lib/schema/formSchema";
 import { UpdateProfileFormData } from "@/pages/user/user-profile";
 import axios from "axios";
@@ -69,8 +69,15 @@ export const api = {
   updateProfile: (newProfileData: UpdateProfileFormData) =>
     axiosInstance.patch("/project-owner/profile", newProfileData),
 
-  getProposals: (filters: FilterPair) =>
-    axiosInstance.get("/proposals", { params: filters }),
+  getProposals: (status: FilterStatus) =>
+    axiosInstance.get("/proposals", {
+      params: {
+        status: status.toUpperCase(),
+      },
+    }),
+
+  // getProposals: (filters: FilterPair) =>
+  //   axiosInstance.get("/proposals", { params: filters }),
 
   getProposalsByUser: () => axiosInstance.get("/proposals/user"),
 
