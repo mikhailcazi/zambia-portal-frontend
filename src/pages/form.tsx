@@ -94,6 +94,8 @@ export default function ProjectForm() {
     return formData;
   };
 
+  const selectedCurrency = form.watch("currency");
+
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
       setLoading(true);
@@ -415,7 +417,8 @@ export default function ProjectForm() {
             />
             <div className="flex">
               <Label className="text-sm p-3">
-                Total Project Cost (USD/ZMW):
+                Total Project Cost{" "}
+                {selectedCurrency ? `(${selectedCurrency})` : ""}:
                 <span className="text-red-500"> *</span>
               </Label>
               <TextField form={form} name="totalCost" mandatory={true} />
