@@ -12,6 +12,10 @@ export function UserRegisterSuccess({
 
   const email = location.state?.email;
 
+  const resendEmail = () => {
+    api.resendEmail(email);
+  };
+
   return (
     <div className={cn("my-10 px-4 sm:px-8 lg:px-60", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -46,7 +50,9 @@ export function UserRegisterSuccess({
             </div>
 
             {/* Add these once implemented */}
-            <Button className="mt-8">Resend verification email</Button>
+            <Button className="mt-8" onClick={resendEmail}>
+              Resend verification email
+            </Button>
             {/* <Button variant="outline" className="mt-2">Back to login</Button> */}
           </div>
 
