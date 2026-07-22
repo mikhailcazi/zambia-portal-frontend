@@ -45,7 +45,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormFileUploadFieldSmall } from "@/components/ui/form/form-file-field-small";
 import { DatePicker } from "@/components/ui/date-picker";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Loading from "@/components/ui/loading";
 import { useAuth } from "@/context/auth-context";
 import axios from "axios";
