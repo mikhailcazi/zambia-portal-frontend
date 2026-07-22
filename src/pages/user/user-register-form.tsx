@@ -46,8 +46,11 @@ export function UserRegister({
       })
       .catch((err) => {
         setLoading(false);
-        setError("Something went wrong!");
-        console.log(err); // <-- set error
+
+        setError(
+          err.response?.data?.message ??
+            "Something went wrong. Please try again.",
+        );
       });
   };
 
