@@ -23,6 +23,9 @@ export function UserLoginForm({
   const [error, setError] = useState(""); // <-- error state
   const [loading, setLoading] = useState(false);
 
+  const [resendFlag, setResendFlag] = useState(false);
+  const [resendText, setResendText] = useState("");
+
   const nav = useNavigate();
   const { authLogin } = useAuth();
 
@@ -47,7 +50,25 @@ export function UserLoginForm({
       .catch((err) => {
         setLoading(false);
         setError(err.response.data.message);
+        if (err.response.data.code === "NEEDS_VERIFICATION")
+          setResendFlag(true);
         console.log(err); // <-- set error
+      });
+  };
+
+  const sendResendLink = () => {
+    setLoading(true);
+    api
+      .resendEmail(email)
+      .then((res) => {
+        setLoading(false);
+        setResendText(res.data.message);
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setResendText(err.response.data.message);
+        console.log(err);
       });
   };
 
@@ -94,6 +115,14 @@ export function UserLoginForm({
               </Field>
               {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
               {loading && <Loading className="h-2" />}
+              {resendFlag && (
+                <div className="mt-6">
+                  <Button onClick={sendResendLink}>
+                    Resend verification email
+                  </Button>
+                </div>
+              )}
+              {resendText}
               <Field>
                 <Button type="submit">Login</Button>
               </Field>

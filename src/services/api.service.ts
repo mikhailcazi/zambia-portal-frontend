@@ -63,8 +63,8 @@ export const api = {
   verifyEmail: (token: string) =>
     axiosInstance.post("/auth/verify-email", { token }),
 
-  resendEmail: (token: string) =>
-    axiosInstance.post("/auth/resend-email", { token }),
+  resendEmail: (email: string) =>
+    axiosInstance.post("/auth/resend-email", { email }),
 
   updateProfile: (newProfileData: UpdateProfileFormData) =>
     axiosInstance.patch("/project-owner/profile", newProfileData),

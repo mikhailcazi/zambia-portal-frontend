@@ -16,6 +16,7 @@ export function UserVerify() {
   const [loading, setLoading] = useState(false);
   const [resendFlag, setResendFlag] = useState(false);
   const [resendText, setResendText] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     if (!token) {
@@ -43,6 +44,7 @@ export function UserVerify() {
 
         if (errResponse.code === "TOKEN_EXPIRED") {
           setResendFlag(true);
+          setEmail(errResponse.email);
         }
         console.log(err.message);
       });
@@ -51,7 +53,7 @@ export function UserVerify() {
   const sendResendLink = () => {
     setLoading(true);
     api
-      .resendEmail(token!)
+      .resendEmail(email)
       .then((res) => {
         setLoading(false);
         setResendText(res.data.message);

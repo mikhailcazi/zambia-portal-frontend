@@ -1,5 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { api } from "@/services/api.service";
 import { useLocation } from "react-router";
 
 export function UserRegisterSuccess({
@@ -44,7 +46,7 @@ export function UserRegisterSuccess({
             </div>
 
             {/* Add these once implemented */}
-            {/* <Button className="mt-8">Resend verification email</Button> */}
+            <Button className="mt-8">Resend verification email</Button>
             {/* <Button variant="outline" className="mt-2">Back to login</Button> */}
           </div>
 
