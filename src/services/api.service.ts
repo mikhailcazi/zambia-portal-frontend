@@ -79,7 +79,12 @@ export const api = {
   // getProposals: (filters: FilterPair) =>
   //   axiosInstance.get("/proposals", { params: filters }),
 
-  getProposalsByUser: () => axiosInstance.get("/proposals/user"),
+  getProposalsByUser: (status: FilterStatus) =>
+    axiosInstance.get("/proposals/user", {
+      params: {
+        status: status.toUpperCase(),
+      },
+    }),
 
   getProposal: (id: string) => axiosInstance.get(`/proposals/${id}`),
 

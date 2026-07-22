@@ -67,7 +67,7 @@ const Header: React.FC = () => {
         {/* Logo always visible */}
         <div className="mr-4 flex items-center gap-3">
           <ZambiaLogo />
-          <Link to="/user/home" className="px-5 self-center text-2xl">
+          <Link to="/home" className="px-5 self-center text-2xl">
             <span className="hidden lg:inline text-2xl">
               Zambia Green Investment Portal
             </span>

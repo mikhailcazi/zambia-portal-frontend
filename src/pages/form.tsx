@@ -45,9 +45,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormFileUploadFieldSmall } from "@/components/ui/form/form-file-field-small";
 import { DatePicker } from "@/components/ui/date-picker";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/components/ui/loading";
 import { useAuth } from "@/context/auth-context";
+import axios from "axios";
 
 export default function ProjectForm() {
   const nav = useNavigate();
@@ -59,6 +60,7 @@ export default function ProjectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: FormDefaultValues,
+    shouldFocusError: true,
   });
 
   const [loading, setLoading] = useState(false);
@@ -105,8 +107,51 @@ export default function ProjectForm() {
       nav("/submitted?proposalID=" + id);
     } catch (error) {
       setLoading(false);
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+
+      console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        if (!error.response) {
+          toast.error(
+            "Unable to reach the server. Please check your internet connection and try again.",
+          );
+          return;
+        }
+
+        const status = error.response.status;
+        const message = error.response.data?.message;
+
+        switch (status) {
+          case 400:
+            toast.error(
+              message || "Some of the submitted information is invalid.",
+            );
+            break;
+
+          case 401:
+            toast.error("Your session has expired. Please sign in again.");
+            break;
+
+          case 403:
+            toast.error("You don't have permission to submit this proposal.");
+            break;
+
+          case 413:
+            toast.error("One or more uploaded files are too large.");
+            break;
+
+          case 500:
+            toast.error("A server error occurred. Please try again later.");
+            break;
+
+          default:
+            toast.error(message || "Submission failed.");
+        }
+
+        return;
+      }
+
+      toast.error("An unexpected error occurred.");
     }
   }
 

@@ -8,31 +8,36 @@ import { Project } from "@/components/project-table";
 import Loading from "@/components/ui/loading";
 
 export default function UserProposals() {
-  const [proposals, setProposals] = useState<Project[]>([]);
-
+  const [pendingProposals, setPendingProposals] = useState<Project[]>([]);
+  const [rejectedProposals, setRejectedProposals] = useState<Project[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
 
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
     setloading(true);
-    api.getProposalsByUser().then((res) => {
+    api.getProposalsByUser("pending").then((res) => {
       setloading(false);
-      setProposals(res.data);
+      setPendingProposals(res.data);
     });
 
     api.getProjectsByUser().then((res) => {
       setloading(false);
       setProjects(res.data);
     });
+
+    api.getProposalsByUser("rejected").then((res) => {
+      setloading(false);
+      setRejectedProposals(res.data);
+    });
   }, []);
 
-  const submitted = proposals;
-
+  const submitted = pendingProposals;
   const approved = projects;
+  const rejected = rejectedProposals;
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 mt-10">
+    <div className="max-w-6xl mx-auto space-y-6 mt-10 p-5">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">My Proposals</h1>
 
@@ -50,6 +55,10 @@ export default function UserProposals() {
           <TabsTrigger value="approved">
             Approved ({approved.length})
           </TabsTrigger>
+
+          <TabsTrigger value="rejected">
+            Rejected ({rejected.length})
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="submitted" className="mt-6">
@@ -57,7 +66,7 @@ export default function UserProposals() {
             {loading ? (
               <Loading />
             ) : submitted.length === 0 ? (
-              <EmptyState text="No approved proposals yet." />
+              <EmptyState text="No pending proposals." />
             ) : (
               submitted.map((project) => (
                 <ProjectCard
@@ -76,9 +85,28 @@ export default function UserProposals() {
             {loading ? (
               <Loading />
             ) : approved.length === 0 ? (
-              <EmptyState text="No approved proposals yet." />
+              <EmptyState text="No approved proposals." />
             ) : (
               approved.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  data={project}
+                  showButton={true}
+                  isProposal={false}
+                />
+              ))
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="rejected" className="mt-6">
+          <div className="col-span-4 md:col-span-3 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 auto-rows-min content-start items-start">
+            {loading ? (
+              <Loading />
+            ) : rejected.length === 0 ? (
+              <EmptyState text="No rejected proposals." />
+            ) : (
+              rejected.map((project) => (
                 <ProjectCard
                   key={project.id}
                   data={project}

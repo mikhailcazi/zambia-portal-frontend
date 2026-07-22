@@ -29,7 +29,7 @@ export function UserRegister({
 
   const nav = useNavigate();
 
-  const login = (event: React.FormEvent<HTMLFormElement>) => {
+  const register = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
     setError(""); // clear previous errors
@@ -55,7 +55,7 @@ export function UserRegister({
     <div className={cn("my-10 px-4 sm:px-8 lg:px-60", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={login}>
+          <form className="p-6 md:p-8" onSubmit={register}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>

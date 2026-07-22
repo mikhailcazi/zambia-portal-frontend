@@ -19,6 +19,7 @@ import UserHome from "./pages/user/user-home";
 import ProposalLandingPage from "./pages/submit-proposal";
 import UserProfile from "./pages/user/user-profile";
 import UserProposals from "./pages/user/user-proposals";
+import { Toaster } from "./components/ui/sonner";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -77,6 +78,8 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+
+        <Toaster richColors position="bottom-right" />
       </div>
     </>
   );

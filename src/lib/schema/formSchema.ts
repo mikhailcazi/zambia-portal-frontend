@@ -31,7 +31,10 @@ export const FormSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   stage: z.string().nonempty("Required field!"),
-  estimatedInvestment: z.string().nonempty("Required field!"),
+  estimatedInvestment: z
+    .string()
+    .nonempty("Required field!")
+    .refine((value) => !isNaN(Number(value)), "Please enter a valid number"),
   currency: z.string().nonempty("Required field!"),
   partners: z.string().nonempty("Required field!"),
   genderDetails: z.string().nonempty("Required field!"),
@@ -83,7 +86,10 @@ export const FormSchema = z.object({
       message: "Please answer all Financial Readiness questions",
     }),
   fundingOptionsOther: z.string(),
-  totalCost: z.string().nonempty("Required field!"),
+  totalCost: z
+    .string()
+    .nonempty("Required field!")
+    .refine((value) => !isNaN(Number(value)), "Please enter a valid number"),
   fundingSought: z
     .array(z.string())
     .min(1, { message: "Please select at least one option" }),
