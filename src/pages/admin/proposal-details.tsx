@@ -36,6 +36,9 @@ export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
   const [files, setFiles] = useState<
     { fileData: UploadedFile; type: string }[]
   >([]);
+
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+
   const [projectOverviewFile, setProjectOverviewFile] =
     useState<UploadedFile>();
 
@@ -87,7 +90,20 @@ export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
     return <Loading />;
   }
 
-  const handleUpload = () => {};
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    setNewFiles(Array.from(e.target.files));
+  };
+
+  const uploadDocuments = async () => {
+    const formData = new FormData();
+
+    formData.append("additionalDocuments", newFiles[0]);
+
+    await api.uploadProposalDocuments(proposal.id, formData);
+  };
+
   const approveProposal = () => {
     api
       .approveProposal(proposal.id, comment)
@@ -480,44 +496,101 @@ export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
                       </a>
                     </li>
                   ))}
+
+                  {proposal["additionalDocuments"] &&
+                    proposal["additionalDocuments"].map((file, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center justify-between rounded-md border p-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <FileIcon className="h-4 w-4 text-gray-500" />
+                          <span>{camelToTitle(file.originalName)}</span>
+                        </div>
+                        <a
+                          href={BACKEND_BASE_URL + file.presignedURL}
+                          target="_blank"
+                        >
+                          <DownloadIcon className="h-4 w-4 text-gray-600 hover:text-gray-900" />
+                        </a>
+                      </li>
+                    ))}
                 </ul>
 
-                <Separator className="my-6" />
+                {!isAdmin && <Separator className="my-6" />}
 
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold">
-                      Upload Additional Documents
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Add any supporting documents that strengthen your
-                      proposal. PDF format is recommended.
-                    </p>
+                {!isAdmin && (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold">
+                        Upload Additional Documents
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Add any supporting documents that strengthen your
+                        proposal. PDF format is recommended.
+                      </p>
+                    </div>
+
+                    <label
+                      htmlFor="document-upload"
+                      className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors
+      ${
+        newFiles.length > 0
+          ? "border-green-500 bg-green-50"
+          : "border-muted-foreground/30 bg-muted/30 hover:border-primary hover:bg-muted/50"
+      }`}
+                    >
+                      <UploadCloud
+                        className={`mb-3 h-8 w-8 ${
+                          newFiles.length > 0
+                            ? "text-green-600"
+                            : "text-muted-foreground"
+                        }`}
+                      />
+
+                      {newFiles.length > 0 ? (
+                        <>
+                          <p className="font-medium text-green-700">
+                            {newFiles.length} document
+                            {newFiles.length > 1 ? "s" : ""} selected
+                          </p>
+
+                          <div className="mt-2 text-center text-sm text-muted-foreground">
+                            {newFiles.map((file) => (
+                              <p key={file.name}>{file.name}</p>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p className="font-medium">
+                            Click to upload or drag and drop files here
+                          </p>
+
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            PDF, DOCX, XLSX, PNG, JPG (Max 20 MB)
+                          </p>
+                        </>
+                      )}
+
+                      <input
+                        id="document-upload"
+                        type="file"
+                        className="hidden"
+                        multiple
+                        onChange={handleUpload}
+                      />
+                    </label>
+
+                    <Button
+                      disabled={newFiles.length === 0}
+                      onClick={uploadDocuments}
+                      className="w-full"
+                    >
+                      Upload Documents
+                    </Button>
                   </div>
-
-                  <label
-                    htmlFor="document-upload"
-                    className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/30 p-8 transition-colors hover:border-primary hover:bg-muted/50"
-                  >
-                    <UploadCloud className="mb-3 h-8 w-8 text-muted-foreground" />
-
-                    <p className="font-medium">
-                      Click to upload or drag and drop files here
-                    </p>
-
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      PDF, DOCX, XLSX, PNG, JPG (Max 20 MB)
-                    </p>
-
-                    <input
-                      id="document-upload"
-                      type="file"
-                      className="hidden"
-                      multiple
-                      onChange={handleUpload}
-                    />
-                  </label>
-                </div>
+                )}
               </CardContent>
             </Card>
           </div>

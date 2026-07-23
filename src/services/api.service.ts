@@ -113,6 +113,13 @@ export const api = {
       { headers: { "Content-Type": "application/json" } },
     ),
 
+  uploadProposalDocuments: (id: string, files: FormData) =>
+    axiosInstance.post(`/proposals/${id}/documents`, files, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+
   getProjects: () => axiosInstance.get("/projects"),
 
   getProject: (id: string) => axiosInstance.get(`/projects/${id}`),

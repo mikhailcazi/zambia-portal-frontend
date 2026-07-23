@@ -8,7 +8,8 @@ export function UserWelcome() {
       <div
         className="h-[65vh] w-full bg-cover bg-center"
         style={{
-          backgroundImage: "url('/images/zambia-fields.jpeg')",
+          backgroundImage:
+            "url('/images/birger-strahl-r3l0EazQLR4-unsplash.jpg')",
         }}
       >
         <div className="flex h-full items-center justify-center bg-black/40 text-white">

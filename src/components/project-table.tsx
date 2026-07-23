@@ -57,6 +57,7 @@ export type Project = {
   partnerships: UploadedFile;
   techStudies: UploadedFile;
   other: UploadedFile;
+  additionalDocuments?: UploadedFile[];
   signedName: string;
   position: string;
   createdAt: string;

@@ -77,15 +77,29 @@ export default function ProposalLandingPage() {
     <div className="max-w-6xl mx-auto px-6 py-12 space-y-12">
       {/* Hero */}
       <section className="grid lg:grid-cols-2 gap-12 items-center py-6">
-        <div className="relative">
+        <div className="relative group">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#d5edd9] to-[#6f946f] blur-3xl opacity-20" />
 
-          <img
-            src="/images/chris-boland-afGA-TbGNbA-unsplash.jpg"
-            alt="Green investment"
-            className="relative rounded-3xl shadow-xl object-cover w-full h-[450px]"
-          />
+          <div className="relative overflow-hidden rounded-3xl shadow-xl">
+            <img
+              src="/images/sikwe-scarter-Wg7f4KxPHVs-unsplash.jpg"
+              alt="Green investment"
+              className="object-cover w-full h-[450px]"
+            />
+
+            <div className="absolute bottom-3 right-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <a
+                href="https://unsplash.com/@sikwe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-md bg-black/60 px-3 py-1.5 text-xs text-white backdrop-blur-sm hover:bg-black/80"
+              >
+                Photo: Sikwe Scarter
+              </a>
+            </div>
+          </div>
         </div>
+
         <div className="space-y-6">
           <h1 className="text-5xl font-bold tracking-tight leading-tight">
             Prepare Your

@@ -149,7 +149,15 @@ export default function UserProfile() {
             </Card>
 
             {/* Organization */}
-            <Card className="md:col-span-2">
+            <Card className="md:col-span-2 overflow-hidden pt-0">
+              <div className="h-50 w-full overflow-hidden">
+                <img
+                  src="/images/henning-borgersen-4Uxu8wnjYOY-unsplash.jpg"
+                  alt="Organization header"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+
               <CardHeader className="flex flex-row items-start justify-between">
                 <div>
                   <CardTitle>Organization Information</CardTitle>
