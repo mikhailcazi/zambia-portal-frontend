@@ -194,8 +194,7 @@ export type FileFieldKeys =
   | "financialStatements"
   | "partnerships"
   | "techStudies"
-  | "other"
-  | "additionalDocuments";
+  | "other";
 
 export const FileFields: FileFieldKeys[] = [
   "projectOverview",
@@ -205,7 +204,6 @@ export const FileFields: FileFieldKeys[] = [
   "partnerships",
   "techStudies",
   "other",
-  "additionalDocuments",
 ];
 
 export const FinancialOptions = [
