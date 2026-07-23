@@ -17,8 +17,7 @@ import { FileFieldKeys } from "@/lib/schema/formSchema";
 import { camelToTitle, UploadedFile } from "./admin/proposal-details";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const BACKEND_BASE_URL =
-  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
+const BACKEND_BASE_URL = "/api";
 
 export function ProjectDetails() {
   const { id } = useParams<{ id: string }>();

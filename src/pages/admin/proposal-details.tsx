@@ -2,7 +2,7 @@ import { Project } from "@/components/project-table";
 import { Fragment, useEffect, useState } from "react";
 import { api } from "../../services/api.service";
 import { useParams, useNavigate } from "react-router";
-import { Check, ChevronLeftIcon, X } from "lucide-react";
+import { Check, ChevronLeftIcon, UploadCloud, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +16,7 @@ import { FileIcon, DownloadIcon } from "lucide-react";
 import { FileFieldKeys } from "@/lib/schema/formSchema";
 import Loading from "@/components/ui/loading";
 import CommentList from "@/components/comment-list";
+import { Separator } from "@radix-ui/react-separator";
 
 export type UploadedFile = {
   originalName: string;
@@ -26,8 +27,7 @@ export type UploadedFile = {
   presignedURL: string;
 };
 
-const BACKEND_BASE_URL =
-  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
+const BACKEND_BASE_URL = "/api";
 
 export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
   const { id } = useParams<{ id: string }>();
@@ -87,6 +87,7 @@ export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
     return <Loading />;
   }
 
+  const handleUpload = () => {};
   const approveProposal = () => {
     api
       .approveProposal(proposal.id, comment)
@@ -480,6 +481,43 @@ export function ProposalDetails({ isAdmin }: { isAdmin: boolean }) {
                     </li>
                   ))}
                 </ul>
+
+                <Separator className="my-6" />
+
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold">
+                      Upload Additional Documents
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Add any supporting documents that strengthen your
+                      proposal. PDF format is recommended.
+                    </p>
+                  </div>
+
+                  <label
+                    htmlFor="document-upload"
+                    className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/30 p-8 transition-colors hover:border-primary hover:bg-muted/50"
+                  >
+                    <UploadCloud className="mb-3 h-8 w-8 text-muted-foreground" />
+
+                    <p className="font-medium">
+                      Click to upload or drag and drop files here
+                    </p>
+
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      PDF, DOCX, XLSX, PNG, JPG (Max 20 MB)
+                    </p>
+
+                    <input
+                      id="document-upload"
+                      type="file"
+                      className="hidden"
+                      multiple
+                      onChange={handleUpload}
+                    />
+                  </label>
+                </div>
               </CardContent>
             </Card>
           </div>

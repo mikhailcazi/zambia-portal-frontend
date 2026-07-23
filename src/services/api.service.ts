@@ -4,8 +4,7 @@ import { UpdateProfileFormData } from "@/pages/user/user-profile";
 import axios from "axios";
 import * as z from "zod";
 
-const API_BASE =
-  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
+const API_BASE = "/api";
 
 // Create an Axios instance
 const axiosInstance = axios.create({ baseURL: API_BASE });
